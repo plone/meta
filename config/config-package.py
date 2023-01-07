@@ -16,11 +16,11 @@ import toml
 
 META_HINT = """\
 # Generated from:
-# https://github.com/zopefoundation/meta/tree/master/config/{config_type}"""
+# https://github.com/plone/meta/tree/master/config/{config_type}"""
 META_HINT_MARKDOWN = """\
 <!--
 Generated from:
-https://github.com/zopefoundation/meta/tree/master/config/{config_type}
+https://github.com/plone/meta/tree/master/config/{config_type}
 --> """
 FUTURE_PYTHON_VERSION = "3.12.0-alpha.2"
 DEFAULT = object()
@@ -111,6 +111,17 @@ class PackageConfiguration:
         return pathlib.Path(__file__).parent / self.config_type
 
     @cached_property
+    def distribution_path(self):
+        paths = (
+            (self.path / 'src'),
+            (self.path / 'plone'),
+        )
+        for path in paths:
+            if path.exists():
+                return path.parts[-1]
+        raise ValueError('The repository does not have a `src` or a `plone` folder!')
+
+    @cached_property
     def default_path(self):
         return pathlib.Path(__file__).parent / 'default'
 
@@ -195,6 +206,45 @@ class PackageConfiguration:
             default = []
         return self.meta_cfg[section].get(name, default)
 
+    def linting_yml(self):
+        workflows = self.path / '.github' / 'workflows'
+        workflows.mkdir(parents=True, exist_ok=True)
+
+        self.copy_with_meta(
+            'linting.yml.j2',
+            workflows / 'linting.yml',
+            self.config_type,
+        )
+
+    def editorconfig(self):
+        self.copy_with_meta(
+            'editorconfig',
+            self.path / '.editorconfig',
+            self.config_type
+        )
+
+    def lint_requirements(self):
+        self.copy_with_meta(
+            'lint-requirements.txt.j2',
+            self.path / 'lint-requirements.txt',
+            self.config_type
+        )
+
+    def pyproject_toml(self):
+        self.copy_with_meta(
+            'pyproject.toml.j2',
+            self.path / 'pyproject.toml',
+            self.config_type
+        )
+
+    def tox(self):
+        self.copy_with_meta(
+            'tox.ini.j2',
+            self.path / 'tox.ini',
+            self.config_type,
+            dist_path=self.distribution_path
+        )
+
     def copy_with_meta(
             self, template_name, destination, config_type,
             meta_hint=META_HINT, **kw):
@@ -217,6 +267,10 @@ class PackageConfiguration:
     def configure(self):
         self._add_project_to_config_type_list()
 
+        self.editorconfig()
+        self.lint_requirements()
+        self.linting_yml()
+        self.pyproject_toml()
         self.setup_cfg()
         self.tox()
 
@@ -242,12 +296,16 @@ class PackageConfiguration:
             updating = git_branch(self.branch_name)
 
             if self.args.commit:
-                call(
-                    'git', 'add',
-                    'setup.cfg', 'tox.ini', '.gitignore',
-                    '.github/workflows/tests.yml', 'MANIFEST.in',
+                files = [
                     '.editorconfig',
-                    '.meta.toml')
+                    'lint-requirements.txt',
+                    '.github/workflows/linting.yml',
+                    'pyproject.toml',
+                    'setup.cfg',
+                    '.meta.toml',
+                    'tox.ini',
+                ]
+                call('git', 'add', *files)
                 if self.args.commit_msg:
                     commit_msg = self.args.commit_msg
                 else:
