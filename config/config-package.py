@@ -53,13 +53,9 @@ def handle_command_line_arguments():
     parser.add_argument(
         '-t', '--type',
         choices=[
-            'buildout-recipe',
-            'c-code',
-            'pure-python',
-            'zope-product',
-            'groktoolkit',
+            'default',
         ],
-        default=None,
+        default='default',
         dest='type',
         help='type of the configuration to be used, see README.rst. '
         'Only required when running on a repository for the first time.')
