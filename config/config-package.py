@@ -157,46 +157,14 @@ class PackageConfiguration:
 
     def setup_cfg(self):
         """Copy setup.cfg file to the package being configured."""
-        extra_flake8_config = self.cfg_option(
-            'flake8', 'additional-config')
         extra_check_manifest_ignores = self.cfg_option(
             'check-manifest', 'additional-ignores')
-        check_manifest_ignore_bad_ideas = self.cfg_option(
-            'check-manifest', 'ignore-bad-ideas')
-        isort_known_third_party = self.cfg_option(
-            'isort', 'known_third_party',
-            default=' six, docutils, pkg_resources')
-        isort_known_zope = self.cfg_option('isort', 'known_zope', default='')
-        isort_known_first_party = self.cfg_option(
-            'isort', 'known_first_party', default='')
-        isort_known_local_folder = self.meta_cfg['isort'].get(
-            'known_local_folder', '')
-        for var in (
-            'isort_known_third_party',
-            'isort_known_zope',
-            'isort_known_first_party',
-        ):
-            if locals()[var]:
-                # Avoid whitespace at end of line if empty:
-                locals()[var] = ' ' + locals()[var]
-
-        zest_releaser_options = self.meta_cfg['zest-releaser'].get(
-            'options', [])
-        if self.config_type == 'c-code':
-            zest_releaser_options.append('create-wheel = no')
 
         self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
             self.config_type,
-            additional_flake8_config=extra_flake8_config,
             additional_check_manifest_ignores=extra_check_manifest_ignores,
-            check_manifest_ignore_bad_ideas=check_manifest_ignore_bad_ideas,
-            isort_known_third_party=isort_known_third_party,
-            isort_known_zope=isort_known_zope,
-            isort_known_first_party=isort_known_first_party,
-            isort_known_local_folder=isort_known_local_folder,
-            zest_releaser_options=zest_releaser_options,
         )
 
     def cfg_option(self, section, name, default=DEFAULT):
