@@ -4,8 +4,8 @@ envlist =
     lint
 
 [testenv]
-py_files = git ls-files "*.py"
-text_files = git ls-files "*.rst" "*.md"
+py_files = find %(dist_path)s -name "*.py"
+rst_files = find %(dist_path)s -name "*.rst"
 allowlist_externals =
     sh
 
@@ -18,9 +18,9 @@ deps =
     black
     -c lint-requirements.txt
 commands =
-    sh -c '{[testenv]py_files} | xargs pyupgrade --py38-plus'
-    sh -c '{[testenv]py_files} | xargs isort'
-    sh -c '{[testenv]py_files} | xargs black'
+    sh -c '{[testenv]py_files} | xargs pyupgrade --py38-plus *.py'
+    sh -c '{[testenv]py_files} | xargs isort *.py'
+    sh -c '{[testenv]py_files} | xargs black *.py'
 
 [testenv:lint]
 description = run linters that will help improve the code style
@@ -30,6 +30,6 @@ deps =
     codespell
     -c lint-requirements.txt
 commands =
-    sh -c '{[testenv]py_files} | xargs flake8'
-    sh -c '{[testenv]py_files} | xargs codespell'
-    sh -c '{[testenv]text_files} | xargs codespell'
+    sh -c '{[testenv]py_files} | xargs flake8 *.py'
+    sh -c '{[testenv]py_files} | xargs codespell *.py'
+    sh -c '{[testenv]rst_files} | xargs codespell *.rst'
