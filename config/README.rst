@@ -5,85 +5,41 @@ Config
 Purpose
 -------
 
-Bring the configuration of the zopefoundation packages into a common state and
-keep it there.
-
-
-Types
------
-
-This directory contains the configuration directories for different types of
-packages:
-
-* buildout-recipe
-
-  - Configuration for a zc.buildout recipe. It is tested using multiple
-    processes, so coverage has to be configured in a special way. (Supports
-    pure Python packages which also run on PyPy.)
-
-* c-code
-
-  - Configuration for package containing C code besides the Python one.
-
-* pure-python
-
-  - Configuration for a pure Python package.
-
-* zope-product
-
-  - Configuration for a pure Python package which uses zc.buildout inside
-    ``tox.ini`` to be able to pin the installed dependency versions the same
-    way ``buildout.cfg`` does it.
-
-* groktoolkit
-
-  - Configuration currently only used for the groktoolkit repository.
+Bring the configuration of the Plone packages into a common state and keep it there.
 
 Contents
 --------
 
-Each directory contains the following files if they differ from the default
-(stored in a directory named ``default``):
-
-* packages.txt
-
-  - This file lists the packages which use the configuration in the
-    directory.
-
-* CONTRIBUTING.md
-
-  - This file is copied as is. It allows developers to easily find our
-    contributing guidelines in the root of the repository.
+The `default` directory contains the following files:
 
 * editorconfig
 
   - This file is copied to `.editorconfig` and allows developers to have a
     common editor configuration experience in all repos.
 
-* gitignore.j2
+* lint-requirements.txt.j2
 
-  - This file is copied to `.gitignore` and can be appended trough
-    configuration in ``.meta.cfg``.
+  - list of packages needed to run the GitHub actions.
 
-* MANIFEST.in.j2
-
-  - Configuration file for the MANIFEST to include all needed files in sdist
-    and wheel.
-
-* setup.cfg
-
-  - common setup.cfg, which should be copied to the repository of the
-    package
-
-* tox.ini.j2
-
-  - tox configuration, which should be copied to the repository of the
-    package
-
-* tests.yml.j2
+* linting.yml.j2
 
   - Configuration for GitHub actions.
 
+* packages.txt
+
+  - This file lists the packages which use the configuration in the directory.
+
+* pyproject.toml.j2
+
+  - configuration for various python related tools.
+
+* setup.cfg.j2
+
+  - common `setup.cfg`, which should be copied to the repository of the package
+
+* tox.ini.j2
+
+  - tox configuration, which should be copied to the repository of the package
 
 Usage
 -----
