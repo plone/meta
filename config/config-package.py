@@ -43,13 +43,13 @@ def handle_command_line_arguments():
         dest='commit',
         action='store_false',
         default=True,
-        help='Prevent automatic committing of changes. Implies --no-push.')
+        help='Prevent automatic committing of changes.')
     parser.add_argument(
-        '--no-push',
+        '--push',
         dest='push',
-        action='store_false',
-        default=True,
-        help='Prevent direct push.')
+        action='store_true',
+        default=False,
+        help='Push changes directly.')
     parser.add_argument(
         '-t', '--type',
         choices=[
