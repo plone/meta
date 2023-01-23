@@ -111,17 +111,6 @@ class PackageConfiguration:
         return pathlib.Path(__file__).parent / self.config_type
 
     @cached_property
-    def distribution_path(self):
-        paths = (
-            (self.path / 'src'),
-            (self.path / 'plone'),
-        )
-        for path in paths:
-            if path.exists():
-                return path.parts[-1]
-        raise ValueError('The repository does not have a `src` or a `plone` folder!')
-
-    @cached_property
     def default_path(self):
         return pathlib.Path(__file__).parent / 'default'
 
@@ -210,7 +199,6 @@ class PackageConfiguration:
             'tox.ini.j2',
             self.path / 'tox.ini',
             self.config_type,
-            dist_path=self.distribution_path
         )
 
     def copy_with_meta(
