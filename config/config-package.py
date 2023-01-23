@@ -205,15 +205,19 @@ class PackageConfiguration:
         with open(destination, 'w') as f_:
             f_.write(content)
 
+        return destination.name
+
     def configure(self):
         self._add_project_to_config_type_list()
 
-        self.editorconfig()
-        self.lint_requirements()
-        self.linting_yml()
-        self.pyproject_toml()
-        self.setup_cfg()
-        self.tox()
+        files_changed = [
+            self.editorconfig(),
+            self.lint_requirements(),
+            self.linting_yml(),
+            self.pyproject_toml(),
+            self.setup_cfg(),
+            self.tox(),
+        ]
 
         with change_dir(self.path) as cwd:
             if pathlib.Path('bootstrap.py').exists():
@@ -237,16 +241,7 @@ class PackageConfiguration:
             updating = git_branch(self.branch_name)
 
             if self.args.commit:
-                files = [
-                    '.editorconfig',
-                    'lint-requirements.txt',
-                    '.github/workflows/linting.yml',
-                    'pyproject.toml',
-                    'setup.cfg',
-                    '.meta.toml',
-                    'tox.ini',
-                ]
-                call('git', 'add', *files)
+                call('git', 'add', *files_changed)
                 if self.args.commit_msg:
                     commit_msg = self.args.commit_msg
                 else:
