@@ -225,6 +225,11 @@ class PackageConfiguration:
                     TomlArraySeparatorEncoderWithNewline(
                         separator=',\n   ', indent_first_line=True))
 
+    def run_tox(self):
+        with change_dir(self.path) as cwd:
+            tox_path = shutil.which('tox') or (pathlib.Path(cwd) / 'bin' / 'tox')
+            call(tox_path, '-e', 'format,lint')
+
     def configure(self):
         self._add_project_to_config_type_list()
 
@@ -239,12 +244,9 @@ class PackageConfiguration:
 
         self.remove_old_files()
         self.remove_toml_empty_sections()
+        self.run_tox()
 
-        with change_dir(self.path) as cwd:
-            tox_path = shutil.which('tox') or (
-                pathlib.Path(cwd) / 'bin' / 'tox')
-            call(tox_path, '-p', 'auto')
-
+        with change_dir(self.path):
             updating = git_branch(self.branch_name)
 
             if self.args.commit:
