@@ -54,33 +54,24 @@ The script needs a ``venv`` with some packages installed::
 
 To use the configuration provided here in a package call the following script::
 
-    $ bin/python config-package.py <path-to-package> --type <config-type-name> [<additional-options>]
+    $ bin/python config-package.py <path-to-package> [<additional-options>]
 
 See ``--help`` for details.
 
 The script does the following steps:
 
-1. Add the package name to ``packages.txt`` of the selected configuration type
-   if it is not yet added.
-2. Copy ``setup.cfg``, ``tox.ini``, ``tests.yml``, ``MANIFEST.in`` and
-   ``.gitignore`` to the repository.
-3. Remove a possibly existing ``.coveragerc`` and ``bootstrap.py``. (Coverage
-   is now configured in ``tox.ini`` for packages which are no buildout
-   recipes.)
-4. Run the tests via: ``tox``. The ``tox`` script may be either on the current
+1. Add the package name to ``packages.txt``
+2. Copies various files to the repository
+3. Remove a possibly existing ``.travis.yml`` and ``bootstrap.py``
+4. Run all ``tox`` _targets_. The ``tox`` script may be either on the current
    ``$PATH`` or in the ``bin`` subfolder of the current working directory.
-5. Create a branch and a pull request. (Prevent an automatic commit of all
-   changes with the command line switch ``--no-commit``, or an automatic push
-   to GitHub using the command line switch ``--no-push``.)
+5. Create a branch and a few commits with all the changes
 
 After running the script you should manually do the following steps:
 
-1. Check for changes in the updated repository and for the need of a change log
-   entry over there.
-2. Make sure the package is activated on https://coveralls.io by trying to add
-   the repository name and making it active.
-3. Check in possible changes in the zopefoundation/meta repository.
-
+1. Double check the changes and adapt the code to them
+2. Add a news entry
+2. Check in possible changes in the plone/meta repository itself
 
 CLI arguments
 +++++++++++++
