@@ -245,7 +245,7 @@ class PackageConfiguration:
                 if self.args.commit_msg:
                     commit_msg = self.args.commit_msg
                 else:
-                    commit_msg = f'Configuring for {self.config_type}'
+                    commit_msg = f'Configuring with plone/meta'
                 call('git', 'commit', '-m', commit_msg)
                 if self.args.push:
                     call('git', 'push', '--set-upstream',
