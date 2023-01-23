@@ -28,8 +28,10 @@ skip_install = true
 deps =
     flake8
     codespell
+    check-manifest
     -c lint-requirements.txt
 commands =
     sh -c '{[testenv]py_files} | xargs flake8 *.py'
     sh -c '{[testenv]py_files} | xargs codespell *.py'
     sh -c '{[testenv]rst_files} | xargs codespell *.rst'
+    check-manifest
