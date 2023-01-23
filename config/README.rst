@@ -103,11 +103,11 @@ Options
 There is almost no options to configure so far,
 but that does not mean it has to be this way!
 
-See `zopefoundation/meta` for plenty of examples
+See ``zopefoundation/meta`` for plenty of examples
 of options that can be added to the configuration files
 if the need arises. 
 
-`.meta.toml` file is added inside the package repository.
+``.meta.toml`` file is added inside the package repository.
 This file stores the template name and commit id 
 of the *meta* repository at the time of the run.
 This file is generated during the configuration run,
@@ -140,13 +140,12 @@ Hints
 * Call ``bin/check-python-versions <path-to-package> -h`` to see how to fix
   version mismatches in the *lint* tox environment.
 
-
 Calling a script on multiple repositories
 -----------------------------------------
 
-The ``config-package.py`` script only runs on a single repository. To update
-multiple repositories at once you can use ``multi-call.py``. It runs a given
-script on all repositories listed in a ``packages.txt`` file.
+The ``config-package.py`` script only runs on a single repository.
+To update multiple repositories at once you can use ``multi-call.py``.
+It runs a given script on all repositories listed in a ``packages.txt`` file.
 
 Usage
 +++++
@@ -170,8 +169,7 @@ The script does the following steps:
 .. caution::
 
   Running this script stashes any uncommitted changes in the repositories,
-  run `git stash pop` to recover them.
-
+  run ``git stash pop`` to recover them.
 
 Re-enabling GitHub Actions
 --------------------------
