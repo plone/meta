@@ -180,6 +180,17 @@ class PackageConfiguration:
     def tox(self):
         return self.copy_with_meta('tox.ini.j2')
 
+    def news_entry(self):
+        news = self.path / 'news'
+        news.mkdir(parents=True, exist_ok=True)
+
+        destination = self.path / f'1.internal.{get_commit_id}'
+        with open(destination, 'w') as f_:
+            f_.write('Update configuration files\n')
+            f_.write('[plone devs]')
+
+        return destination.name
+
     def copy_with_meta(
             self, template_name, destination=None,
             meta_hint=META_HINT, **kw):
@@ -263,6 +274,7 @@ class PackageConfiguration:
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
+            self.news_entry(),
         ]
 
         self.remove_old_files()
