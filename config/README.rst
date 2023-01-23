@@ -82,8 +82,7 @@ The following arguments are supported.
   Use MSG as commit message instead of an artificial one.
 
 --no-commit
-  Don't automatically commit changes after the configuration run. Implies
-  --no-push.
+  Don't automatically commit changes after the configuration run.
 
 --no-push
   Avoid pushing at the end of the configuration run.
@@ -92,41 +91,11 @@ The following arguments are supported.
   Define a specific git branch name to be created for the changes. By default
   the script creates one which includes the name of the configuration type.
 
-The following options are only needed one time as their values re stored in
+The following options are only needed one time as their values are stored in
 ``.meta.toml.``.
 
 --type
-  Define the configuration type (see `Types`_ section above) to be used for the
-  repository.
-
---with-appveyor
-  Enable running the tests on AppVeyor, too.
-
---with-macos
-  Enable running the tests on macOS on GitHub Actions.
-
---with-windows
-  Enable running the tests on Windows on GitHub Actions.
-
---with-pypy
-  Enable PyPy support.
-
---with-future-python
-  The package supports the next upcoming Python version which does not yet have
-  a final release thus it is not yet generally supported by the zopefoundation
-  packages.
-
---with-docs
-  Enable building the documentation using Sphinx.
-
---with-sphinx-doctests
-  Enable running the documentation as doctest using Sphinx.
-
---no-flake8
-  Don't add ``flake8`` and ``isort`` linting steps to the configuration. If
-  the code is old and numerous linting changes would obscure the package
-  reconfiguration changes it may make sense to use this flag and configure/run
-  ``flake8`` and ``isort`` in a separate step.
+  Define the configuration type, by now `default` is the only option
 
 Options
 +++++++
