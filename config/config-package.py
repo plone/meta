@@ -166,56 +166,41 @@ class PackageConfiguration:
     def linting_yml(self):
         workflows = self.path / '.github' / 'workflows'
         workflows.mkdir(parents=True, exist_ok=True)
-
-        self.copy_with_meta(
-            'linting.yml.j2',
-            workflows / 'linting.yml',
-            self.config_type,
-        )
+        self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
 
     def editorconfig(self):
-        self.copy_with_meta(
-            'editorconfig',
-            self.path / '.editorconfig',
-            self.config_type
-        )
+        self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
     def lint_requirements(self):
-        self.copy_with_meta(
-            'lint-requirements.txt.j2',
-            self.path / 'lint-requirements.txt',
-            self.config_type
-        )
+        self.copy_with_meta('lint-requirements.txt.j2')
 
     def pyproject_toml(self):
-        self.copy_with_meta(
-            'pyproject.toml.j2',
-            self.path / 'pyproject.toml',
-            self.config_type
-        )
+        self.copy_with_meta('pyproject.toml.j2')
 
     def tox(self):
-        self.copy_with_meta(
-            'tox.ini.j2',
-            self.path / 'tox.ini',
-            self.config_type,
-        )
+        self.copy_with_meta('tox.ini.j2')
 
     def copy_with_meta(
-            self, template_name, destination, config_type,
+            self, template_name, destination=None,
             meta_hint=META_HINT, **kw):
         """Copy the source file to destination and a hint of origin.
 
         If kwargs are given they are used as template arguments.
         """
         template = self.jinja_env.get_template(template_name)
-        rendered = template.render(config_type=config_type, **kw)
-        meta_hint = meta_hint.format(config_type=config_type)
+        rendered = template.render(config_type=self.config_type, **kw)
+        meta_hint = meta_hint.format(config_type=self.config_type)
         if rendered.startswith('#!'):
             she_bang, _, body = rendered.partition('\n')
             content = '\n'.join([she_bang, meta_hint, body])
         else:
             content = '\n'.join([meta_hint, rendered])
+
+        if destination is None:
+            if template_name.endswith('.j2'):
+                destination = self.path / template_name[:-3]  # remove `.j2`
+            else:
+                destination = self.path / template_name
 
         with open(destination, 'w') as f_:
             f_.write(content)
