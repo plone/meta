@@ -207,6 +207,52 @@ class PackageConfiguration:
 
         return destination.relative_to(self.path)
 
+    def remove_old_files(self):
+        filenames = ('bootstrap.py', '.travis.yml')
+        with change_dir(self.path):
+            for filename in filenames:
+                if pathlib.Path(filename).exists():
+                    call('git', 'rm', 'filename')
+
+    def remove_toml_empty_sections(self):
+        meta_cfg = {k: v for k, v in self.meta_cfg.items() if v}
+        with change_dir(self.path):
+            with open('.meta.toml', 'w') as meta_f:
+                meta_f.write(META_HINT.format(config_type=self.config_type))
+                meta_f.write('\n')
+                toml.dump(
+                    meta_cfg, meta_f,
+                    TomlArraySeparatorEncoderWithNewline(
+                        separator=',\n   ', indent_first_line=True))
+
+    def run_tox(self):
+        with change_dir(self.path) as cwd:
+            tox_path = shutil.which('tox') or (pathlib.Path(cwd) / 'bin' / 'tox')
+            call(tox_path, '-e', 'format,lint')
+
+    @property
+    def _commit_msg(self):
+        return self.args.commit_msg or 'Configuring with plone/meta'
+
+    def commit_and_push(self, filenames):
+        if not self.args.commit:
+            return
+
+        with change_dir(self.path):
+            call('git', 'add', *filenames)
+            call('git', 'commit', '-m', self._commit_msg)
+            if self.args.push:
+                call('git', 'push', '--set-upstream', 'origin', self.branch_name)
+
+    @staticmethod
+    def final_help_tips(updating):
+        print()
+        print('If everything went fine up to here:')
+        if updating:
+            print('Updated the previously created PR.')
+        else:
+            print('Create a PR, using the URL shown above.')
+
     def configure(self):
         self._add_project_to_config_type_list()
 
@@ -219,43 +265,15 @@ class PackageConfiguration:
             self.tox(),
         ]
 
-        with change_dir(self.path) as cwd:
-            if pathlib.Path('bootstrap.py').exists():
-                call('git', 'rm', 'bootstrap.py')
-            if pathlib.Path('.travis.yml').exists():
-                call('git', 'rm', '.travis.yml')
-            # Remove empty sections:
-            meta_cfg = {k: v for k, v in self.meta_cfg.items() if v}
-            with open('.meta.toml', 'w') as meta_f:
-                meta_f.write(META_HINT.format(config_type=self.config_type))
-                meta_f.write('\n')
-                toml.dump(
-                    meta_cfg, meta_f,
-                    TomlArraySeparatorEncoderWithNewline(
-                        separator=',\n   ', indent_first_line=True))
+        self.remove_old_files()
+        self.remove_toml_empty_sections()
+        self.run_tox()
 
-            tox_path = shutil.which('tox') or (
-                pathlib.Path(cwd) / 'bin' / 'tox')
-            call(tox_path, '-p', 'auto')
-
+        with change_dir(self.path):
             updating = git_branch(self.branch_name)
 
-            if self.args.commit:
-                call('git', 'add', *files_changed)
-                if self.args.commit_msg:
-                    commit_msg = self.args.commit_msg
-                else:
-                    commit_msg = f'Configuring with plone/meta'
-                call('git', 'commit', '-m', commit_msg)
-                if self.args.push:
-                    call('git', 'push', '--set-upstream',
-                         'origin', self.branch_name)
-            print()
-            print('If everything went fine up to here:')
-            if updating:
-                print('Updated the previously created PR.')
-            else:
-                print('Create a PR, using the URL shown above.')
+        self.commit_and_push(files_changed)
+        self.final_help_tips(updating)
 
 
 def main():
