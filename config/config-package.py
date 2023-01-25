@@ -111,17 +111,6 @@ class PackageConfiguration:
         return pathlib.Path(__file__).parent / self.config_type
 
     @cached_property
-    def distribution_path(self):
-        paths = (
-            (self.path / 'src'),
-            (self.path / 'plone'),
-        )
-        for path in paths:
-            if path.exists():
-                return path.parts[-1]
-        raise ValueError('The repository does not have a `src` or a `plone` folder!')
-
-    @cached_property
     def default_path(self):
         return pathlib.Path(__file__).parent / 'default'
 
@@ -160,7 +149,7 @@ class PackageConfiguration:
         extra_check_manifest_ignores = self.cfg_option(
             'check-manifest', 'additional-ignores')
 
-        self.copy_with_meta(
+        return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
             self.config_type,
@@ -177,70 +166,58 @@ class PackageConfiguration:
     def linting_yml(self):
         workflows = self.path / '.github' / 'workflows'
         workflows.mkdir(parents=True, exist_ok=True)
-
-        self.copy_with_meta(
-            'linting.yml.j2',
-            workflows / 'linting.yml',
-            self.config_type,
-        )
+        return self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
 
     def editorconfig(self):
-        self.copy_with_meta(
-            'editorconfig',
-            self.path / '.editorconfig',
-            self.config_type
-        )
+        return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
     def lint_requirements(self):
-        self.copy_with_meta(
-            'lint-requirements.txt.j2',
-            self.path / 'lint-requirements.txt',
-            self.config_type
-        )
+        return self.copy_with_meta('lint-requirements.txt.j2')
 
     def pyproject_toml(self):
-        self.copy_with_meta(
-            'pyproject.toml.j2',
-            self.path / 'pyproject.toml',
-            self.config_type
-        )
+        return self.copy_with_meta('pyproject.toml.j2')
 
     def tox(self):
-        self.copy_with_meta(
-            'tox.ini.j2',
-            self.path / 'tox.ini',
-            self.config_type,
-            dist_path=self.distribution_path
-        )
+        return self.copy_with_meta('tox.ini.j2')
 
     def copy_with_meta(
-            self, template_name, destination, config_type,
+            self, template_name, destination=None,
             meta_hint=META_HINT, **kw):
         """Copy the source file to destination and a hint of origin.
 
         If kwargs are given they are used as template arguments.
         """
         template = self.jinja_env.get_template(template_name)
-        rendered = template.render(config_type=config_type, **kw)
-        meta_hint = meta_hint.format(config_type=config_type)
+        rendered = template.render(config_type=self.config_type, **kw)
+        meta_hint = meta_hint.format(config_type=self.config_type)
         if rendered.startswith('#!'):
             she_bang, _, body = rendered.partition('\n')
             content = '\n'.join([she_bang, meta_hint, body])
         else:
             content = '\n'.join([meta_hint, rendered])
 
+        if destination is None:
+            if template_name.endswith('.j2'):
+                destination = self.path / template_name[:-3]  # remove `.j2`
+            else:
+                destination = self.path / template_name
+
         with open(destination, 'w') as f_:
             f_.write(content)
+
+        return destination.relative_to(self.path)
 
     def configure(self):
         self._add_project_to_config_type_list()
 
-        self.editorconfig()
-        self.lint_requirements()
-        self.linting_yml()
-        self.pyproject_toml()
-        self.setup_cfg()
-        self.tox()
+        files_changed = [
+            self.editorconfig(),
+            self.lint_requirements(),
+            self.linting_yml(),
+            self.pyproject_toml(),
+            self.setup_cfg(),
+            self.tox(),
+        ]
 
         with change_dir(self.path) as cwd:
             if pathlib.Path('bootstrap.py').exists():
@@ -264,20 +241,11 @@ class PackageConfiguration:
             updating = git_branch(self.branch_name)
 
             if self.args.commit:
-                files = [
-                    '.editorconfig',
-                    'lint-requirements.txt',
-                    '.github/workflows/linting.yml',
-                    'pyproject.toml',
-                    'setup.cfg',
-                    '.meta.toml',
-                    'tox.ini',
-                ]
-                call('git', 'add', *files)
+                call('git', 'add', *files_changed)
                 if self.args.commit_msg:
                     commit_msg = self.args.commit_msg
                 else:
-                    commit_msg = f'Configuring for {self.config_type}'
+                    commit_msg = f'Configuring with plone/meta'
                 call('git', 'commit', '-m', commit_msg)
                 if self.args.push:
                     call('git', 'push', '--set-upstream',
