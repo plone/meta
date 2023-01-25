@@ -149,7 +149,7 @@ class PackageConfiguration:
         extra_check_manifest_ignores = self.cfg_option(
             'check-manifest', 'additional-ignores')
 
-        self.copy_with_meta(
+        return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
             self.config_type,
@@ -166,19 +166,19 @@ class PackageConfiguration:
     def linting_yml(self):
         workflows = self.path / '.github' / 'workflows'
         workflows.mkdir(parents=True, exist_ok=True)
-        self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
+        return self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
 
     def editorconfig(self):
-        self.copy_with_meta('editorconfig', self.path / '.editorconfig')
+        return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
     def lint_requirements(self):
-        self.copy_with_meta('lint-requirements.txt.j2')
+        return self.copy_with_meta('lint-requirements.txt.j2')
 
     def pyproject_toml(self):
-        self.copy_with_meta('pyproject.toml.j2')
+        return self.copy_with_meta('pyproject.toml.j2')
 
     def tox(self):
-        self.copy_with_meta('tox.ini.j2')
+        return self.copy_with_meta('tox.ini.j2')
 
     def copy_with_meta(
             self, template_name, destination=None,
@@ -205,7 +205,7 @@ class PackageConfiguration:
         with open(destination, 'w') as f_:
             f_.write(content)
 
-        return destination.name
+        return destination.relative_to(self.path)
 
     def configure(self):
         self._add_project_to_config_type_list()
