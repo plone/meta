@@ -184,12 +184,12 @@ class PackageConfiguration:
         news = self.path / 'news'
         news.mkdir(parents=True, exist_ok=True)
 
-        destination = self.path / f'1.internal.{get_commit_id}'
+        destination = self.path / 'news' / f'1.internal.{get_commit_id()}'
         with open(destination, 'w') as f_:
             f_.write('Update configuration files\n')
             f_.write('[plone devs]')
 
-        return destination.name
+        return destination.relative_to(self.path)
 
     def copy_with_meta(
             self, template_name, destination=None,
