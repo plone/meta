@@ -217,7 +217,6 @@ class PackageConfiguration:
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
-            '.meta.toml',
         ]
 
         with change_dir(self.path) as cwd:
