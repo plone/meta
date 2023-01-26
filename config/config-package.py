@@ -152,7 +152,6 @@ class PackageConfiguration:
         return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
-            self.config_type,
             additional_check_manifest_ignores=extra_check_manifest_ignores,
         )
 
