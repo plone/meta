@@ -4,3 +4,4 @@
 plone.batching
 plone.subrequest
 plone.supermodel
+Products.CMFPlacefulWorkflow
