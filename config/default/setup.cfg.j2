@@ -1,3 +1,17 @@
+{% if metadata %}
+[metadata]
+    {% for key, value in metadata %}
+%(key)s = %(value)s
+    {% endfor %}
+
+{% endif %}
+{% if options %}
+[options]
+    {% for key, value in options %}
+%(key)s = %(value)s
+    {% endfor %}
+
+{% endif %}
 [bdist_wheel]
 universal = 0
 

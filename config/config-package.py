@@ -6,6 +6,8 @@ from shared.git import get_commit_id
 from shared.git import git_branch
 from shared.path import change_dir
 from shared.toml_encoder import TomlArraySeparatorEncoderWithNewline
+from shared.utils import cleanup_data_for_jinja
+
 import argparse
 import collections
 import jinja2
@@ -148,18 +150,31 @@ class PackageConfiguration:
         """Copy setup.cfg file to the package being configured."""
         extra_check_manifest_ignores = self.cfg_option(
             'check-manifest', 'additional-ignores')
+        metadata = self.cfg_option('setup', 'metadata')
+        if metadata:
+            metadata = cleanup_data_for_jinja(metadata)
+            metadata = metadata.items()
+        options = self.cfg_option('setup', 'options')
+        if options:
+            options = cleanup_data_for_jinja(options)
+            options = options.items()
 
         return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
             additional_check_manifest_ignores=extra_check_manifest_ignores,
+            metadata=metadata,
+            options=options,
         )
 
-    def cfg_option(self, section, name, default=DEFAULT):
+    def cfg_option(self, section, name=None, default=DEFAULT):
         """Read a value from `self.meta_cfg`, default to `[]` if not existing.
         """
         if default == DEFAULT:
             default = []
+        if name is None:
+            # Get the entire section.
+            return self.meta_cfg[section]
         return self.meta_cfg[section].get(name, default)
 
     def linting_yml(self):
