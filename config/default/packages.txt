@@ -5,3 +5,5 @@ plone.batching
 plone.subrequest
 plone.supermodel
 Products.CMFPlacefulWorkflow
+plone.session
+plone.schemaeditor
