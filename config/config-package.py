@@ -189,7 +189,13 @@ class PackageConfiguration:
         return self.copy_with_meta('lint-requirements.txt.j2')
 
     def pyproject_toml(self):
-        return self.copy_with_meta('pyproject.toml.j2')
+        codespell_ignores = self.cfg_option(
+            'codespell', 'additional-ignores')
+
+        return self.copy_with_meta(
+            'pyproject.toml.j2',
+            codespell_ignores=codespell_ignores
+        )
 
     def tox(self):
         return self.copy_with_meta('tox.ini.j2')

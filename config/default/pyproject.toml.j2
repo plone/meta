@@ -39,3 +39,8 @@ profile = "plone"
 
 [tool.black]
 target-version = ["py38"]
+
+{% if codespell_ignores %}
+[tool.codespell]
+ignore-words-list = "%(codespell_ignores)s"
+{% endif %}
