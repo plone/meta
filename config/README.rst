@@ -120,6 +120,12 @@ Example:
     template = "default"
     commit-id = "< commit-hash >"
 
+    [dependencies]
+    mappings = [
+        "Zope = ['Products.Five', 'ZTUtils']",
+        ]
+    ignores = "['plone.app.locales', 'plone.batching']"
+
 Meta Options
 ````````````
 
@@ -130,6 +136,18 @@ template
 commit-id
   Commit of the meta repository, which was used for the last configuration run.
   Currently read-only.
+
+Dependencies
+````````````
+
+Options to configure `z3c.dependencychecker`.
+
+ignores
+  Text line of a list of packages that should be ignored.
+
+mappings
+  List of text lines with mappings of imports and packages providing them.
+  i.e. `Zope` provides `Products.Five` and other importable packages.
 
 Hints
 -----
