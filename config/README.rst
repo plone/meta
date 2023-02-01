@@ -105,10 +105,10 @@ but that does not mean it has to be this way!
 
 See ``zopefoundation/meta`` for plenty of examples
 of options that can be added to the configuration files
-if the need arises. 
+if the need arises.
 
 ``.meta.toml`` file is added inside the package repository.
-This file stores the template name and commit id 
+This file stores the template name and commit id
 of the *meta* repository at the time of the run.
 This file is generated during the configuration run,
 if it does not exist or at least gets updated.
@@ -120,6 +120,12 @@ Example:
     template = "default"
     commit-id = "< commit-hash >"
 
+    [dependencies]
+    mappings = [
+        "Zope = ['Products.Five', 'ZTUtils']",
+        ]
+    ignores = "['plone.app.locales', 'plone.batching']"
+
 Meta Options
 ````````````
 
@@ -130,6 +136,18 @@ template
 commit-id
   Commit of the meta repository, which was used for the last configuration run.
   Currently read-only.
+
+Dependencies
+````````````
+
+Options to configure `z3c.dependencychecker`.
+
+ignores
+  Text line of a list of packages that should be ignored.
+
+mappings
+  List of text lines with mappings of imports and packages providing them.
+  i.e. `Zope` provides `Products.Five` and other importable packages.
 
 Hints
 -----

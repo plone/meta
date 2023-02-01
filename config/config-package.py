@@ -191,10 +191,16 @@ class PackageConfiguration:
     def pyproject_toml(self):
         codespell_ignores = self.cfg_option(
             'codespell', 'additional-ignores')
+        dependencies_ignores = self.cfg_option(
+            'dependencies', 'ignores')
+        dependencies_mapping = self.cfg_option(
+            'dependencies', 'mappings')
 
         return self.copy_with_meta(
             'pyproject.toml.j2',
-            codespell_ignores=codespell_ignores
+            codespell_ignores=codespell_ignores,
+            dependencies_ignores=dependencies_ignores,
+            dependencies_mapping=dependencies_mapping,
         )
 
     def tox(self):

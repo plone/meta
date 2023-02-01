@@ -38,3 +38,11 @@ commands =
     sh -c '{[testenv]text_files} | xargs codespell'
     check-manifest
     pyroma -n 10 .
+
+[testenv:dependencies]
+description = check if the package defines all its dependencies
+deps =
+    z3c.dependencychecker
+    -c lint-requirements.txt
+commands =
+    dependencychecker
