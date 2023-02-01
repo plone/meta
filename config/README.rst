@@ -105,10 +105,10 @@ but that does not mean it has to be this way!
 
 See ``zopefoundation/meta`` for plenty of examples
 of options that can be added to the configuration files
-if the need arises. 
+if the need arises.
 
 ``.meta.toml`` file is added inside the package repository.
-This file stores the template name and commit id 
+This file stores the template name and commit id
 of the *meta* repository at the time of the run.
 This file is generated during the configuration run,
 if it does not exist or at least gets updated.
