@@ -7,3 +7,4 @@ plone.supermodel
 Products.CMFPlacefulWorkflow
 plone.session
 plone.schemaeditor
+plone.app.caching
