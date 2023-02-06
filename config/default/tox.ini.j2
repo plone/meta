@@ -51,3 +51,12 @@ deps =
     -c lint-requirements.txt
 commands =
     dependencychecker
+
+[testenv:dependencies-graph]
+description = generate a graph with the distribution dependencies
+deps =
+    pipdeptree
+    graphviz  # optional dependency of pipdeptree
+    -c lint-requirements.txt
+commands =
+    sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
