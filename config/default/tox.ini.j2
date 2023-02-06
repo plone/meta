@@ -6,6 +6,8 @@ envlist =
 [testenv]
 py_files = git ls-files "*.py"
 text_files = git ls-files "*.rst" "*.md"
+xml_files = git ls-files "*.xml"
+zcml_files = git ls-files "*.zcml"
 allowlist_externals =
     sh
 
@@ -16,11 +18,14 @@ deps =
     pyupgrade
     isort
     black
+    zpretty
     -c lint-requirements.txt
 commands =
     sh -c '{[testenv]py_files} | xargs pyupgrade --py38-plus'
     sh -c '{[testenv]py_files} | xargs isort'
     sh -c '{[testenv]py_files} | xargs black'
+    sh -c '{[testenv]xml_files} | xargs zpretty -x -i'
+    sh -c '{[testenv]zcml_files} | xargs zpretty -z -i'
 
 [testenv:lint]
 description = run linters that will help improve the code style
