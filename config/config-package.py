@@ -182,6 +182,14 @@ class PackageConfiguration:
         workflows.mkdir(parents=True, exist_ok=True)
         return self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
 
+    def test_yml(self):
+        should_run_tests_on_gha = self.cfg_option('tests', 'gha', default=False)
+        if not should_run_tests_on_gha:
+            return
+        workflows = self.path / '.github' / 'workflows'
+        workflows.mkdir(parents=True, exist_ok=True)
+        return self.copy_with_meta('tests.yml.j2', workflows / 'tests.yml')
+
     def editorconfig(self):
         return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
@@ -291,10 +299,12 @@ class PackageConfiguration:
             self.editorconfig(),
             self.lint_requirements(),
             self.linting_yml(),
+            self.test_yml(),
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
         ]
+        files_changed = filter(None, files_changed)
 
         self.remove_old_files()
         self.remove_toml_empty_sections()
