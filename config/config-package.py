@@ -283,6 +283,7 @@ class PackageConfiguration:
         self._add_project_to_config_type_list()
 
         files_changed = [
+            self.path / '.meta.toml',
             self.editorconfig(),
             self.lint_requirements(),
             self.linting_yml(),
