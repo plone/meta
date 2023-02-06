@@ -126,6 +126,15 @@ Example:
         ]
     ignores = "['plone.app.locales', 'plone.batching']"
 
+    [check-manifest]
+    additional-ignores = [
+        ".tox",
+        "lint-requirements.txt",
+        ]
+
+    [codespell]
+    additional-ignores = "typo,wurd"
+
 Meta Options
 ````````````
 
@@ -148,6 +157,22 @@ ignores
 mappings
   List of text lines with mappings of imports and packages providing them.
   i.e. `Zope` provides `Products.Five` and other importable packages.
+
+Check-manifest
+``````````````
+
+Options to configure `check-manifest`.
+
+additional-ignores
+  List of text lines to be added on check-manifest configuration for files to be ignored.
+
+Codespell
+`````````
+
+Options to configure `codespell`.
+
+additional-ignores
+  List of words that should be ignored by `codespell`.
 
 Hints
 -----
