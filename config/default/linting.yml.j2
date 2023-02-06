@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Lint code
+  lint:
+    name: Format and lint code
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
