@@ -204,7 +204,11 @@ class PackageConfiguration:
         )
 
     def tox(self):
-        return self.copy_with_meta('tox.ini.j2')
+        package_name = self.path.name
+        return self.copy_with_meta(
+            'tox.ini.j2',
+            package_name=package_name
+        )
 
     def copy_with_meta(
             self, template_name, destination=None,
