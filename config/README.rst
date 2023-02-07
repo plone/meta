@@ -135,6 +135,9 @@ Example:
     [codespell]
     additional-ignores = "typo,wurd"
 
+    [tests]
+    gha = true
+
 Meta Options
 ````````````
 
@@ -173,6 +176,14 @@ Options to configure `codespell`.
 
 additional-ignores
   List of words that should be ignored by `codespell`.
+
+Tests
+`````
+
+Options related to the testing the distribution.
+
+gha
+  Whether it should run the tests on GitHub Actions.
 
 Hints
 -----
