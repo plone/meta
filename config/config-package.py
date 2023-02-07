@@ -250,7 +250,7 @@ class PackageConfiguration:
         with change_dir(self.path):
             for filename in filenames:
                 if pathlib.Path(filename).exists():
-                    call('git', 'rm', 'filename')
+                    call('git', 'rm', filename)
 
     def remove_toml_empty_sections(self):
         meta_cfg = {k: v for k, v in self.meta_cfg.items() if v}
