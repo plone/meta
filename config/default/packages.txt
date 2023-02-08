@@ -8,3 +8,4 @@ Products.CMFPlacefulWorkflow
 plone.session
 plone.schemaeditor
 plone.app.caching
+plone.releaser
