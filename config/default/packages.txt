@@ -11,3 +11,4 @@ plone.app.caching
 plone.releaser
 plone.dexterity
 borg.localrole
+five.intid
