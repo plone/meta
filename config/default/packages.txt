@@ -12,3 +12,4 @@ plone.releaser
 plone.dexterity
 borg.localrole
 five.intid
+plone.scale
