@@ -4,3 +4,11 @@
 plone.batching
 plone.subrequest
 plone.supermodel
+Products.CMFPlacefulWorkflow
+plone.session
+plone.schemaeditor
+plone.app.caching
+plone.releaser
+plone.dexterity
+borg.localrole
+five.intid

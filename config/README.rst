@@ -105,10 +105,10 @@ but that does not mean it has to be this way!
 
 See ``zopefoundation/meta`` for plenty of examples
 of options that can be added to the configuration files
-if the need arises. 
+if the need arises.
 
 ``.meta.toml`` file is added inside the package repository.
-This file stores the template name and commit id 
+This file stores the template name and commit id
 of the *meta* repository at the time of the run.
 This file is generated during the configuration run,
 if it does not exist or at least gets updated.
@@ -120,6 +120,24 @@ Example:
     template = "default"
     commit-id = "< commit-hash >"
 
+    [dependencies]
+    mappings = [
+        "Zope = ['Products.Five', 'ZTUtils']",
+        ]
+    ignores = "['plone.app.locales', 'plone.batching']"
+
+    [check-manifest]
+    additional-ignores = [
+        ".tox",
+        "lint-requirements.txt",
+        ]
+
+    [codespell]
+    additional-ignores = "typo,wurd"
+
+    [tests]
+    gha = true
+
 Meta Options
 ````````````
 
@@ -130,6 +148,42 @@ template
 commit-id
   Commit of the meta repository, which was used for the last configuration run.
   Currently read-only.
+
+Dependencies
+````````````
+
+Options to configure `z3c.dependencychecker`.
+
+ignores
+  Text line of a list of packages that should be ignored.
+
+mappings
+  List of text lines with mappings of imports and packages providing them.
+  i.e. `Zope` provides `Products.Five` and other importable packages.
+
+Check-manifest
+``````````````
+
+Options to configure `check-manifest`.
+
+additional-ignores
+  List of text lines to be added on check-manifest configuration for files to be ignored.
+
+Codespell
+`````````
+
+Options to configure `codespell`.
+
+additional-ignores
+  List of words that should be ignored by `codespell`.
+
+Tests
+`````
+
+Options related to the testing the distribution.
+
+gha
+  Whether it should run the tests on GitHub Actions.
 
 Hints
 -----

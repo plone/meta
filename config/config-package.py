@@ -6,6 +6,8 @@ from shared.git import get_commit_id
 from shared.git import git_branch
 from shared.path import change_dir
 from shared.toml_encoder import TomlArraySeparatorEncoderWithNewline
+from shared.utils import cleanup_data_for_jinja
+
 import argparse
 import collections
 import jinja2
@@ -148,25 +150,45 @@ class PackageConfiguration:
         """Copy setup.cfg file to the package being configured."""
         extra_check_manifest_ignores = self.cfg_option(
             'check-manifest', 'additional-ignores')
+        metadata = self.cfg_option('setup', 'metadata')
+        if metadata:
+            metadata = cleanup_data_for_jinja(metadata)
+            metadata = metadata.items()
+        options = self.cfg_option('setup', 'options')
+        if options:
+            options = cleanup_data_for_jinja(options)
+            options = options.items()
 
         return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
-            self.config_type,
             additional_check_manifest_ignores=extra_check_manifest_ignores,
+            metadata=metadata,
+            options=options,
         )
 
-    def cfg_option(self, section, name, default=DEFAULT):
+    def cfg_option(self, section, name=None, default=DEFAULT):
         """Read a value from `self.meta_cfg`, default to `[]` if not existing.
         """
         if default == DEFAULT:
             default = []
+        if name is None:
+            # Get the entire section.
+            return self.meta_cfg[section]
         return self.meta_cfg[section].get(name, default)
 
     def linting_yml(self):
         workflows = self.path / '.github' / 'workflows'
         workflows.mkdir(parents=True, exist_ok=True)
         return self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
+
+    def test_yml(self):
+        should_run_tests_on_gha = self.cfg_option('tests', 'gha', default=False)
+        if not should_run_tests_on_gha:
+            return
+        workflows = self.path / '.github' / 'workflows'
+        workflows.mkdir(parents=True, exist_ok=True)
+        return self.copy_with_meta('tests.yml.j2', workflows / 'tests.yml')
 
     def editorconfig(self):
         return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
@@ -175,10 +197,26 @@ class PackageConfiguration:
         return self.copy_with_meta('lint-requirements.txt.j2')
 
     def pyproject_toml(self):
-        return self.copy_with_meta('pyproject.toml.j2')
+        codespell_ignores = self.cfg_option(
+            'codespell', 'additional-ignores')
+        dependencies_ignores = self.cfg_option(
+            'dependencies', 'ignores')
+        dependencies_mapping = self.cfg_option(
+            'dependencies', 'mappings')
+
+        return self.copy_with_meta(
+            'pyproject.toml.j2',
+            codespell_ignores=codespell_ignores,
+            dependencies_ignores=dependencies_ignores,
+            dependencies_mapping=dependencies_mapping,
+        )
 
     def tox(self):
-        return self.copy_with_meta('tox.ini.j2')
+        package_name = self.path.name
+        return self.copy_with_meta(
+            'tox.ini.j2',
+            package_name=package_name
+        )
 
     def news_entry(self):
         news = self.path / 'news'
@@ -223,7 +261,7 @@ class PackageConfiguration:
         with change_dir(self.path):
             for filename in filenames:
                 if pathlib.Path(filename).exists():
-                    call('git', 'rm', 'filename')
+                    call('git', 'rm', filename)
 
     def remove_toml_empty_sections(self):
         meta_cfg = {k: v for k, v in self.meta_cfg.items() if v}
@@ -268,14 +306,17 @@ class PackageConfiguration:
         self._add_project_to_config_type_list()
 
         files_changed = [
+            self.path / '.meta.toml',
             self.editorconfig(),
             self.lint_requirements(),
             self.linting_yml(),
+            self.test_yml(),
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
             self.news_entry(),
         ]
+        files_changed = filter(None, files_changed)
 
         self.remove_old_files()
         self.remove_toml_empty_sections()

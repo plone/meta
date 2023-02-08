@@ -1,6 +1,14 @@
 import toml
 
 
+def dump_string(value):
+    if "\n" in value:
+        # Return a multi line string as a multi line string,
+        # instead of on one line with literal '\n' in it.
+        return f'"""\n{value}"""'
+    return toml.encoder._dump_str(value)
+
+
 class TomlArraySeparatorEncoderWithNewline(toml.TomlArraySeparatorEncoder):
     """Special version indenting the first element of and array.
 
@@ -14,6 +22,7 @@ class TomlArraySeparatorEncoderWithNewline(toml.TomlArraySeparatorEncoder):
         super(TomlArraySeparatorEncoderWithNewline, self).__init__(
             _dict=_dict, preserve=preserve, separator=separator)
         self.indent_first_line = indent_first_line
+        self.dump_funcs[str] = dump_string
 
     def dump_list(self, v):
         t = []

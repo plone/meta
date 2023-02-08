@@ -39,3 +39,18 @@ profile = "plone"
 
 [tool.black]
 target-version = ["py38"]
+{% if codespell_ignores %}
+
+[tool.codespell]
+ignore-words-list = "%(codespell_ignores)s"
+{% endif %}
+{% if dependencies_ignores or dependencies_mapping %}
+
+[tool.dependencychecker]
+{% if dependencies_ignores %}
+ignore-packages = %(dependencies_ignores)s
+{% endif %}
+{% for line in dependencies_mapping %}
+%(line)s
+{% endfor %}
+{% endif %}
