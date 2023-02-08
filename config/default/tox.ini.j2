@@ -24,8 +24,8 @@ commands =
     sh -c '{[testenv]py_files} | xargs pyupgrade --py38-plus'
     sh -c '{[testenv]py_files} | xargs isort'
     sh -c '{[testenv]py_files} | xargs black'
-    sh -c '{[testenv]xml_files} | xargs zpretty -x -i'
-    sh -c '{[testenv]zcml_files} | xargs zpretty -z -i'
+    sh -c '{[testenv]xml_files} | xargs zpretty -x -i || true'
+    sh -c '{[testenv]zcml_files} | xargs zpretty -z -i || true'
 
 [testenv:lint]
 description = run linters that will help improve the code style
