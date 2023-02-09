@@ -218,6 +218,17 @@ class PackageConfiguration:
             package_name=package_name
         )
 
+    def news_entry(self):
+        news = self.path / 'news'
+        news.mkdir(parents=True, exist_ok=True)
+
+        destination = self.path / 'news' / f'{get_commit_id()}.internal'
+        with open(destination, 'w') as f_:
+            f_.write('Update configuration files.\n')
+            f_.write('[plone devs]\n')
+
+        return destination.relative_to(self.path)
+
     def copy_with_meta(
             self, template_name, destination=None,
             meta_hint=META_HINT, **kw):
@@ -303,6 +314,7 @@ class PackageConfiguration:
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
+            self.news_entry(),
         ]
         files_changed = filter(None, files_changed)
 
