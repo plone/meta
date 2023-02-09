@@ -17,7 +17,7 @@ repos:
     hooks:
     -   id: black
 -   repo: https://github.com/collective/zpretty
-    rev: 2.4.1
+    rev: 3.0.0
     hooks:
     -   id: zpretty
 -   repo: https://github.com/PyCQA/flake8
