@@ -42,12 +42,12 @@ commands =
     sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
 
 [testenv:test]
-description = run the distribution's tests
+description = run the tests of the distribution
 deps =
     %(package_name)s[test]
     pytest
     gocept.pytestlayer
     -c https://dist.plone.org/release/6.0-dev/constraints.txt
 commands =
-    pip install -e .
+    pip install -e .[test]
     pytest
