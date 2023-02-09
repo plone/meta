@@ -1,3 +1,7 @@
+ci:
+    autofix_prs: false
+    autoupdate_schedule: monthly
+
 repos:
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
