@@ -177,11 +177,6 @@ class PackageConfiguration:
             return self.meta_cfg[section]
         return self.meta_cfg[section].get(name, default)
 
-    def linting_yml(self):
-        workflows = self.path / '.github' / 'workflows'
-        workflows.mkdir(parents=True, exist_ok=True)
-        return self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
-
     def test_yml(self):
         should_run_tests_on_gha = self.cfg_option('tests', 'gha', default=False)
         if not should_run_tests_on_gha:
@@ -300,7 +295,6 @@ class PackageConfiguration:
             self.path / '.meta.toml',
             self.editorconfig(),
             self.pre_commit_config(),
-            self.linting_yml(),
             self.test_yml(),
             self.pyproject_toml(),
             self.setup_cfg(),
