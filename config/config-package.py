@@ -198,9 +198,6 @@ class PackageConfiguration:
             'pre-commit-config.yaml', self.path / '.pre-commit-config.yaml',
         )
 
-    def lint_requirements(self):
-        return self.copy_with_meta('lint-requirements.txt.j2')
-
     def pyproject_toml(self):
         codespell_ignores = self.cfg_option(
             'codespell', 'additional-ignores')
@@ -303,7 +300,6 @@ class PackageConfiguration:
             self.path / '.meta.toml',
             self.editorconfig(),
             self.pre_commit_config(),
-            self.lint_requirements(),
             self.linting_yml(),
             self.test_yml(),
             self.pyproject_toml(),

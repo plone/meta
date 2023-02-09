@@ -29,17 +29,15 @@ commands =
 [testenv:dependencies]
 description = check if the package defines all its dependencies
 deps =
-    z3c.dependencychecker
-    -c lint-requirements.txt
+    z3c.dependencychecker==2.10
 commands =
     dependencychecker
 
 [testenv:dependencies-graph]
 description = generate a graph with the distribution dependencies
 deps =
-    pipdeptree
+    pdeptree==2.3.3
     graphviz  # optional dependency of pipdeptree
-    -c lint-requirements.txt
 commands =
     sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
 
