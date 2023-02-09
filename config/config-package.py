@@ -177,24 +177,13 @@ class PackageConfiguration:
             return self.meta_cfg[section]
         return self.meta_cfg[section].get(name, default)
 
-    def linting_yml(self):
-        workflows = self.path / '.github' / 'workflows'
-        workflows.mkdir(parents=True, exist_ok=True)
-        return self.copy_with_meta('linting.yml.j2', workflows / 'linting.yml')
-
-    def test_yml(self):
-        should_run_tests_on_gha = self.cfg_option('tests', 'gha', default=False)
-        if not should_run_tests_on_gha:
-            return
-        workflows = self.path / '.github' / 'workflows'
-        workflows.mkdir(parents=True, exist_ok=True)
-        return self.copy_with_meta('tests.yml.j2', workflows / 'tests.yml')
-
     def editorconfig(self):
         return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
-    def lint_requirements(self):
-        return self.copy_with_meta('lint-requirements.txt.j2')
+    def pre_commit_config(self):
+        return self.copy_with_meta(
+            'pre-commit-config.yaml', self.path / '.pre-commit-config.yaml',
+        )
 
     def pyproject_toml(self):
         codespell_ignores = self.cfg_option(
@@ -308,9 +297,7 @@ class PackageConfiguration:
         files_changed = [
             self.path / '.meta.toml',
             self.editorconfig(),
-            self.lint_requirements(),
-            self.linting_yml(),
-            self.test_yml(),
+            self.pre_commit_config(),
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
