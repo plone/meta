@@ -177,14 +177,6 @@ class PackageConfiguration:
             return self.meta_cfg[section]
         return self.meta_cfg[section].get(name, default)
 
-    def test_yml(self):
-        should_run_tests_on_gha = self.cfg_option('tests', 'gha', default=False)
-        if not should_run_tests_on_gha:
-            return
-        workflows = self.path / '.github' / 'workflows'
-        workflows.mkdir(parents=True, exist_ok=True)
-        return self.copy_with_meta('tests.yml.j2', workflows / 'tests.yml')
-
     def editorconfig(self):
         return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
@@ -295,7 +287,6 @@ class PackageConfiguration:
             self.path / '.meta.toml',
             self.editorconfig(),
             self.pre_commit_config(),
-            self.test_yml(),
             self.pyproject_toml(),
             self.setup_cfg(),
             self.tox(),
