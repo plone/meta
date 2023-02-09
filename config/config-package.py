@@ -193,6 +193,11 @@ class PackageConfiguration:
     def editorconfig(self):
         return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
 
+    def pre_commit_config(self):
+        return self.copy_with_meta(
+            'pre-commit-config.yaml', self.path / '.pre-commit-config.yaml',
+        )
+
     def lint_requirements(self):
         return self.copy_with_meta('lint-requirements.txt.j2')
 
@@ -297,6 +302,7 @@ class PackageConfiguration:
         files_changed = [
             self.path / '.meta.toml',
             self.editorconfig(),
+            self.pre_commit_config(),
             self.lint_requirements(),
             self.linting_yml(),
             self.test_yml(),
