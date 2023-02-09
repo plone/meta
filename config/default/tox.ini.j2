@@ -3,6 +3,10 @@ envlist =
     format
     lint
 
+[testenv]
+allowlist_externals =
+    sh
+
 [testenv:format]
 description = automatically reformat code
 skip_install = true
