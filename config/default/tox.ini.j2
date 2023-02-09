@@ -36,7 +36,7 @@ commands =
 [testenv:dependencies-graph]
 description = generate a graph with the distribution dependencies
 deps =
-    pdeptree==2.3.3
+    pipdeptree==2.3.3
     graphviz  # optional dependency of pipdeptree
 commands =
     sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
