@@ -17,14 +17,6 @@ The `default` directory contains the following files:
   - This file is copied to `.editorconfig` and allows developers to have a
     common editor configuration experience in all repos.
 
-* lint-requirements.txt.j2
-
-  - list of packages needed to run the GitHub actions.
-
-* linting.yml.j2
-
-  - Configuration for GitHub actions.
-
 * packages.txt
 
   - This file lists the packages which use the configuration in the directory.
