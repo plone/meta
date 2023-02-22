@@ -28,6 +28,8 @@ repos:
     rev: v2.2.2
     hooks:
     -   id: codespell
+        additional_dependencies:
+          - tomli
 -   repo: https://github.com/mgedmin/check-manifest
     rev: "0.49"
     hooks:
