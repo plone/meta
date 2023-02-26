@@ -14,3 +14,4 @@ borg.localrole
 five.intid
 plone.scale
 plone.browserlayer
+plone.cachepurging
