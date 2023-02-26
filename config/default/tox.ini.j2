@@ -27,18 +27,13 @@ commands =
     pre-commit run -a
 
 [testenv:dependencies]
-description = check if the package defines all its dependencies
+description = check if the package defines all its dependencies and generate a graph out of them
 deps =
     z3c.dependencychecker==2.10
-commands =
-    dependencychecker
-
-[testenv:dependencies-graph]
-description = generate a graph with the distribution dependencies
-deps =
     pipdeptree==2.3.3
     graphviz  # optional dependency of pipdeptree
 commands =
+    dependencychecker
     sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
 
 [testenv:test]
