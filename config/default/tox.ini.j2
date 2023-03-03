@@ -30,12 +30,12 @@ commands =
 [testenv:dependencies]
 description = check if the package defines all its dependencies and generate a graph out of them
 deps =
-    z3c.dependencychecker==2.10
-    pipdeptree==2.3.3
+    z3c.dependencychecker==2.11
+    pipdeptree==2.5.1
     graphviz  # optional dependency of pipdeptree
 commands =
     dependencychecker
-    sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
+    sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel,pipdeptree,z3c.dependencychecker,zope.interface,zope.component --graph-output svg > dependencies.svg'
 
 [testenv:test]
 usedevelop = true
