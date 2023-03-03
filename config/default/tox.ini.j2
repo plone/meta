@@ -2,6 +2,7 @@
 envlist =
     format
     lint
+    test
 
 [testenv]
 allowlist_externals =
@@ -37,12 +38,11 @@ commands =
     sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
 
 [testenv:test]
-description = run the tests of the distribution
+usedevelop = true
 deps =
-    %(package_name)s[test]
-    pytest
-    gocept.pytestlayer
+    zope.testrunner
     -c https://dist.plone.org/release/6.0-dev/constraints.txt
 commands =
-    pip install -e .[test]
-    pytest
+    zope-testrunner --test-path={toxinidir} -s %(package_name)s
+extras =
+    test
