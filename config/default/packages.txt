@@ -16,3 +16,4 @@ plone.scale
 plone.browserlayer
 plone.cachepurging
 plone.i18n
+plone.base
