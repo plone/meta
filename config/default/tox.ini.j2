@@ -2,6 +2,7 @@
 envlist =
     format
     lint
+    test
 
 [testenv]
 allowlist_externals =
@@ -29,20 +30,19 @@ commands =
 [testenv:dependencies]
 description = check if the package defines all its dependencies and generate a graph out of them
 deps =
-    z3c.dependencychecker==2.10
-    pipdeptree==2.3.3
+    z3c.dependencychecker==2.11
+    pipdeptree==2.5.1
     graphviz  # optional dependency of pipdeptree
 commands =
     dependencychecker
-    sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel --graph-output svg > dependencies.svg'
+    sh -c 'pipdeptree --exclude setuptools,pipdeptree,wheel,pipdeptree,z3c.dependencychecker,zope.interface,zope.component --graph-output svg > dependencies.svg'
 
 [testenv:test]
-description = run the tests of the distribution
+usedevelop = true
 deps =
-    %(package_name)s[test]
-    pytest
-    gocept.pytestlayer
+    zope.testrunner
     -c https://dist.plone.org/release/6.0-dev/constraints.txt
 commands =
-    pip install -e .[test]
-    pytest
+    zope-testrunner --test-path={toxinidir} -s %(package_name)s
+extras =
+    test
