@@ -1,19 +1,19 @@
 # Packages configured for Plone are listed here.
 # Do not edit the file by hand but use the script config-package.py as
 # described in README.rst
+borg.localrole
+five.intid
+plone.app.caching
+plone.base
 plone.batching
+plone.browserlayer
+plone.cachepurging
+plone.dexterity
+plone.i18n
+plone.releaser
+plone.scale
+plone.schemaeditor
+plone.session
 plone.subrequest
 plone.supermodel
 Products.CMFPlacefulWorkflow
-plone.session
-plone.schemaeditor
-plone.app.caching
-plone.releaser
-plone.dexterity
-borg.localrole
-five.intid
-plone.scale
-plone.browserlayer
-plone.cachepurging
-plone.i18n
-plone.base
