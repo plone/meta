@@ -58,6 +58,10 @@ Zope = [
   'zope.interface', 'zope.lifecycleevent', 'zope.location', 'zope.publisher',
   'zope.schema', 'zope.security', 'zope.site', 'zope.traversing', 'AccessControl',
 ]
+'plone.base' = [
+  'setuptools', 'AccessControl', 'Products.BTreeFolder2', 'Products.CMFCore',
+  'Products.CMFDynamicViewFTI', 'zope.deprecation',
+]
 {% if dependencies_ignores %}
 ignore-packages = %(dependencies_ignores)s
 {% endif %}
