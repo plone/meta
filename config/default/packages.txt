@@ -17,3 +17,4 @@ plone.session
 plone.subrequest
 plone.supermodel
 Products.CMFPlacefulWorkflow
+plone.app.content
