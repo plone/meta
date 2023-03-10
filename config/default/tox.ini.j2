@@ -40,9 +40,11 @@ commands =
 [testenv:test]
 usedevelop = true
 deps =
+    coverage
     zope.testrunner
     -c https://dist.plone.org/release/6.0-dev/constraints.txt
 commands =
-    zope-testrunner --test-path={toxinidir} -s %(package_name)s
+    coverage run {envbindir}/zope-testrunner --test-path={toxinidir} -s %(package_name)s
+    coverage report -m --format markdown
 extras =
     test
