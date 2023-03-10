@@ -44,13 +44,28 @@ target-version = ["py38"]
 [tool.codespell]
 ignore-words-list = "%(codespell_ignores)s"
 {% endif %}
-{% if dependencies_ignores or dependencies_mapping %}
 
 [tool.dependencychecker]
+Zope = [
+  # Zope own provided namespaces
+  'App', 'OFS', 'Products.Five', 'Products.OFSP', 'Products.PageTemplates',
+  'Products.SiteAccess', 'Shared', 'Testing', 'ZPublisher', 'ZTUtils',
+  'Zope2', 'webdav', 'zmi',
+  # Zope dependencies
+  'Acquisition', 'DateTime', 'transaction', 'zExceptions', 'ZODB', 'zope.component',
+  'zope.configuration', 'zope.container', 'zope.deferredimport', 'zope.event',
+  'zope.exceptions', 'zope.globalrequest', 'zope.i18n', 'zope.i18nmessageid',
+  'zope.interface', 'zope.lifecycleevent', 'zope.location', 'zope.publisher',
+  'zope.schema', 'zope.security', 'zope.site', 'zope.traversing', 'AccessControl',
+]
+'plone.base' = [
+  'setuptools', 'AccessControl', 'Products.BTreeFolder2', 'Products.CMFCore',
+  'Products.CMFDynamicViewFTI', 'zope.deprecation',
+]
+python-dateutil = ['dateutil']
 {% if dependencies_ignores %}
 ignore-packages = %(dependencies_ignores)s
 {% endif %}
 {% for line in dependencies_mapping %}
 %(line)s
 {% endfor %}
-{% endif %}
