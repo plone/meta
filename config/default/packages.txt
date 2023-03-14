@@ -18,3 +18,7 @@ plone.subrequest
 plone.supermodel
 Products.CMFPlacefulWorkflow
 plone.app.content
+plone.z3cform
+plone.portlet.static
+plone.portlet.collection
+plone.app.querystring
