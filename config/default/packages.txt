@@ -28,3 +28,7 @@ plone.formwidget.namedfile
 plone.autoform
 plone.app.z3cform
 plone.app.workflow
+plone.app.vocabularies
+plone.app.viewletmanager
+plone.app.versioningbehavior
+plone.app.uuid
