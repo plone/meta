@@ -27,3 +27,4 @@ plone.formwidget.recurrence
 plone.formwidget.namedfile
 plone.autoform
 plone.app.z3cform
+plone.app.workflow
