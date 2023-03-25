@@ -1,40 +1,40 @@
-# Packages configured for Plone are listed here.
-# Do not edit the file by hand but use the script config-package.py as
-# described in README.rst
 borg.localrole
+# described in README.rst
+# Do not edit the file by hand but use the script config-package.py as
 five.intid
+# Packages configured for Plone are listed here.
 plone.app.caching
+plone.app.content
+plone.app.querystring
+plone.app.textfield
+plone.app.theming
+plone.app.uuid
+plone.app.versioningbehavior
+plone.app.viewletmanager
+plone.app.vocabularies
+plone.app.workflow
+plone.app.z3cform
+plone.autoform
 plone.base
 plone.batching
 plone.browserlayer
 plone.cachepurging
 plone.dexterity
+plone.formwidget.namedfile
+plone.formwidget.recurrence
 plone.i18n
+plone.outputfilters
+plone.portlet.collection
+plone.portlets
+plone.portlet.static
 plone.releaser
 plone.scale
+plone.schema
 plone.schemaeditor
 plone.session
 plone.subrequest
 plone.supermodel
-Products.CMFPlacefulWorkflow
-plone.app.content
 plone.z3cform
-plone.portlet.static
-plone.portlet.collection
-plone.app.querystring
-plone.outputfilters
-plone.formwidget.recurrence
-plone.formwidget.namedfile
-plone.autoform
-plone.app.z3cform
-plone.app.workflow
-plone.app.vocabularies
-plone.app.viewletmanager
-plone.app.versioningbehavior
-plone.app.uuid
-plone.app.textfield
-plone.app.theming
-plone.portlets
+Products.CMFPlacefulWorkflow
 Products.PlonePAS
 Products.PortalTransforms
-plone.schema
