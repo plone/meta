@@ -32,3 +32,8 @@ plone.app.vocabularies
 plone.app.viewletmanager
 plone.app.versioningbehavior
 plone.app.uuid
+plone.app.textfield
+plone.app.theming
+plone.portlets
+Products.PlonePAS
+Products.PortalTransforms
