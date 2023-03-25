@@ -1,8 +1,8 @@
-borg.localrole
-# described in README.rst
 # Do not edit the file by hand but use the script config-package.py as
-five.intid
+# described in README.rst
 # Packages configured for Plone are listed here.
+borg.localrole
+five.intid
 plone.app.caching
 plone.app.content
 plone.app.querystring
