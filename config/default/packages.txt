@@ -37,3 +37,4 @@ plone.app.theming
 plone.portlets
 Products.PlonePAS
 Products.PortalTransforms
+plone.schema
