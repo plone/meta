@@ -10,6 +10,11 @@ def get_commit_id():
 
 def get_branch_name(override, config_type):
     """Get the default branch name but prefer override if not empty."""
+    if override == "current":
+        # Note: can be empty if not on a branch.
+        override = call(
+            'git', 'branch', '--show-current',
+            capture_output=True).stdout.splitlines()[0]
     return (
         override
         or f"config-with-{config_type}-template-{get_commit_id()}")

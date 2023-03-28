@@ -82,6 +82,7 @@ The following arguments are supported.
 --branch
   Define a specific git branch name to be created for the changes. By default
   the script creates one which includes the name of the configuration type.
+  Use "current" to update the current branch.
 
 The following options are only needed one time as their values are stored in
 ``.meta.toml.``.
