@@ -5,6 +5,14 @@ borg.localrole
 five.intid
 plone.app.caching
 plone.app.content
+plone.app.contentlisting
+plone.app.contentmenu
+plone.app.contentrules
+plone.app.contenttypes
+plone.app.dexterity
+plone.app.discussion
+plone.app.event
+plone.app.i18n
 plone.app.querystring
 plone.app.textfield
 plone.app.theming
@@ -38,10 +46,3 @@ plone.z3cform
 Products.CMFPlacefulWorkflow
 Products.PlonePAS
 Products.PortalTransforms
-plone.app.contentlisting
-plone.app.contentmenu
-plone.app.contentrules
-plone.app.contenttypes
-plone.app.dexterity
-plone.app.discussion
-plone.app.event
