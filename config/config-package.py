@@ -67,7 +67,7 @@ def handle_command_line_arguments():
         default=None,
         help='Define a git branch name to be used for the changes. '
         'If not given it is constructed automatically and includes '
-        'the configuration type')
+        'the configuration type. Use "current" to update the current branch.')
 
     args = parser.parse_args()
     return args
@@ -208,6 +208,9 @@ class PackageConfiguration:
         )
 
     def news_entry(self):
+        if self.args.branch_name == 'current':
+            print('Updating current branch, so I do not add a news entry.')
+            return
         news = self.path / 'news'
         news.mkdir(parents=True, exist_ok=True)
 
