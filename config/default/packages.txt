@@ -46,3 +46,4 @@ plone.z3cform
 Products.CMFPlacefulWorkflow
 Products.PlonePAS
 Products.PortalTransforms
+plone.app.portlets
