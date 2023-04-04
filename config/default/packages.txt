@@ -51,3 +51,9 @@ plone.z3cform
 Products.CMFPlacefulWorkflow
 Products.PlonePAS
 Products.PortalTransforms
+plone.app.registry
+plone.app.relationfield
+plone.alterego
+plone.app.customerize
+plone.app.iterate
+plone.app.linkintegrity
