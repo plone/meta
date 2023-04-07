@@ -15,6 +15,7 @@ plone.app.dexterity
 plone.app.discussion
 plone.app.event
 plone.app.i18n
+plone.app.intid
 plone.app.iterate
 plone.app.linkintegrity
 plone.app.portlets
@@ -35,6 +36,7 @@ plone.base
 plone.batching
 plone.browserlayer
 plone.cachepurging
+plone.caching
 plone.dexterity
 plone.formwidget.namedfile
 plone.formwidget.recurrence
