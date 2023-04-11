@@ -43,7 +43,7 @@ if not (path / '.meta.toml').exists():
 
 with change_dir(path) as cwd_str:
     cwd = pathlib.Path(cwd_str)
-    bin_dir = cwd / 'bin'
+    bin_dir = pathlib.Path(sys.executable).parent
     meta_cfg = collections.defaultdict(dict, **toml.load('.meta.toml'))
     config_type = meta_cfg['meta']['template']
     branch_name = get_branch_name(args.branch_name, config_type)
