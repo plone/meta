@@ -46,6 +46,7 @@ plone.dexterity
 plone.formwidget.namedfile
 plone.formwidget.recurrence
 plone.i18n
+plone.locking
 plone.memoize
 plone.outputfilters
 plone.portlet.collection
@@ -60,7 +61,12 @@ plone.session
 plone.stringinterp
 plone.subrequest
 plone.supermodel
+plone.transformchain
 plone.z3cform
+Products.CMFDiffTool
+Products.CMFDynamicViewFTI
+Products.CMFEditions
 Products.CMFPlacefulWorkflow
+Products.isurlinportal
 Products.PlonePAS
 Products.PortalTransforms
