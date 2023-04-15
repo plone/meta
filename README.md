@@ -59,10 +59,4 @@ if the distribution defines all its dependencies on `setup.py`.
 tox -e dependencies
 ```
 
-Another `tox` environment allows you to visualize the full dependency graph.
-
-```shell
-tox -e dependencies-graph
-```
-
 Note: these `tox` environments are not run on GitHub Actions as of now.
