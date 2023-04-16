@@ -42,10 +42,14 @@ plone.batching
 plone.browserlayer
 plone.cachepurging
 plone.caching
+plone.contentrules
 plone.dexterity
+plone.event
+plone.folder
 plone.formwidget.namedfile
 plone.formwidget.recurrence
 plone.i18n
+plone.indexer
 plone.locking
 plone.memoize
 plone.outputfilters
@@ -61,6 +65,7 @@ plone.session
 plone.stringinterp
 plone.subrequest
 plone.supermodel
+plone.testing
 plone.transformchain
 plone.z3cform
 Products.CMFDiffTool
@@ -68,5 +73,6 @@ Products.CMFDynamicViewFTI
 Products.CMFEditions
 Products.CMFPlacefulWorkflow
 Products.isurlinportal
+Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
