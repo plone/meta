@@ -76,8 +76,8 @@ The following arguments are supported.
 --no-commit
   Don't automatically commit changes after the configuration run.
 
---no-push
-  Avoid pushing at the end of the configuration run.
+--push
+  Push changes at the end of the configuration run.
 
 --branch
   Define a specific git branch name to be created for the changes. By default
