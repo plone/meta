@@ -50,6 +50,8 @@ plone.formwidget.namedfile
 plone.formwidget.recurrence
 plone.i18n
 plone.indexer
+plone.intelligenttext
+plone.keyring
 plone.locking
 plone.memoize
 plone.outputfilters
@@ -67,6 +69,7 @@ plone.subrequest
 plone.supermodel
 plone.testing
 plone.transformchain
+plone.uuid
 plone.z3cform
 Products.CMFDiffTool
 Products.CMFDynamicViewFTI
