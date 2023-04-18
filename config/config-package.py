@@ -188,6 +188,8 @@ class PackageConfiguration:
     def pyproject_toml(self):
         codespell_ignores = self.cfg_option(
             'codespell', 'additional-ignores')
+        codespell_skip = self.cfg_option(
+            'codespell', 'skip')
         dependencies_ignores = self.cfg_option(
             'dependencies', 'ignores')
         dependencies_mapping = self.cfg_option(
@@ -196,6 +198,7 @@ class PackageConfiguration:
         return self.copy_with_meta(
             'pyproject.toml.j2',
             codespell_ignores=codespell_ignores,
+            codespell_skip=codespell_skip,
             dependencies_ignores=dependencies_ignores,
             dependencies_mapping=dependencies_mapping,
         )
