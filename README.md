@@ -33,6 +33,17 @@ To enable a repository, as an admin, go to the [Actions permissions](https://git
 scroll all the way down, update the relevant workflow
 and finally search the repository you just configured.
 
+## Coverage
+
+Another `tox` environment allows you to run the tests,
+like the previous one, but get a [coverage report](https://pypi.org/project/coverage/).
+
+```shell
+tox -e coverage
+```
+
+Note: this `tox` environment does not run on GitHub Actions as of now.
+
 ## Code analysis / formatting
 
 On the `tox.ini` configuration there are two environments
@@ -59,4 +70,4 @@ if the distribution defines all its dependencies on `setup.py`.
 tox -e dependencies
 ```
 
-Note: these `tox` environments are not run on GitHub Actions as of now.
+Note: this `tox` environment does not run on GitHub Actions as of now.
