@@ -15,23 +15,27 @@ The `default` directory contains the following files:
 * editorconfig
 
   - This file is copied to `.editorconfig` and allows developers to have a
-    common editor configuration experience in all repos.
+    common editor configuration experience in all repos
 
 * packages.txt
 
-  - This file lists the packages which use the configuration in the directory.
+  - Lists the packages have been configured to use these set of configuration files
+
+* pre-commit-config.yaml
+
+  - Configuration for [pre-commit](https://pypi.org/project/pre-commit/)
 
 * pyproject.toml.j2
 
-  - configuration for various python related tools.
+  - Configuration for various python related tools
 
 * setup.cfg.j2
 
-  - common `setup.cfg`, which should be copied to the repository of the package
+  - Another typical configuration file for various python tools
 
 * tox.ini.j2
 
-  - tox configuration, which should be copied to the repository of the package
+  - [`tox`](https://pypi.org/project/tox/) configuration, which should be copied to the repository of the package
 
 Usage
 -----
