@@ -63,11 +63,24 @@ it does _not_ install its hooks by default.
 
 ## Dependencies
 
-Another `tox` environment allows you to check
+This `tox` environment allows you to check
 if the distribution defines all its dependencies on `setup.py`.
 
 ```shell
 tox -e dependencies
+```
+
+Note: this `tox` environment does not run on GitHub Actions as of now.
+
+## Dependencies graph
+
+This `tox` environment generates an SVG graph with all the package dependencies.
+
+Really useful to see if unwanted dependencies are being pulled in,
+or to diagnose circular dependencies.
+
+```shell
+tox -e dependencies-graph
 ```
 
 Note: this `tox` environment does not run on GitHub Actions as of now.
