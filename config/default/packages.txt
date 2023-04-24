@@ -58,12 +58,15 @@ plone.outputfilters
 plone.portlet.collection
 plone.portlets
 plone.portlet.static
+plone.registry
 plone.releaser
 plone.rest
+plone.rfc822
 plone.scale
 plone.schema
 plone.schemaeditor
 plone.session
+plone.staticresources
 plone.stringinterp
 plone.subrequest
 plone.supermodel
@@ -79,4 +82,3 @@ Products.isurlinportal
 Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
-plone.staticresources
