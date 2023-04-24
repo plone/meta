@@ -79,3 +79,4 @@ Products.isurlinportal
 Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
+plone.staticresources
