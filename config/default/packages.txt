@@ -82,3 +82,6 @@ Products.isurlinportal
 Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
+plone.theme
+plone.resource
+plone.resourceeditor
