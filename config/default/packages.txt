@@ -19,6 +19,7 @@ plone.app.intid
 plone.app.iterate
 plone.app.layout
 plone.app.linkintegrity
+plone.app.mosaic
 plone.app.multilingual
 plone.app.portlets
 plone.app.querystring
@@ -39,6 +40,7 @@ plone.app.z3cform
 plone.autoform
 plone.base
 plone.batching
+plone.behavior
 plone.browserlayer
 plone.cachepurging
 plone.caching
@@ -58,8 +60,12 @@ plone.outputfilters
 plone.portlet.collection
 plone.portlets
 plone.portlet.static
+plone.protect
+plone.recipe.zeoserver
 plone.registry
 plone.releaser
+plone.resource
+plone.resourceeditor
 plone.rest
 plone.rfc822
 plone.scale
@@ -71,6 +77,8 @@ plone.stringinterp
 plone.subrequest
 plone.supermodel
 plone.testing
+plone.theme
+plonetheme.barceloneta
 plone.transformchain
 plone.uuid
 plone.z3cform
@@ -82,6 +90,4 @@ Products.isurlinportal
 Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
-plone.theme
-plone.resource
-plone.resourceeditor
+Products.statusmessages
