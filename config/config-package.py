@@ -224,6 +224,12 @@ class PackageConfiguration:
 
         return destination.relative_to(self.path)
 
+    def coverage_workflow(self):
+        folder = self.path / '.github' / 'workflows'
+        folder.mkdir(parents=True, exist_ok=True)
+        destination = folder / 'coverage.yml'
+        return self.copy_with_meta('coverage.yml.j2', destination=destination)
+
     def copy_with_meta(
             self, template_name, destination=None,
             meta_hint=META_HINT, **kw):
@@ -308,6 +314,7 @@ class PackageConfiguration:
             self.setup_cfg(),
             self.tox(),
             self.news_entry(),
+            self.coverage_workflow(),
         ]
         files_changed = filter(None, files_changed)
 
