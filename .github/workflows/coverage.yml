@@ -1,0 +1,42 @@
+name: Coverage
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+  # allow this workflow to be called
+  # by other workflows from other repositories
+  workflow_call:
+
+jobs:
+  test:
+    name: Coverage report
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: "3.11"
+        os: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: python -m pip install tox
+      - name: Run coverage
+        run: |
+          tox -q -e coverage >> $GITHUB_STEP_SUMMARY
