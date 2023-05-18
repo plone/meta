@@ -91,3 +91,4 @@ Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
 Products.statusmessages
+plone.api
