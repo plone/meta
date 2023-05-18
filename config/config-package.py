@@ -62,6 +62,12 @@ def handle_command_line_arguments():
         help='type of the configuration to be used, see README.rst. '
         'Only required when running on a repository for the first time.')
     parser.add_argument(
+        '--tox',
+        dest='run_tox',
+        action='store_true',
+        default=False,
+        help='Whether to run tox after configuring the repository.')
+    parser.add_argument(
         '--branch',
         dest='branch_name',
         default=None,
@@ -364,7 +370,8 @@ class PackageConfiguration:
 
         self.remove_old_files()
         self.remove_toml_empty_sections()
-        self.run_tox()
+        if self.args.run_tox:
+            self.run_tox()
 
         with change_dir(self.path):
             updating = git_branch(self.branch_name)
