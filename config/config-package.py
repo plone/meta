@@ -152,12 +152,29 @@ class PackageConfiguration:
         with open(self.config_type_path / 'packages.txt', 'a') as f:
             f.write(f'{self.path.name}\n')
 
+    def cfg_option(self, section, name=None, default=DEFAULT):
+        """Read a value from `self.meta_cfg`, default to `[]` if not existing.
+        """
+        if default == DEFAULT:
+            default = []
+        if name is None:
+            # Get the entire section.
+            return self.meta_cfg[section]
+        return self.meta_cfg[section].get(name, default)
+
+    def _get_options_for(self, section, names):
+        """Get all given named options from a given section"""
+        options = {}
+        for name in names:
+            options[name] = self.cfg_option(section, name, '')
+        return options
+
     def setup_cfg(self):
         """Copy setup.cfg file to the package being configured."""
-        check_manifest_ignore = self.cfg_option(
-            'setup', 'check_manifest_ignore', '')
-        extra_lines = self.cfg_option(
-            'setup', 'extra_lines', '')
+        setup_options = self._get_options_for(
+            'setup',
+            ('check_manifest_ignore', 'extra_lines')
+        )
         metadata = self.cfg_option('setup', 'metadata')
         if metadata:
             metadata = cleanup_data_for_jinja(metadata)
@@ -170,43 +187,31 @@ class PackageConfiguration:
         return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
-            check_manifest_ignore=check_manifest_ignore,
-            extra_lines=extra_lines,
             metadata=metadata,
             options=options,
+            **setup_options
         )
 
-    def cfg_option(self, section, name=None, default=DEFAULT):
-        """Read a value from `self.meta_cfg`, default to `[]` if not existing.
-        """
-        if default == DEFAULT:
-            default = []
-        if name is None:
-            # Get the entire section.
-            return self.meta_cfg[section]
-        return self.meta_cfg[section].get(name, default)
-
     def editorconfig(self):
-        extra_lines = self.cfg_option(
+        options = self._get_options_for(
             'editorconfig',
-            'extra_lines',
-            ''
+            ('extra_lines', )
         )
         return self.copy_with_meta(
             'editorconfig.j2',
             self.path / '.editorconfig',
-            extra_lines=extra_lines
+            **options
         )
 
     def pre_commit_config(self):
-        codespell_extra_lines = self.cfg_option(
-            'pre_commit', 'codespell_extra_lines', ''
+        options = self._get_options_for(
+            'pre_commit', ('codespell_extra_lines',)
         )
 
         return self.copy_with_meta(
             'pre-commit-config.yaml.j2',
             self.path / '.pre-commit-config.yaml',
-            codespell_extra_lines=codespell_extra_lines
+            **options
         )
 
     def pyproject_toml(self):
@@ -228,34 +233,14 @@ class PackageConfiguration:
         )
 
     def tox(self):
-        envlist_lines = self.cfg_option(
+        options = self._get_options_for(
             'tox',
-            'envlist_lines',
-            ''
+            ('envlist_lines', 'config_lines', 'extra_lines', 'testenv_lines')
         )
-        config_lines = self.cfg_option(
-            'tox',
-            'config_lines',
-            ''
-        )
-        extra_lines = self.cfg_option(
-            'tox',
-            'extra_lines',
-            ''
-        )
-        testenv_lines = self.cfg_option(
-            'tox',
-            'testenv_lines',
-            ''
-        )
-        package_name = self.path.name
+        options['package_name'] = self.path.name
         return self.copy_with_meta(
             'tox.ini.j2',
-            package_name=package_name,
-            envlist_lines=envlist_lines,
-            extra_lines=extra_lines,
-            config_lines=config_lines,
-            testenv_lines=testenv_lines,
+            **options
         )
 
     def news_entry(self):
