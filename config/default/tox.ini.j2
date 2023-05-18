@@ -5,10 +5,13 @@ envlist =
     format
     lint
     test
+%(envlist_lines)s
+%(config_lines)s
 
 [testenv]
 allowlist_externals =
     sh
+%(testenv_lines)s
 
 [testenv:format]
 description = automatically reformat code
@@ -72,3 +75,4 @@ commands =
     coverage report -m --format markdown
 extras =
     test
+%(extra_lines)s

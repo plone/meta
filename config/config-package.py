@@ -148,8 +148,10 @@ class PackageConfiguration:
 
     def setup_cfg(self):
         """Copy setup.cfg file to the package being configured."""
-        extra_check_manifest_ignores = self.cfg_option(
-            'check-manifest', 'additional-ignores')
+        check_manifest_ignore = self.cfg_option(
+            'setup', 'check_manifest_ignore', '')
+        extra_lines = self.cfg_option(
+            'setup', 'extra_lines', '')
         metadata = self.cfg_option('setup', 'metadata')
         if metadata:
             metadata = cleanup_data_for_jinja(metadata)
@@ -162,7 +164,8 @@ class PackageConfiguration:
         return self.copy_with_meta(
             'setup.cfg.j2',
             self.path / 'setup.cfg',
-            additional_check_manifest_ignores=extra_check_manifest_ignores,
+            check_manifest_ignore=check_manifest_ignore,
+            extra_lines=extra_lines,
             metadata=metadata,
             options=options,
         )
@@ -178,11 +181,26 @@ class PackageConfiguration:
         return self.meta_cfg[section].get(name, default)
 
     def editorconfig(self):
-        return self.copy_with_meta('editorconfig', self.path / '.editorconfig')
+        extra_lines = self.cfg_option(
+            'editorconfig',
+            'extra_lines',
+            ''
+        )
+        return self.copy_with_meta(
+            'editorconfig.j2',
+            self.path / '.editorconfig',
+            extra_lines=extra_lines
+        )
 
     def pre_commit_config(self):
+        codespell_extra_lines = self.cfg_option(
+            'pre_commit', 'codespell_extra_lines', ''
+        )
+
         return self.copy_with_meta(
-            'pre-commit-config.yaml', self.path / '.pre-commit-config.yaml',
+            'pre-commit-config.yaml.j2',
+            self.path / '.pre-commit-config.yaml',
+            codespell_extra_lines=codespell_extra_lines
         )
 
     def pyproject_toml(self):
@@ -204,10 +222,34 @@ class PackageConfiguration:
         )
 
     def tox(self):
+        envlist_lines = self.cfg_option(
+            'tox',
+            'envlist_lines',
+            ''
+        )
+        config_lines = self.cfg_option(
+            'tox',
+            'config_lines',
+            ''
+        )
+        extra_lines = self.cfg_option(
+            'tox',
+            'extra_lines',
+            ''
+        )
+        testenv_lines = self.cfg_option(
+            'tox',
+            'testenv_lines',
+            ''
+        )
         package_name = self.path.name
         return self.copy_with_meta(
             'tox.ini.j2',
-            package_name=package_name
+            package_name=package_name,
+            envlist_lines=envlist_lines,
+            extra_lines=extra_lines,
+            config_lines=config_lines,
+            testenv_lines=testenv_lines,
         )
 
     def news_entry(self):
