@@ -146,11 +146,11 @@ class PackageConfiguration:
         if self.path.name in known_packages:
             print(f'{self.path.name} is already configured '
                   'for this config type, updating.')
-        else:
-            print(f'{self.path.name} is not yet configured '
-                  'for this config type, adding.')
-            with open(self.config_type_path / 'packages.txt', 'a') as f:
-                f.write(f'{self.path.name}\n')
+            return
+        print(f'{self.path.name} is not yet configured '
+              'for this config type, adding.')
+        with open(self.config_type_path / 'packages.txt', 'a') as f:
+            f.write(f'{self.path.name}\n')
 
     def setup_cfg(self):
         """Copy setup.cfg file to the package being configured."""
