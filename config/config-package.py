@@ -294,6 +294,8 @@ class PackageConfiguration:
             else:
                 destination = self.path / template_name
 
+        # Get rid of empty lines at the end.
+        content = content.strip() + "\n"
         with open(destination, 'w') as f_:
             f_.write(content)
 
