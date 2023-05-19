@@ -237,6 +237,10 @@ class PackageConfiguration:
             'tox',
             ('envlist_lines', 'config_lines', 'extra_lines', 'testenv_lines')
         )
+        test_path = ''
+        if (self.path / 'src').exists():
+            test_path = '/src'
+        options['test_path'] = test_path
         options['package_name'] = self.path.name
         return self.copy_with_meta(
             'tox.ini.j2',
