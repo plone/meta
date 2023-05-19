@@ -33,6 +33,6 @@ ignore =
     .meta.toml
     .pre-commit-config.yaml
     tox.ini
-{% for line in additional_check_manifest_ignores %}
-    %(line)s
-{% endfor %}
+%(check_manifest_ignore)s
+
+%(extra_lines)s
