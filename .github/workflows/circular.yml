@@ -1,0 +1,35 @@
+# Workflow meant to be used by external repositories
+# that are configured with this `meta` repository
+name: Circular
+on:
+  # allow this workflow to be called
+  # by other workflows from other repositories
+  workflow_call:
+
+jobs:
+  test:
+    name: Circular dependencies report
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        os: ["ubuntu-latest"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: python -m pip install tox
+      - name: Run circular dependencies check
+        run: |
+          tox -e circular
