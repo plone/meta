@@ -4,6 +4,7 @@
 borg.localrole
 five.intid
 plone.alterego
+plone.api
 plone.app.caching
 plone.app.content
 plone.app.contentlisting
@@ -46,6 +47,7 @@ plone.cachepurging
 plone.caching
 plone.contentrules
 plone.dexterity
+plone.distribution
 plone.event
 plone.folder
 plone.formwidget.namedfile
@@ -86,9 +88,9 @@ Products.CMFDiffTool
 Products.CMFDynamicViewFTI
 Products.CMFEditions
 Products.CMFPlacefulWorkflow
+Products.CMFPlone
 Products.isurlinportal
 Products.MimetypesRegistry
 Products.PlonePAS
 Products.PortalTransforms
 Products.statusmessages
-plone.api
