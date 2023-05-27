@@ -12,8 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.11"]
-        os: ["ubuntu-latest"]
+        python-version: ${{ fromJSON(vars.TEST_PYTHON_VERSIONS) }}
+        os: ${{ fromJSON(vars.TEST_OS_VERSIONS) }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
