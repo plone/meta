@@ -1,6 +1,6 @@
 # Workflow meant to be used by external repositories
 # that are configured with this `meta` repository
-name: Coverage
+name: QA
 on:
   # allow this workflow to be called
   # by other workflows from other repositories
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Coverage report
+    name: QA report
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -30,6 +30,6 @@ jobs:
             ${{ runner.os }}-pip-
       - name: Install dependencies
         run: python -m pip install tox
-      - name: Run coverage
+      - name: Run QA tools
         run: |
-          tox -q -e coverage >> $GITHUB_STEP_SUMMARY
+          tox -e lint
