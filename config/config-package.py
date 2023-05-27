@@ -281,6 +281,13 @@ class PackageConfiguration:
         destination = folder / 'meta.yml'
         return self.copy_with_meta('meta.yml.j2', destination=destination)
 
+    def flake8(self):
+        options = self._get_options_for('flake8', ('extra_lines', ))
+        destination = self.path / '.flake8'
+        return self.copy_with_meta(
+            'flake8.j2', destination=destination, **options
+        )
+
     def copy_with_meta(
             self, template_name, destination=None,
             meta_hint=META_HINT, **kw):
@@ -369,6 +376,7 @@ class PackageConfiguration:
             self.setup_cfg,
             self.tox,
             self.news_entry,
+            self.flake8,
             self.gha_workflows
         )
         for method in methods:
