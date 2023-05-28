@@ -91,3 +91,17 @@ commands =
     python -m build --sdist --no-isolation
     twine check dist/*
 %(extra_lines)s
+
+[testenv:circular]
+usedevelop = true
+deps =
+    pipdeptree
+    pipforester
+    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+commands =
+    # Generate the full dependency tree
+    sh -c 'pipdeptree -j > forest.json'
+    # Generate a DOT graph with the circular dependencies, if any
+    pipforester -i forest.json -o forest.dot --cycles
+    # Report if there are any circular dependencies, i.e. error if there are any
+    pipforester -i forest.json --check-cycles
