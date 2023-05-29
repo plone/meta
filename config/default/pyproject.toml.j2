@@ -116,6 +116,25 @@ ignore-packages = %(dependencies_ignores)s
 #  """
 ##
 
+[tool.check-manifest]
+ignore = [
+    ".editorconfig",
+    ".meta.toml",
+    ".pre-commit-config.yaml",
+    "tox.ini",
+    ".flake8",
+%(check_manifest_ignore)s
+]
+
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  check_manifest_ignores = """
+#      "*.map.js",
+#      "*.pyc",
+#  """
+##
+
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]

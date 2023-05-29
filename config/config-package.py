@@ -171,11 +171,10 @@ class PackageConfiguration:
         return options
 
     def setup_cfg(self):
-        """Copy setup.cfg file to the package being configured."""
-        setup_options = self._get_options_for(
-            'setup',
-            ('check_manifest_ignore', 'extra_lines')
-        )
+        """Copy setup.cfg file to the package being configured.
+
+        Only if there are options/metadata defined in .meta.cfg
+        """
         metadata = self.cfg_option('setup', 'metadata')
         if metadata:
             metadata = cleanup_data_for_jinja(metadata)
@@ -185,13 +184,13 @@ class PackageConfiguration:
             options = cleanup_data_for_jinja(options)
             options = options.items()
 
-        return self.copy_with_meta(
-            'setup.cfg.j2',
-            self.path / 'setup.cfg',
-            metadata=metadata,
-            options=options,
-            **setup_options
-        )
+        if metadata or options:
+            return self.copy_with_meta(
+                'setup.cfg.j2',
+                self.path / 'setup.cfg',
+                metadata=metadata,
+                options=options,
+            )
 
     def editorconfig(self):
         options = self._get_options_for(
@@ -234,6 +233,7 @@ class PackageConfiguration:
                 'codespell_skip',
                 'dependencies_ignores',
                 'dependencies_mapping',
+                'check_manifest_ignores',
                 'extra_lines',
             )
         )
