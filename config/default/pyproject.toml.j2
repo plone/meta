@@ -1,8 +1,17 @@
 [tool.towncrier]
-filename = "CHANGES.rst"
 directory = "news/"
+{% if changes_extension == 'rst' %}
+filename = "CHANGES.rst"
 title_format = "{version} ({project_date})"
 underlines = ["-", ""]
+{% endif %}
+{% if changes_extension == 'md' %}
+filename = "CHANGES.md"
+start_string = "<!-- towncrier release notes start -->\n"
+title_format = "## {version} ({project_date})"
+template = "news/changelog_template.jinja"
+underlines = ["", "", ""]
+{% endif %}
 
 [[tool.towncrier.type]]
 directory = "breaking"

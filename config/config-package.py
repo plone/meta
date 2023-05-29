@@ -214,6 +214,17 @@ class PackageConfiguration:
         )
 
     def pyproject_toml(self):
+        files = []
+        changes_extension = 'rst'
+        if (self.path / 'CHANGES.md').exists():
+            changes_extension = 'md'
+            destination = self.path / 'news' / 'changelog_template.jinja'
+            shutil.copy(
+                self.config_type_path / 'changelog_template.jinja',
+                destination
+            )
+            files.append(destination)
+
         codespell_ignores = self.cfg_option(
             'codespell', 'additional-ignores')
         codespell_skip = self.cfg_option(
@@ -223,13 +234,16 @@ class PackageConfiguration:
         dependencies_mapping = self.cfg_option(
             'dependencies', 'mappings')
 
-        return self.copy_with_meta(
+        filename = self.copy_with_meta(
             'pyproject.toml.j2',
             codespell_ignores=codespell_ignores,
             codespell_skip=codespell_skip,
             dependencies_ignores=dependencies_ignores,
             dependencies_mapping=dependencies_mapping,
+            changes_extension=changes_extension
         )
+        files.append(filename)
+        return files
 
     def tox(self):
         options = self._get_options_for(
@@ -346,14 +360,22 @@ class PackageConfiguration:
 
         files_changed = [
             self.path / '.meta.toml',
-            self.editorconfig(),
-            self.pre_commit_config(),
-            self.pyproject_toml(),
-            self.setup_cfg(),
-            self.tox(),
-            self.news_entry(),
-            self.gha_workflows(),
         ]
+        methods = (
+            self.editorconfig,
+            self.pre_commit_config,
+            self.pyproject_toml,
+            self.setup_cfg,
+            self.tox,
+            self.news_entry,
+            self.gha_workflows
+        )
+        for method in methods:
+            files = method()
+            if isinstance(files, list):
+                files_changed.extend(files)
+            else:
+                files_changed.append(files)
         files_changed = filter(None, files_changed)
 
         self.remove_old_files()
