@@ -215,9 +215,9 @@ class PackageConfiguration:
 
     def pyproject_toml(self):
         codespell_ignores = self.cfg_option(
-            'codespell', 'additional-ignores')
+            'codespell', 'additional-ignores', default='')
         codespell_skip = self.cfg_option(
-            'codespell', 'skip')
+            'codespell', 'skip', default='')
         dependencies_ignores = self.cfg_option(
             'dependencies', 'ignores')
         dependencies_mapping = self.cfg_option(

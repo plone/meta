@@ -40,16 +40,9 @@ profile = "plone"
 [tool.black]
 target-version = ["py38"]
 
-{% if codespell_ignores or codespell_skip%}
 [tool.codespell]
-{%if codespell_ignores %}
-ignore-words-list = "%(codespell_ignores)s"
-{% endif %}
-{%if codespell_skip %}
-skip = "%(codespell_skip)s"
-{% endif %}
-
-{% endif %}
+ignore-words-list = "discreet,%(codespell_ignores)s"
+skip = "*.po,%(codespell_skip)s"
 
 [tool.dependencychecker]
 Zope = [
