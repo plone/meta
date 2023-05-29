@@ -8,11 +8,6 @@ envlist =
 %(envlist_lines)s
 %(config_lines)s
 
-[testenv]
-allowlist_externals =
-    sh
-%(testenv_lines)s
-
 [testenv:format]
 description = automatically reformat code
 skip_install = true
@@ -44,6 +39,8 @@ commands =
 
 [testenv:dependencies-graph]
 description = generate a graph out of the package's dependencies
+allowlist_externals =
+    sh
 deps =
     pipdeptree==2.5.1
     graphviz  # optional dependency of pipdeptree
@@ -51,6 +48,7 @@ commands =
     sh -c 'pipdeptree --exclude setuptools,wheel,pipdeptree,zope.interface,zope.component --graph-output svg > dependencies.svg'
 
 [testenv:test]
+description = run the distribution tests
 use_develop = true
 constrain_package_deps = true
 set_env = ROBOT_BROWSER=headlesschrome
@@ -63,6 +61,7 @@ extras =
     test
 
 [testenv:coverage]
+description = get a test coverage report
 use_develop = true
 constrain_package_deps = true
 set_env = ROBOT_BROWSER=headlesschrome
@@ -77,6 +76,7 @@ extras =
     test
 
 [testenv:release-check]
+description = ensure that the distribution is ready to release
 skip_install = true
 deps =
     twine
@@ -93,7 +93,10 @@ commands =
 %(extra_lines)s
 
 [testenv:circular]
+description = ensure there are no cyclic dependencies
 usedevelop = true
+allowlist_externals =
+    sh
 deps =
     pipdeptree
     pipforester
