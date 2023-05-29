@@ -8,11 +8,6 @@ envlist =
 %(envlist_lines)s
 %(config_lines)s
 
-[testenv]
-allowlist_externals =
-    sh
-%(testenv_lines)s
-
 [testenv:format]
 description = automatically reformat code
 skip_install = true
@@ -44,6 +39,8 @@ commands =
 
 [testenv:dependencies-graph]
 description = generate a graph out of the package's dependencies
+allowlist_externals =
+    sh
 deps =
     pipdeptree==2.5.1
     graphviz  # optional dependency of pipdeptree
@@ -94,6 +91,8 @@ commands =
 
 [testenv:circular]
 usedevelop = true
+allowlist_externals =
+    sh
 deps =
     pipdeptree
     pipforester
