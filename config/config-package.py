@@ -6,7 +6,6 @@ from shared.git import get_commit_id
 from shared.git import git_branch
 from shared.path import change_dir
 from shared.toml_encoder import TomlArraySeparatorEncoderWithNewline
-from shared.utils import cleanup_data_for_jinja
 
 import argparse
 import collections
@@ -170,27 +169,21 @@ class PackageConfiguration:
             options[name] = self.cfg_option(section, name, '')
         return options
 
-    def setup_cfg(self):
-        """Copy setup.cfg file to the package being configured.
+    def warn_on_setup_cfg(self):
+        """Warn if setup.cfg has sections that we define in other files"""
+        setup_file = pathlib.Path( self.path / 'setup.cfg')
+        if not setup_file.exists():
+            return
+        content = setup_file.read_text()
+        sections_outside = ('check-manifest', 'flake8', 'bdist_wheel')
+        prefix = 'setup.cfg cleanup'
+        print()
+        for section_name in sections_outside:
+            if f'[{section_name}]' in content:
+                self.print_warning(prefix, f'please remove [{section_name}] section')
 
-        Only if there are options/metadata defined in .meta.cfg
-        """
-        metadata = self.cfg_option('setup', 'metadata')
-        if metadata:
-            metadata = cleanup_data_for_jinja(metadata)
-            metadata = metadata.items()
-        options = self.cfg_option('setup', 'options')
-        if options:
-            options = cleanup_data_for_jinja(options)
-            options = options.items()
-
-        if metadata or options:
-            return self.copy_with_meta(
-                'setup.cfg.j2',
-                self.path / 'setup.cfg',
-                metadata=metadata,
-                options=options,
-            )
+    def print_warning(self, prefix, message):
+        print(f'*** {prefix}" {message}\n')
 
     def editorconfig(self):
         options = self._get_options_for(
@@ -373,7 +366,6 @@ class PackageConfiguration:
             self.editorconfig,
             self.pre_commit_config,
             self.pyproject_toml,
-            self.setup_cfg,
             self.tox,
             self.news_entry,
             self.flake8,
@@ -396,6 +388,7 @@ class PackageConfiguration:
             updating = git_branch(self.branch_name)
 
         self.commit_and_push(files_changed)
+        self.warn_on_setup_cfg()
         self.final_help_tips(updating)
 
 
