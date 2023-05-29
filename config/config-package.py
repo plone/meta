@@ -227,22 +227,21 @@ class PackageConfiguration:
             )
             files.append(destination)
 
-        codespell_ignores = self.cfg_option(
-            'codespell', 'additional-ignores', default='')
-        codespell_skip = self.cfg_option(
-            'codespell', 'skip', default='')
-        dependencies_ignores = self.cfg_option(
-            'dependencies', 'ignores')
-        dependencies_mapping = self.cfg_option(
-            'dependencies', 'mappings')
+        options = self._get_options_for(
+            'pyproject',
+            (
+                'codespell_ignores',
+                'codespell_skip',
+                'dependencies_ignores',
+                'dependencies_mapping',
+                'extra_lines',
+            )
+        )
 
         filename = self.copy_with_meta(
             'pyproject.toml.j2',
-            codespell_ignores=codespell_ignores,
-            codespell_skip=codespell_skip,
-            dependencies_ignores=dependencies_ignores,
-            dependencies_mapping=dependencies_mapping,
-            changes_extension=changes_extension
+            changes_extension=changes_extension,
+            **options,
         )
         files.append(filename)
         return files
