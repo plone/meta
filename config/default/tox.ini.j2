@@ -7,6 +7,16 @@ envlist =
     dependencies
 %(envlist_lines)s
 %(config_lines)s
+##
+# Add extra configuration options in .meta.toml:
+#  [tox]
+#  envlist_lines = """
+#      my_other_environment
+#  """
+#  config_lines = """
+#  my_extra_top_level_tox_configuration_lines
+#  """
+##
 
 [testenv:format]
 description = automatically reformat code
@@ -90,7 +100,6 @@ commands =
     towncrier build --version=100.0.0 --yes
     python -m build --sdist --no-isolation
     twine check dist/*
-%(extra_lines)s
 
 [testenv:circular]
 description = ensure there are no cyclic dependencies
@@ -108,3 +117,12 @@ commands =
     pipforester -i forest.json -o forest.dot --cycles
     # Report if there are any circular dependencies, i.e. error if there are any
     pipforester -i forest.json --check-cycles
+
+%(extra_lines)s
+##
+# Add extra configuration options in .meta.toml:
+#  [tox]
+#  extra_lines = """
+#      my_other_environment
+#  """
+##
