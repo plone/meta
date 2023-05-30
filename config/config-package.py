@@ -18,11 +18,13 @@ import toml
 
 META_HINT = """\
 # Generated from:
-# https://github.com/plone/meta/tree/master/config/{config_type}"""
+# https://github.com/plone/meta/tree/master/config/{config_type}
+# See the inline comments on how to expand/tweak this configuration file"""
 META_HINT_MARKDOWN = """\
 <!--
 Generated from:
 https://github.com/plone/meta/tree/master/config/{config_type}
+See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
 
@@ -204,7 +206,7 @@ class PackageConfiguration:
 
     def pre_commit_config(self):
         options = self._get_options_for(
-            'pre_commit', ('codespell_extra_lines',)
+            'pre_commit', ('codespell_extra_lines', 'extra_lines',)
         )
 
         return self.copy_with_meta(
@@ -225,22 +227,21 @@ class PackageConfiguration:
             )
             files.append(destination)
 
-        codespell_ignores = self.cfg_option(
-            'codespell', 'additional-ignores', default='')
-        codespell_skip = self.cfg_option(
-            'codespell', 'skip', default='')
-        dependencies_ignores = self.cfg_option(
-            'dependencies', 'ignores')
-        dependencies_mapping = self.cfg_option(
-            'dependencies', 'mappings')
+        options = self._get_options_for(
+            'pyproject',
+            (
+                'codespell_ignores',
+                'codespell_skip',
+                'dependencies_ignores',
+                'dependencies_mapping',
+                'extra_lines',
+            )
+        )
 
         filename = self.copy_with_meta(
             'pyproject.toml.j2',
-            codespell_ignores=codespell_ignores,
-            codespell_skip=codespell_skip,
-            dependencies_ignores=dependencies_ignores,
-            dependencies_mapping=dependencies_mapping,
-            changes_extension=changes_extension
+            changes_extension=changes_extension,
+            **options,
         )
         files.append(filename)
         return files
