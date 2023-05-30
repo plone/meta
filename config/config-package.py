@@ -196,6 +196,17 @@ class PackageConfiguration:
             **options
         )
 
+    def gitignore(self):
+        options = self._get_options_for(
+            'gitignore',
+            ('extra_lines', )
+        )
+        return self.copy_with_meta(
+            'gitignore.j2',
+            self.path / '.gitignore',
+            **options
+        )
+
     def pre_commit_config(self):
         options = self._get_options_for(
             'pre_commit', ('codespell_extra_lines', 'extra_lines',)
@@ -364,6 +375,7 @@ class PackageConfiguration:
         ]
         methods = (
             self.editorconfig,
+            self.gitignore,
             self.pre_commit_config,
             self.pyproject_toml,
             self.tox,
