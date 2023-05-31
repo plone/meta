@@ -18,6 +18,17 @@ envlist =
 #  """
 ##
 
+[testenv]
+skip_install = true
+allowlist_externals =
+    echo
+    false
+# Make sure typos like `tox -e formaat` are caught instead of silently doing nothing.
+# See https://github.com/tox-dev/tox/issues/2858.
+commands =
+    echo "Unrecognized environment name {envname}"
+    false
+
 [testenv:format]
 description = automatically reformat code
 skip_install = true
@@ -49,6 +60,7 @@ commands =
 
 [testenv:dependencies-graph]
 description = generate a graph out of the dependencies of the package
+skip_install = false
 allowlist_externals =
     sh
 deps =
@@ -60,6 +72,7 @@ commands =
 [testenv:test]
 description = run the distribution tests
 use_develop = true
+skip_install = false
 constrain_package_deps = true
 set_env = ROBOT_BROWSER=headlesschrome
 deps =
@@ -73,6 +86,7 @@ extras =
 [testenv:coverage]
 description = get a test coverage report
 use_develop = true
+skip_install = false
 constrain_package_deps = true
 set_env = ROBOT_BROWSER=headlesschrome
 deps =
@@ -103,7 +117,8 @@ commands =
 
 [testenv:circular]
 description = ensure there are no cyclic dependencies
-usedevelop = true
+use_develop = true
+skip_install = false
 allowlist_externals =
     sh
 deps =
