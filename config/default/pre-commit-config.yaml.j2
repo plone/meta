@@ -20,6 +20,14 @@ repos:
     rev: 3.0.4
     hooks:
     -   id: zpretty
+%(zpretty_extra_lines)s
+##
+# Add extra configuration options in .meta.toml:
+#  [pre_commit]
+#  zpretty_extra_lines = """
+#  _your own configuration lines_
+#  """
+##
 -   repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
