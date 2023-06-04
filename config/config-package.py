@@ -236,7 +236,7 @@ class PackageConfiguration:
                 'codespell_ignores',
                 'codespell_skip',
                 'dependencies_ignores',
-                'dependencies_mapping',
+                'dependencies_mappings',
                 'check_manifest_ignores',
                 'extra_lines',
             )

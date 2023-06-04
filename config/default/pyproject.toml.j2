@@ -101,7 +101,7 @@ python-dateutil = ['dateutil']
 {% if dependencies_ignores %}
 ignore-packages = %(dependencies_ignores)s
 {% endif %}
-{% for line in dependencies_mapping %}
+{% for line in dependencies_mappings %}
 %(line)s
 {% endfor %}
 
