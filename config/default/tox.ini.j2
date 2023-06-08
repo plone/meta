@@ -131,7 +131,7 @@ commands =
     # Generate a DOT graph with the circular dependencies, if any
     pipforester -i forest.json -o forest.dot --cycles
     # Report if there are any circular dependencies, i.e. error if there are any
-    pipforester -i forest.json --check-cycles
+    pipforester -i forest.json --check-cycles -o /dev/null
 
 %(extra_lines)s
 ##
