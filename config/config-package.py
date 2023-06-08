@@ -209,7 +209,8 @@ class PackageConfiguration:
 
     def pre_commit_config(self):
         options = self._get_options_for(
-            'pre_commit', ('codespell_extra_lines', 'extra_lines',)
+            'pre_commit',
+            ('zpretty_extra_lines', 'codespell_extra_lines', 'extra_lines',)
         )
 
         return self.copy_with_meta(
