@@ -97,6 +97,10 @@ Example:
 template = "default"
 commit-id = "< commit-hash >"
 
+[test]
+runner = "pytest"
+path = "/tests"
+
 [dependencies]
 mappings = [
     "Zope = ['Products.Five', 'ZTUtils']",
@@ -121,6 +125,14 @@ skip = "*.zcml"
 
 `commit-id`: Commit of the meta repository, which was used for the last configuration run.
   Currently read-only.
+
+#### Test Options
+
+`runner`: Name of the test runner used by tox, by default we use `zope.testrunner`, but
+`pytest` is also supported.
+
+`path`: Base path to run tests. Default values are top-level `/tests` or `/src`.
+
 
 #### Dependencies
 
