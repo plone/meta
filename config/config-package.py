@@ -254,7 +254,7 @@ class PackageConfiguration:
     def tox(self):
         options = self._get_options_for(
             'tox',
-            ('envlist_lines', 'config_lines', 'extra_lines')
+            ('envlist_lines', 'config_lines', 'test_extras', 'extra_lines')
         )
         test_path = ''
         if (self.path / 'src').exists():

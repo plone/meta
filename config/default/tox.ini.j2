@@ -82,6 +82,15 @@ commands =
     zope-testrunner --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
 extras =
     test
+%(test_extras)s
+##
+# Add extra configuration options in .meta.toml:
+#  [tox]
+#  test_extras = """
+#      tests
+#      widgets
+#  """
+##
 
 [testenv:coverage]
 description = get a test coverage report
@@ -98,6 +107,7 @@ commands =
     coverage report -m --format markdown
 extras =
     test
+%(test_extras)s
 
 [testenv:release-check]
 description = ensure that the distribution is ready to release
