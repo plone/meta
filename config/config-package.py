@@ -94,7 +94,6 @@ class PackageConfiguration:
         self.meta_cfg = self._read_meta_configuration()
         self.meta_cfg['meta']['template'] = self.config_type
         self.meta_cfg['meta']['commit-id'] = get_commit_id()
-        self.test_cfg = self._test_cfg()
 
     def _read_meta_configuration(self):
         """Read and update meta configuration"""
@@ -173,11 +172,10 @@ class PackageConfiguration:
     def _test_cfg(self):
         """Setup testing configuration."""
         options = self._get_options_for(
-            'test',
-            ('runner', 'path')
+            'tox',
+            ('test_runner', 'test_path')
         )
-        runner = options.get("runner", "zope.testrunner")
-        path = options.get("path")
+        path = options.get("test_path")
         if not path:
             if (self.path / 'tests').exists():
                 path = "/tests"
@@ -185,8 +183,9 @@ class PackageConfiguration:
                 path = "/src"
             else:
                 path = ""
-        options["runner"] = runner
-        options["path"] = path
+        options["test_path"] = path
+        runner = options.get("test_runner", "zope.testrunner")
+        options["test_runner"] = runner
         return options
 
     def warn_on_setup_cfg(self):
@@ -276,8 +275,7 @@ class PackageConfiguration:
             'tox',
             ('envlist_lines', 'config_lines', 'test_extras', 'extra_lines')
         )
-        options['test_runner'] = self.test_cfg["runner"]
-        options['test_path'] = self.test_cfg["path"]
+        options.update(self._test_cfg())
         options['package_name'] = self.path.name
         return self.copy_with_meta(
             'tox.ini.j2',
