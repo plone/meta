@@ -169,6 +169,25 @@ class PackageConfiguration:
             options[name] = self.cfg_option(section, name, '')
         return options
 
+    def _test_cfg(self):
+        """Setup testing configuration."""
+        options = self._get_options_for(
+            'tox',
+            ('test_runner', 'test_path')
+        )
+        path = options.get("test_path")
+        if not path:
+            if (self.path / 'tests').exists():
+                path = "/tests"
+            elif (self.path / 'src').exists():
+                path = "/src"
+            else:
+                path = ""
+        options["test_path"] = path
+        runner = options.get("test_runner", "zope.testrunner")
+        options["test_runner"] = runner
+        return options
+
     def warn_on_setup_cfg(self):
         """Warn if setup.cfg has sections that we define in other files"""
         setup_file = pathlib.Path( self.path / 'setup.cfg')
@@ -256,10 +275,7 @@ class PackageConfiguration:
             'tox',
             ('envlist_lines', 'config_lines', 'test_extras', 'extra_lines')
         )
-        test_path = ''
-        if (self.path / 'src').exists():
-            test_path = '/src'
-        options['test_path'] = test_path
+        options.update(self._test_cfg())
         options['package_name'] = self.path.name
         return self.copy_with_meta(
             'tox.ini.j2',
