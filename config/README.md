@@ -386,7 +386,7 @@ bin/python re-enable-actions.py
 
 ### Dropping support for legacy Python versions
 
-To drop support for Python 2.7 up to 3.6 several steps have to be done as
+To drop support for Python 2.7 up to 3.6, several steps have to be done as
 documented at https://zope.dev/developer/python2.html#how-to-drop-support.
 There is a script to ease this process.
 
