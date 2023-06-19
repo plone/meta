@@ -17,7 +17,7 @@ any developer has the answer to the following questions at their fingertips:
 - what's the coverage of the test suite?
 - is the package ready to be released?
 - are all dependencies clearly defined?
-- how the dependencies graph looks like?
+- What does the dependency graph look like?
 - are there any circular dependency problems?
 - is the code formatted upon some agreed standards?
 - Do all agreed upon code quality checks pass?
