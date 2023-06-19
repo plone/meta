@@ -258,6 +258,9 @@ class PackageConfiguration:
                 'dependencies_ignores',
                 'dependencies_mappings',
                 'check_manifest_ignores',
+                'towncrier_extra_lines',
+                'isort_extra_lines',
+                'black_extra_lines',
                 'extra_lines',
             )
         )
