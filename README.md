@@ -22,7 +22,7 @@ any developer has the answer to the following questions at their fingertips:
 - is the code formatted upon some agreed standards?
 - Do all agreed upon code quality checks pass?
 
-__How to find the answers?__ With the following commands:
+To find the answers to these questions, you can run the following commands.
 
 ```shell
 # run the test suite
@@ -35,7 +35,7 @@ tox -e release-check
 tox -e dependencies
 # generate a dependency graph
 tox -e dependencies-graph
-# check if there are cyclic dependencies
+# check if there are circular dependencies
 tox -e circular
 # format the code
 tox -e format
@@ -45,16 +45,15 @@ tox -e lint
 
 ## Tox
 
-As seen above, [`tox`](https://pypi.org/project/tox) is the tool to find all these answers.
+As seen above, [`tox`](https://pypi.org/project/tox) provides the answers.
 
 Tooling is like fashion, it keeps evolving and changing.
 
-The great power behind `plone/meta` is that as soon as we find a better solution/tool,
-we can swiftly move all packages to a new approach and making it as painless as possible!
+The great power behind `plone/meta` is that when we implement a better solution or tool,
+we can swiftly move all packages to the new approach, making it as painless as possible!
 
 ## Configure a package
 
-How to get the above answers to any package?
-By using the `config-package.py` script found in this repositories' `config` folder.
+To get the above answers to any package, use the `config-package.py` script found in this repository's `config` folder.
 
 See the [README](config/README.md) documentation for the details.

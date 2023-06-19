@@ -14,15 +14,14 @@ pip install -r requirements.txt
 python config-package.py PATH/TO/PACKAGE
 ```
 
-That's it :-)
+That's it. :-)
 
 Now, you can use the `tox` commands
 to adapt the repository just configured!
 
 ## Configuration files
 
-In a nutshell what `plone/meta` does
-is to put some configuration files on the repository.
+In a nutshell `plone/meta`, puts some configuration files on the repository.
 
 Currently, the files being managed by `plone/meta` are:
 
