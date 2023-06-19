@@ -252,9 +252,9 @@ By default, it falls back to use [`zope.testrunner`]((https://pypi.org/project/z
 Likewise, the root path where the tests are to be found can be specified
 under the key `test_path`. By default, it is set to nothing,
 that is, the repository's top-level is already importable
-and thus the tests can already be found directly.
+and thus the tests can be found directly.
 
-If either a `tests` or `src` folder exists they are used as a safe fallbacks.
+If either a `tests` or `src` folder exists, then they are used as a safe fallbacks.
 
 ```
 ##
@@ -266,7 +266,7 @@ If either a `tests` or `src` folder exists they are used as a safe fallbacks.
 ##
 ```
 
-Add the `[tox]` TOML table on `.meta.toml`
+Add the `[tox]` TOML table in `.meta.toml`,
 and set the extra configuration for `tox` under the `extra_lines` key.
 
 ```
@@ -319,27 +319,27 @@ By default, the changes are __not__ pushed
 
 `--branch`: define a specific git branch name to be created for the changes.
 By default, the script creates one which includes the name of the configuration type.
-__Tip:__ Use "current" to update the current branch.
+__Tip:__ Use `current` to update the current branch.
 
-`--tox`: whether to run `tox` already on the repository, by default it is not run.
+`--tox`: whether to run `tox` on the repository. By default it is not run.
 
 The following options are only needed one time
 as their values are stored in `.meta.toml.`.
 
-`--type`: define the configuration type, by now `default` is the only option
+`--type`: define the configuration type. At this time, `default` is the only option.
 
 ## Other scripts
 
 ### Calling a script on multiple repositories
 
 The `config-package.py` script only runs on a single repository.
-To update multiple repositories at once you can use `multi-call.py`.
+To update multiple repositories at once, you can use `multi-call.py`.
 It runs a given script on all repositories listed in a `packages.txt` file.
 
 #### Usage
 
-To run a script on all packages listed in a `packages.txt` file call
-`multi-call.py` the following way::
+To run a script on all packages listed in a `packages.txt` file, call
+`multi-call.py` as follows.
 
 ```shell
 bin/python multi-call.py <name-of-the-script.py> <path-to-packages.txt> <path-to-clones> <arguments-for-script>
@@ -357,7 +357,7 @@ which does not start with `#`:
 
 __CAUTION:__
 
-Running this script stashes any uncommitted changes in the repositories,
+Running this script stashes any uncommitted changes in the repositories.
 Run `git stash pop` to recover them.
 
 ### Re-enabling GitHub Actions
@@ -390,7 +390,7 @@ There is a script to ease this process.
 
 #### Preparation
 
-- The package to remove legacy python support from has to have a `.meta.toml`
+- The package from which to remove legacy Python support has to have a `.meta.toml`
   file, in other words, it must be under control of the `config-package.py` script.
 
 #### Usage
