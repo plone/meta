@@ -158,6 +158,20 @@ _your own configuration lines_
 """
 ```
 
+Extend [`flake8`](https://pypi.org/project/flake8) configuration
+by setting the values on the `flake8_extra_lines` key.
+
+Like to add extra plugins:
+
+```toml
+[pre_commit]
+flake8_extra_lines = """
+        additional_dependencies:
+          - flake8-debugger
+          - flake8-deprecated
+"""
+```
+
 ### `pyproject.toml`
 
 `towncrier` configuration: depending on the extension of your `CHANGES` file,
