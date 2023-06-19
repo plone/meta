@@ -5,7 +5,6 @@ of configuration files across Plone related repositories.
 
 By using these files, you can have the same developer experience (DX)
 across all Plone related packages.
-which benefits seasoned contributors and newcomers alike.
 
 The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
 while encouraging its adoption for the repositories under the [collective Plone organization](https://github.com/collective)
