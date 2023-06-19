@@ -13,13 +13,13 @@ and even your own private packages for your customers.
 With this configurations set in place,
 any developer has the answer to the following questions at their fingertips:
 
-- do the tests of this package pass?
-- what's the coverage of the test suite?
-- is the package ready to be released?
-- are all dependencies clearly defined?
+- Do the tests of this package pass?
+- What's the coverage of the test suite?
+- Is the package ready to be released?
+- Are all dependencies clearly defined?
 - What does the dependency graph look like?
-- are there any circular dependency problems?
-- is the code formatted upon some agreed standards?
+- Are there any circular dependency problems?
+- Is the code formatted upon some agreed standards?
 - Do all agreed upon code quality checks pass?
 
 To find the answers to these questions, you can run the following commands.
