@@ -32,6 +32,14 @@ repos:
     rev: 6.0.0
     hooks:
     -   id: flake8
+%(flake8_extra_lines)s
+##
+# Add extra configuration options in .meta.toml:
+#  [pre_commit]
+#  flake8_extra_lines = """
+#  _your own configuration lines_
+#  """
+##
 -   repo: https://github.com/codespell-project/codespell
     rev: v2.2.4
     hooks:
