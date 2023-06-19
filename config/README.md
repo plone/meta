@@ -360,7 +360,7 @@ which does not start with `#`:
 __CAUTION:__
 
 Running this script stashes any uncommitted changes in the repositories,
-run `git stash pop` to recover them.
+Run `git stash pop` to recover them.
 
 ### Re-enabling GitHub Actions
 
