@@ -20,7 +20,7 @@ any developer has the answer to the following questions at their fingertips:
 - how the dependencies graph looks like?
 - are there any circular dependency problems?
 - is the code formatted upon some agreed standards?
-- are all agreed upon quality tools passing?
+- Do all agreed upon code quality checks pass?
 
 __How to find the answers?__ With the following commands:
 
