@@ -8,7 +8,7 @@ across all Plone related packages.
 which benefits seasoned contributors and newcomers alike.
 
 The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
-but also reaching out to the [collective plone organization](https://github.com/collective) repositories,
+while encouraging its adoption for the repositories under the [collective Plone organization](https://github.com/collective)
 and, why not, your own private packages for your customers.
 
 With this configurations set in place,
