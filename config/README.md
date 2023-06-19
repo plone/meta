@@ -130,12 +130,12 @@ and set the extra configuration for `flake8` under the `extra_lines` key.
 ##
 ```
 
-Add the `[gitignore]` TOML table on `.meta.toml`
+Add the `[gitignore]` TOML table in `.meta.toml`,
 and set the extra configuration for `git` under the `extra_lines` key.
 
 ### `.github/workflows/meta.yml`
 
-_So far it does not have any configuration option_.
+_At this time there are no configuration options_.
 
 ### `.pre-commit-config.yaml`
 
@@ -149,7 +149,7 @@ _So far it does not have any configuration option_.
 ##
 ```
 
-Add the `[pre_commit]` TOML table on `.meta.toml`
+Add the `[pre_commit]` TOML table in `.meta.toml`,
 and set the extra configuration for `pre-commit` under the `extra_lines` key.
 
 ```
@@ -180,10 +180,10 @@ by setting the values on the `codespell_extra_lines` key.
 
 ### `pyproject.toml`
 
-`towncrier` configuration: depending on the extension of your `CHANGES` file
+`towncrier` configuration: depending on the extension of your `CHANGES` file,
 `plone/meta` will adapt the configuration for `towncrier`.
 
-It's authomatic, you don't need to do anything!
+It's automatic, you don't need to do anything!
 
 ```
 ##
@@ -195,9 +195,9 @@ It's authomatic, you don't need to do anything!
 ##
 ```
 
-Add the `[pyproject]` TOML table on `.meta.toml`
+Add the `[pyproject]` TOML table in `.meta.toml`,
 and set extra configuration for any extra tool that you use
-under the `extra_lines` key.
+for the `extra_lines` key.
 
 ```
 ##
@@ -209,7 +209,7 @@ under the `extra_lines` key.
 ```
 
 Extend [`codespell`](https://pypi.org/project/codespell) configuration
-by setting the values on the `codespell_ignores` and `codespell_skip` keys.
+by setting the values for the `codespell_ignores` and `codespell_skip` keys.
 
 ```
 ##
@@ -225,7 +225,7 @@ by setting the values on the `codespell_ignores` and `codespell_skip` keys.
 ```
 
 Extend [`z3c.dependencychecker`](https://pypi.org/project/z3c.dependencychecker) configuration
-by setting the values on the `dependencies_ignores` and `dependencies_mappings` keys.
+by setting the values for the `dependencies_ignores` and `dependencies_mappings` keys.
 
 ```
 ##
@@ -239,20 +239,19 @@ by setting the values on the `dependencies_ignores` and `dependencies_mappings` 
 ```
 
 Extend [`check-manifest`](https://pypi.org/project/check-manifest) configuration
-by setting the values on the `check_manifest_ignores` key.
+by setting the values for the `check_manifest_ignores` key.
 
 ### `tox.ini`
 
 Depending on the test runner that you want to use,
 `plone/meta` will adapt `tox.ini` to it.
 
-Set the on the `[tox]` TOML table on `.meta.toml`
-the key `test_runner` to `pytest` if you want to use [`pytest`](https://pypi.org/project/pytest).
-By default, it fallbacks to use [`zope.testrunner`]((https://pypi.org/project/zope.testrunner)).
+In the `[tox]` TOML table in `.meta.toml`, set the value for the key `test_runner` to `pytest` if you want to use [`pytest`](https://pypi.org/project/pytest).
+By default, it falls back to use [`zope.testrunner`]((https://pypi.org/project/zope.testrunner)).
 
 Likewise, the root path where the tests are to be found can be specified
 under the key `test_path`. By default, it is set to nothing,
-i.e. the repository top-level is already importable
+that is, the repository's top-level is already importable
 and thus the tests can already be found directly.
 
 If either a `tests` or `src` folder exists they are used as a safe fallbacks.
