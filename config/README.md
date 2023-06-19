@@ -364,7 +364,7 @@ Run `git stash pop` to recover them.
 
 ### Re-enabling GitHub Actions
 
-After a certain period of time (currently 60 days) without commits GitHub
+After a certain period of time (currently 60 days) without commits, GitHub
 automatically disables Actions. They can be re-enabled manually per repository.
 There is a script to do this for all repositories. It does no harm if Actions
 is already enabled for a repository.
