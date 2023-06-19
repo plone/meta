@@ -9,7 +9,7 @@ which benefits seasoned contributors and newcomers alike.
 
 The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
 while encouraging its adoption for the repositories under the [collective Plone organization](https://github.com/collective)
-and, why not, your own private packages for your customers.
+and even your own private packages for your customers.
 
 With this configurations set in place,
 any developer has the answer to the following questions at their fingertips:
