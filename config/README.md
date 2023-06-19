@@ -90,7 +90,7 @@ does not fulfill all your needs.
 
 ### `.editorconfig`
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [editorconfig]
@@ -105,7 +105,7 @@ and set extra configuration for `editorconfig` under the `extra_lines` key.
 
 ### `.flake8`
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [flake8]
@@ -120,7 +120,7 @@ and set the extra configuration for `flake8` under the `extra_lines` key.
 
 ### `.gitignore`
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [gitignore]
@@ -139,7 +139,7 @@ _At this time there are no configuration options_.
 
 ### `.pre-commit-config.yaml`
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pre_commit]
@@ -152,7 +152,7 @@ _At this time there are no configuration options_.
 Add the `[pre_commit]` TOML table in `.meta.toml`,
 and set the extra configuration for `pre-commit` under the `extra_lines` key.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pre_commit]
@@ -165,7 +165,7 @@ and set the extra configuration for `pre-commit` under the `extra_lines` key.
 Extend [`zpretty`](https://pypi.org/project/zpretty) configuration
 by setting the values on the `zpretty_extra_lines` key.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pre_commit]
@@ -185,7 +185,7 @@ by setting the values on the `codespell_extra_lines` key.
 
 It's automatic, you don't need to do anything!
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]
@@ -199,7 +199,7 @@ Add the `[pyproject]` TOML table in `.meta.toml`,
 and set extra configuration for any extra tool that you use
 for the `extra_lines` key.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]
@@ -211,7 +211,7 @@ for the `extra_lines` key.
 Extend [`codespell`](https://pypi.org/project/codespell) configuration
 by setting the values for the `codespell_ignores` and `codespell_skip` keys.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]
@@ -227,7 +227,7 @@ by setting the values for the `codespell_ignores` and `codespell_skip` keys.
 Extend [`z3c.dependencychecker`](https://pypi.org/project/z3c.dependencychecker) configuration
 by setting the values for the `dependencies_ignores` and `dependencies_mappings` keys.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]
@@ -256,7 +256,7 @@ and thus the tests can be found directly.
 
 If either a `tests` or `src` folder exists, then they are used as a safe fallbacks.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [tox]
@@ -269,7 +269,7 @@ If either a `tests` or `src` folder exists, then they are used as a safe fallbac
 Add the `[tox]` TOML table in `.meta.toml`,
 and set the extra configuration for `tox` under the `extra_lines` key.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [tox]
@@ -286,7 +286,7 @@ Extend the list of default `tox` environments by using the `envlist_lines` key.
 
 Add extra top level configuration for `tox` by using the `config_lines` key.
 
-```
+```toml
 ##
 # Add extra configuration options in .meta.toml:
 #  [tox]
