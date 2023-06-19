@@ -393,7 +393,7 @@ There is a script to ease this process.
 #### Preparation
 
 - The package to remove legacy python support from has to have a `.meta.toml`
-  file, aka it must be under control of the `config-package.py` script.
+  file, in other words, it must be under control of the `config-package.py` script.
 
 #### Usage
 
