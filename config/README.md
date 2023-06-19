@@ -23,39 +23,39 @@ to adapt the repository just configured!
 
 In a nutshell `plone/meta`, puts some configuration files on the repository.
 
-Currently, the files being managed by `plone/meta` are:
+Currently the files managed by `plone/meta` are the following.
 
 - `.meta.toml`: `plone/meta`'s configuration file
-- `.editorconfig`: configuration meant to be read by IDEs
+- `.editorconfig`: configuration meant to be read by code editors
 - `.flake8`: [`flake8`](https://pypi.org/project/flake8) configuration
 - `.gitignore`: list of file/folders patterns that `git` should ignore
 - `.github/workflows/meta.yml`: GitHub Actions to run the testing and QA tools on GitHub
 - `.pre-commit-config.yaml`: [`pre-commit`](https://pypi.org/project/pre-commit) configuration
-- `pyproject.toml`: configuration options for a wide variety of python tooling
+- `pyproject.toml`: configuration options for a wide variety of Python tooling
 - `tox.ini`: [`tox`](https://pypi.org/project/tox) configuration, __the most important file__
 
 You can find the _template_ files for each of these files
 in the `config/default` folder of this `plone/meta` repository.
 
-You will notice that they have a `.jinja` extension,
-that's because the files are not merely copied over to the target repository,
-but rather they are enhanced/adapted on the way there.
+You will notice that they have a `.jinja` extension.
+That's because the files are not merely copied over to the target repository,
+but rather they are enhanced and adapted on the way there.
 
-See the next section about how to extend/modify these configuration files.
+See the next section about how to extend and modify these configuration files.
 
 ## Configuration options
 
 One thing is trying to standardize,
 but another thing is being flexible enough
-to adapt to each repositories' special needs.
+It is one thing to standardize, yet another to be flexible enough to adapt to each repository's particular needs.
 
 Fortunately `plone/meta` tries its best to accomplish both:
 
 - it provides sane defaults
-- it allows to extend the defaults with custom configuration
+- it allows extension of the defaults with custom configuration
 
 The files mentioned above have comments all over them
-with instructions on how to extend/modify/influence
+with instructions on how to extend, modify, and influence
 what `plone/meta` ends up adding on those files.
 
 Those options are to be stored,
