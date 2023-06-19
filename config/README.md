@@ -60,13 +60,13 @@ what `plone/meta` ends up adding on those files.
 
 Those options are to be stored,
 as it is mentioned on the comments themselves,
-on `.meta.toml`.
+in `.meta.toml`.
 
-This way, when the configuration files get re-generated,
-`plone/meta` reads the configuration on `.meta.toml`
-and re-applies the specific configuration on the other files.
+This way, when the configuration files get regenerated,
+`plone/meta` reads the configuration in `.meta.toml`
+and reapplies the specific configuration on the other files.
 
-See the specific configuration files sections below on how to extend/modify each configuration file.
+See the specific configuration files sections below on how to extend and modify each configuration file.
 
 ### Configuration philosophy
 
@@ -74,12 +74,12 @@ The idea behind the configuration system
 in `plone/meta` controlled configuration files is to make it as simple as possible.
 
 Rather than adding plenty of configuration options,
-almost all configuration files have a `extra_lines`
+almost all configuration files have an `extra_lines` section
 that allows you to paste as much configuration as you want there.
 
-This way providing a simple, yet powerful, extension mechanism.
+In this way, it provides a simple, yet powerful, extension mechanism.
 
-There are a few, and growing, other configuration options on for a few files,
+There are a few, and growing, other configuration options in a few files,
 where the simple approach described above is not enough.
 
 ### More configuration options
@@ -100,7 +100,7 @@ does not fulfill all your needs.
 ##
 ```
 
-Add the `[editorconfig]` TOML table on `.meta.toml`
+Add the `[editorconfig]` TOML table in `.meta.toml`,
 and set extra configuration for `editorconfig` under the `extra_lines` key.
 
 ### `.flake8`
@@ -115,7 +115,7 @@ and set extra configuration for `editorconfig` under the `extra_lines` key.
 ##
 ```
 
-Add the `[flake8]` TOML table on `.meta.toml`
+Add the `[flake8]` TOML table in `.meta.toml`,
 and set the extra configuration for `flake8` under the `extra_lines` key.
 
 ### `.gitignore`
