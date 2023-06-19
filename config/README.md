@@ -90,48 +90,39 @@ does not fulfill all your needs.
 
 ### `.editorconfig`
 
-```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [editorconfig]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
-##
-```
-
 Add the `[editorconfig]` TOML table in `.meta.toml`,
 and set extra configuration for `editorconfig` under the `extra_lines` key.
 
-### `.flake8`
-
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [flake8]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
-##
+[editorconfig]
+extra_lines = """
+_your own configuration lines_
+"""
 ```
+
+### `.flake8`
 
 Add the `[flake8]` TOML table in `.meta.toml`,
 and set the extra configuration for `flake8` under the `extra_lines` key.
 
-### `.gitignore`
-
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [gitignore]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
-##
+[flake8]
+extra_lines = """
+_your own configuration lines_
+"""
 ```
+
+### `.gitignore`
 
 Add the `[gitignore]` TOML table in `.meta.toml`,
 and set the extra configuration for `git` under the `extra_lines` key.
+
+```toml
+[gitignore]
+extra_lines = """
+_your own configuration lines_
+"""
+```
 
 ### `.github/workflows/meta.yml`
 
@@ -139,44 +130,35 @@ _At this time there are no configuration options_.
 
 ### `.pre-commit-config.yaml`
 
-```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pre_commit]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
-##
-```
-
 Add the `[pre_commit]` TOML table in `.meta.toml`,
 and set the extra configuration for `pre-commit` under the `extra_lines` key.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pre_commit]
-#  zpretty_extra_lines = """
-#  _your own configuration lines_
-#  """
-##
+[pre_commit]
+extra_lines = """
+_your own configuration lines_
+"""
 ```
 
 Extend [`zpretty`](https://pypi.org/project/zpretty) configuration
 by setting the values on the `zpretty_extra_lines` key.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pre_commit]
-#  codespell_extra_lines = """
-#  _your own configuration lines_
-#  """
-##
+[pre_commit]
+zpretty_extra_lines = """
+_your own configuration lines_
+"""
 ```
 
 Extend [`codespell`](https://pypi.org/project/codespell) configuration
 by setting the values on the `codespell_extra_lines` key.
+
+```toml
+[pre_commit]
+codespell_extra_lines = """
+_your own configuration lines_
+"""
+```
 
 ### `pyproject.toml`
 
@@ -185,61 +167,48 @@ by setting the values on the `codespell_extra_lines` key.
 
 It's automatic, you don't need to do anything!
 
-```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pyproject]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
-##
-```
-
 Add the `[pyproject]` TOML table in `.meta.toml`,
 and set extra configuration for any extra tool that you use
 for the `extra_lines` key.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pyproject]
-#  codespell_ignores = "foo,bar"
-#  codespell_skip = "*.po,*.map,package-lock.json"
-##
+[pyproject]
+extra_lines = """
+_your own configuration lines_
+"""
 ```
 
 Extend [`codespell`](https://pypi.org/project/codespell) configuration
 by setting the values for the `codespell_ignores` and `codespell_skip` keys.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pyproject]
-#  dependencies_ignores = "['zestreleaser.towncrier']"
-#  dependencies_mappings = [
-#    "gitpython = ['git']",
-#    "pygithub = ['github']",
-#  ]
-#  """
-##
+[pyproject]
+codespell_ignores = "foo,bar"
+codespell_skip = "*.po,*.map,package-lock.json"
 ```
 
 Extend [`z3c.dependencychecker`](https://pypi.org/project/z3c.dependencychecker) configuration
 by setting the values for the `dependencies_ignores` and `dependencies_mappings` keys.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [pyproject]
-#  check_manifest_ignores = """
-#      "*.map.js",
-#      "*.pyc",
-#  """
-##
+[pyproject]
+dependencies_ignores = "['zestreleaser.towncrier']"
+dependencies_mappings = [
+  "gitpython = ['git']",
+  "pygithub = ['github']",
+]
 ```
 
 Extend [`check-manifest`](https://pypi.org/project/check-manifest) configuration
 by setting the values for the `check_manifest_ignores` key.
+
+```toml
+[pyproject]
+check_manifest_ignores = """
+    "*.map.js",
+    "*.pyc",
+"""
+```
 
 ### `tox.ini`
 
@@ -256,30 +225,14 @@ and thus the tests can be found directly.
 
 If either a `tests` or `src` folder exists, then they are used as a safe fallbacks.
 
-```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [tox]
-#  extra_lines = """
-#  _your own configuration lines_
-#  """
-##
-```
-
 Add the `[tox]` TOML table in `.meta.toml`,
 and set the extra configuration for `tox` under the `extra_lines` key.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [tox]
-#  envlist_lines = """
-#      my_other_environment
-#  """
-#  config_lines = """
-#  my_extra_top_level_tox_configuration_lines
-#  """
-##
+[tox]
+extra_lines = """
+_your own configuration lines_
+"""
 ```
 
 Extend the list of default `tox` environments by using the `envlist_lines` key.
@@ -287,18 +240,25 @@ Extend the list of default `tox` environments by using the `envlist_lines` key.
 Add extra top level configuration for `tox` by using the `config_lines` key.
 
 ```toml
-##
-# Add extra configuration options in .meta.toml:
-#  [tox]
-#  test_extras = """
-#      tests
-#      widgets
-#  """
-##
+[tox]
+envlist_lines = """
+    my_other_environment
+"""
+config_lines = """
+my_extra_top_level_tox_configuration_lines
+"""
 ```
 
 Extend the list of `extras` that need to be installed to run the test suite
 and generate the coverage report by setting them on the `test_extras` key.
+
+```toml
+[tox]
+test_extras = """
+    tests
+    widgets
+"""
+```
 
 ## Detailed script usage
 
