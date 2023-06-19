@@ -7,7 +7,7 @@ By using these files, you can have the same developer experience (DX)
 across all Plone related packages.
 which benefits seasoned contributors and newcomers alike.
 
-The idea is to make  it mantadory for [GitHub plone organization](https://github.com/plone) repositories,
+The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
 but also reaching out to the [collective plone organization](https://github.com/collective) repositories,
 and, why not, your own private packages for your customers.
 
