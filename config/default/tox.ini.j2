@@ -79,7 +79,12 @@ set_env = ROBOT_BROWSER=headlesschrome
 deps =
     pytest-plone
     pytest
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+    -c %(constraints_file)s
+##
+# Specify a custom constraints file in .meta.toml:
+#  [tox]
+#  constraints_file = """https://my-server.com/constraints.txt"""
+##
 commands =
     pytest --disable-warnings {posargs} {toxinidir}%(test_path)s
 extras =
@@ -96,7 +101,7 @@ deps =
     pytest-plone
     pytest
     coverage
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+    -c %(constraints_file)s
 commands =
     coverage run --source %(package_name)s -m pytest  {posargs} --disable-warnings {toxinidir}%(test_path)s
     coverage report -m --format markdown
@@ -113,7 +118,12 @@ constrain_package_deps = true
 set_env = ROBOT_BROWSER=headlesschrome
 deps =
     zope.testrunner
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+    -c %(constraints_file)s
+##
+# Specify a custom constraints file in .meta.toml:
+#  [tox]
+#  constraints_file = """https://my-server.com/constraints.txt"""
+##
 commands =
     zope-testrunner --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
 extras =
@@ -137,7 +147,7 @@ set_env = ROBOT_BROWSER=headlesschrome
 deps =
     coverage
     zope.testrunner
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+    -c %(constraints_file)s
 commands =
     coverage run --branch --source %(package_name)s {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
     coverage report -m --format markdown
@@ -154,7 +164,7 @@ deps =
     twine
     build
     towncrier
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+    -c %(constraints_file)s
 commands =
     # fake version to not have to install the package
     # we build the change log as news entries might break
@@ -172,7 +182,7 @@ allowlist_externals =
 deps =
     pipdeptree
     pipforester
-    -c https://dist.plone.org/release/6.0-dev/constraints.txt
+    -c %(constraints_file)s
 commands =
     # Generate the full dependency tree
     sh -c 'pipdeptree -j > forest.json'

@@ -27,6 +27,8 @@ See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
 
+PLONE_CONSTRAINTS_FILE = 'https://dist.plone.org/release/6.0-dev/constraints.txt'
+
 
 def handle_command_line_arguments():
     """Parse command line options"""
@@ -281,10 +283,12 @@ class PackageConfiguration:
     def tox(self):
         options = self._get_options_for(
             'tox',
-            ('envlist_lines', 'config_lines', 'test_extras', 'extra_lines')
+            ('constraints_file', 'envlist_lines', 'config_lines', 'test_extras', 'extra_lines')
         )
         options.update(self._test_cfg())
         options['package_name'] = self.path.name
+        if not options['constraints_file']:
+            options['constraints_file'] = PLONE_CONSTRAINTS_FILE
         return self.copy_with_meta(
             'tox.ini.j2',
             **options
