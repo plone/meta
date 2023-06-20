@@ -8,7 +8,7 @@ to follow the standards agreed upon by the Plone community.
 To configure a repository run the following commands:
 
 ```shell
-python3.11 -m venv venv
+python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 python config-package.py PATH/TO/PACKAGE
@@ -45,8 +45,6 @@ See the next section about how to extend and modify these configuration files.
 
 ## Configuration options
 
-One thing is trying to standardize,
-but another thing is being flexible enough
 It is one thing to standardize, yet another to be flexible enough to adapt to each repository's particular needs.
 
 Fortunately `plone/meta` tries its best to accomplish both:
@@ -84,7 +82,7 @@ where the simple approach described above is not enough.
 
 ### More configuration options
 
-Please, use the [issue tracker](https://github.com/plone/meta/issues/new)
+Please use the [issue tracker](https://github.com/plone/meta/issues/new)
 to ask for more extension points whenever `plone/meta`
 does not fulfill all your needs.
 
@@ -220,7 +218,7 @@ By default, it falls back to use [`zope.testrunner`]((https://pypi.org/project/z
 
 Likewise, the root path where the tests are to be found can be specified
 under the key `test_path`. By default, it is set to nothing,
-that is, the repository's top-level is already importable
+that is, the repository's top level is already importable
 and thus the tests can be found directly.
 
 If either a `tests` or `src` folder exists, then they are used as a safe fallbacks.

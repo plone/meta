@@ -10,7 +10,7 @@ The idea is to make it mandatory for repositories under the [GitHub Plone organi
 while encouraging its adoption for the repositories under the [collective Plone organization](https://github.com/collective)
 and even your own private packages for your customers.
 
-With this configurations set in place,
+With this configuration in place,
 any developer has the answer to the following questions at their fingertips:
 
 - Do the tests of this package pass?
@@ -19,7 +19,7 @@ any developer has the answer to the following questions at their fingertips:
 - Are all dependencies clearly defined?
 - What does the dependency graph look like?
 - Are there any circular dependency problems?
-- Is the code formatted upon some agreed standards?
+- Is the code formatted to some agreed upon standards?
 - Do all agreed upon code quality checks pass?
 
 To find the answers to these questions, you can run the following commands.
