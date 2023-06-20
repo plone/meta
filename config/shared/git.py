@@ -35,3 +35,9 @@ def git_branch(branch_name) -> bool:
         call('git', 'checkout', '-b', branch_name)
         updating = False
     return updating
+
+def git_server_url():
+    """Return the repository URL"""
+    output = call('git', 'remote', 'get-url', 'origin', capture_output=True)
+    url = output.stdout.splitlines()[0]
+    return url
