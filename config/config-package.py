@@ -4,6 +4,7 @@ from shared.call import call
 from shared.git import get_branch_name
 from shared.git import get_commit_id
 from shared.git import git_branch
+from shared.git import git_server_url
 from shared.path import change_dir
 from shared.toml_encoder import TomlArraySeparatorEncoderWithNewline
 
@@ -28,6 +29,8 @@ See the inline comments on how to expand/tweak this configuration file
 DEFAULT = object()
 
 PLONE_CONSTRAINTS_FILE = 'https://dist.plone.org/release/6.0-dev/constraints.txt'
+
+DOCKER_IMAGE = 'python:3.11-bullseye'
 
 
 def handle_command_line_arguments():
@@ -96,6 +99,16 @@ class PackageConfiguration:
         self.meta_cfg = self._read_meta_configuration()
         self.meta_cfg['meta']['template'] = self.config_type
         self.meta_cfg['meta']['commit-id'] = get_commit_id()
+
+        with change_dir(self.path):
+            server_url = git_server_url()
+        self.is_github = 'github' in server_url
+        self.is_gitlab = 'gitlab' in server_url
+        if not self.is_github and not self.is_gitlab:
+            self.print_warning(
+                'CI configuration',
+                'The repository is not hosted in github nor in gitlab, no CI configuration will be done!'
+            )
 
     def _read_meta_configuration(self):
         """Read and update meta configuration"""
@@ -309,10 +322,21 @@ class PackageConfiguration:
         return destination.relative_to(self.path)
 
     def gha_workflows(self):
+        if not self.is_github:
+            return []
         folder = self.path / '.github' / 'workflows'
         folder.mkdir(parents=True, exist_ok=True)
         destination = folder / 'meta.yml'
         return self.copy_with_meta('meta.yml.j2', destination=destination)
+
+    def gitlab_ci(self):
+        if not self.is_gitlab:
+            return []
+        options = self._get_options_for('gitlab', ('custom_image', 'extra_lines', ))
+        if not options['custom_image']:
+            options['custom_image'] = DOCKER_IMAGE
+        destination = self.path / '.gitlab-ci.yml'
+        return self.copy_with_meta('gitlab-ci.yml.j2', destination=destination, **options)
 
     def flake8(self):
         options = self._get_options_for('flake8', ('extra_lines', ))
@@ -410,7 +434,8 @@ class PackageConfiguration:
             self.tox,
             self.news_entry,
             self.flake8,
-            self.gha_workflows
+            self.gha_workflows,
+            self.gitlab_ci,
         )
         for method in methods:
             files = method()

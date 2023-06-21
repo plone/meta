@@ -29,7 +29,8 @@ Currently the files managed by `plone/meta` are the following.
 - `.editorconfig`: configuration meant to be read by code editors
 - `.flake8`: [`flake8`](https://pypi.org/project/flake8) configuration
 - `.gitignore`: list of file/folders patterns that `git` should ignore
-- `.github/workflows/meta.yml`: GitHub Actions to run the testing and QA tools on GitHub
+- `.github/workflows/meta.yml`: GitHub Actions to run the testing and QA tools on GitHub (if the repository is hosted in GitHub.com)
+- `.gitlab-ci.yml`: GitLab CI configuration (if the repository is hosted in GitLab.com)
 - `.pre-commit-config.yaml`: [`pre-commit`](https://pypi.org/project/pre-commit) configuration
 - `pyproject.toml`: configuration options for a wide variety of Python tooling
 - `tox.ini`: [`tox`](https://pypi.org/project/tox) configuration, __the most important file__
@@ -125,6 +126,25 @@ _your own configuration lines_
 ### `.github/workflows/meta.yml`
 
 _At this time there are no configuration options_.
+
+### `.gitlab-ci.yml`
+
+Add the `[gitlab]` TOML table in `.meta.toml`,
+and set the extra configuration for GitLab CI under the `extra_lines` key.
+
+```toml
+[gitlab]
+extra_lines = """
+_your own configuration lines_
+"""
+```
+
+Specify a custom docker image if the default does not fit your needs on the `custom_image` key.
+
+```toml
+[gitlab]
+custom_image = "python:3.11-bullseye"
+```
 
 ### `.pre-commit-config.yaml`
 
