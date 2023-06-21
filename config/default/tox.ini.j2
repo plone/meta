@@ -100,6 +100,7 @@ deps =
 commands =
     coverage run --source %(package_name)s -m pytest  {posargs} --disable-warnings {toxinidir}%(test_path)s
     coverage report -m --format markdown
+    coverage xml
 extras =
     test
 %(test_extras)s
@@ -140,6 +141,7 @@ deps =
 commands =
     coverage run --branch --source %(package_name)s {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
     coverage report -m --format markdown
+    coverage xml
 extras =
     test
 %(test_extras)s
