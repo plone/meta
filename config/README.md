@@ -300,6 +300,17 @@ test_extras = """
     tests
     widgets
 """
+
+When using `plone/meta` outside of plone core packages
+there might be extra version pins, or overrides over the official versions.
+To specify a custom constraints file, use the `constraints_file` key.
+
+Generating a custom constraints.txt is out of scope for `plone/meta` itself,
+there are plenty of tools that can do that though.
+
+```toml
+[tox]
+constraints_file = "https://my-server.com/constraints.txt"
 ```
 
 ## Detailed script usage
