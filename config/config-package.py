@@ -296,7 +296,14 @@ class PackageConfiguration:
     def tox(self):
         options = self._get_options_for(
             'tox',
-            ('constraints_file', 'envlist_lines', 'config_lines', 'test_extras', 'extra_lines')
+            (
+                'constraints_file',
+                'envlist_lines',
+                'config_lines',
+                'test_extras',
+                'test_environment_variables',
+                'extra_lines',
+            )
         )
         options.update(self._test_cfg())
         options['package_name'] = self.path.name
