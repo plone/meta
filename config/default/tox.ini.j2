@@ -83,7 +83,7 @@ deps =
 ##
 # Specify a custom constraints file in .meta.toml:
 #  [tox]
-#  constraints_file = """https://my-server.com/constraints.txt"""
+#  constraints_file = "https://my-server.com/constraints.txt"
 ##
 commands =
     pytest --disable-warnings {posargs} {toxinidir}%(test_path)s
@@ -122,7 +122,7 @@ deps =
 ##
 # Specify a custom constraints file in .meta.toml:
 #  [tox]
-#  constraints_file = """https://my-server.com/constraints.txt"""
+#  constraints_file = "https://my-server.com/constraints.txt"
 ##
 commands =
     zope-testrunner --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
