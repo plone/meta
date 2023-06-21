@@ -89,6 +89,12 @@ def handle_command_line_arguments():
         help='Define a git branch name to be used for the changes. '
         'If not given it is constructed automatically and includes '
         'the configuration type. Use "current" to update the current branch.')
+    parser.add_argument(
+        '--no-track',
+        dest='track_package',
+        action='store_false',
+        default=True,
+        help='Whether to add the package being configured in packages.txt.')
 
     args = parser.parse_args()
     return args
@@ -461,7 +467,8 @@ class PackageConfiguration:
             print('Create a PR, using the URL shown above.')
 
     def configure(self):
-        self._add_project_to_config_type_list()
+        if self.args.track_package:
+            self._add_project_to_config_type_list()
 
         files_changed = [
             self.path / '.meta.toml',
