@@ -208,6 +208,36 @@ check_manifest_ignores = """
 """
 ```
 
+Extend [`towncrier`](https://pypi.org/project/towncrier) configuration
+by setting the values for the `towncrier_extra_lines` key.
+
+```toml
+[pyproject]
+towncrier_extra_lines = """
+_custom configuration_
+"""
+```
+
+Extend [`black`](https://pypi.org/project/black) configuration
+by setting the values for the `black_extra_lines` key.
+
+```toml
+[pyproject]
+black_extra_lines = """
+_custom configuration_
+"""
+```
+
+Extend [`isort`](https://pypi.org/project/isort) configuration
+by setting the values for the `isort_extra_lines` key.
+
+```toml
+[pyproject]
+isort_extra_lines = """
+_custom configuration_
+"""
+```
+
 ### `tox.ini`
 
 Depending on the test runner that you want to use,
