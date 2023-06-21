@@ -320,6 +320,7 @@ test_extras = """
     tests
     widgets
 """
+```
 
 When using `plone/meta` outside of plone core packages
 there might be extra version pins, or overrides over the official versions.
