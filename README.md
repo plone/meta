@@ -1,86 +1,59 @@
 # meta
 
-This repository's aim is to define common configuration files
-across all/most repositories in the [GitHub plone organization](https://github.com/plone).
+This repository's aim is to define and standarize a common set
+of configuration files across Plone related repositories.
 
-This allows Plone developers and contributors
-to have the same expectations/workflow
-when contributing to any of the Plone repositories.
+By using these files, you can have the same developer experience (DX)
+across all Plone related packages.
 
-The following areas are configured on repositories
-where the configuration has been applied.
+The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
+while encouraging its adoption for the repositories under the [collective Plone organization](https://github.com/collective)
+and even your own private packages for your customers.
 
-## Testing
+With this configuration in place,
+any developer has the answer to the following questions at their fingertips:
 
-A `tox.ini` configuration is added to each repository to allow contributors
-to test their contributions, as well as running the tests on GitHub Actions.
+- Do the tests of this package pass?
+- What's the coverage of the test suite?
+- Is the package ready to be released?
+- Are all dependencies clearly defined?
+- What does the dependency graph look like?
+- Are there any circular dependency problems?
+- Is the code formatted to some agreed upon standards?
+- Do all agreed upon code quality checks pass?
 
-To run the tests, run the following commands:
+To find the answers to these questions, you can run the following commands.
 
 ```shell
-python3.11 -m venv venv
-. venv/bin/activate
-pip install tox
+# run the test suite
 tox -e test
-```
-
-Note: the GitHub Actions workflow is __not__ installed on each repository,
-but rather shared by all repositories.
-
-The workflow definition can be found in this repository in `shared-workflows/tests.yml`.
-
-To enable a repository, as an admin, go to the [Actions permissions](https://github.com/organizations/plone/settings/actions),
-scroll all the way down, update the relevant workflow
-and finally search the repository you just configured.
-
-## Coverage
-
-Another `tox` environment allows you to run the tests,
-like the previous one, but get a [coverage report](https://pypi.org/project/coverage/).
-
-```shell
+# get a coverage report
 tox -e coverage
-```
-
-Note: this `tox` environment does not run on GitHub Actions as of now.
-
-## Code analysis / formatting
-
-On the `tox.ini` configuration there are two environments
-to format and run quality check tools:
-
-```shell
+# check if the package is ready to be released
+tox -e release-check
+# check if the dependencies are all specified
+tox -e dependencies
+# generate a dependency graph
+tox -e dependencies-graph
+# check if there are circular dependencies
+tox -e circular
+# format the code
 tox -e format
+# run all sorts of QA tools (code smells, typo finder...)
 tox -e lint
 ```
 
-Note: they are based on `pre-commit`.
-Each repository needs to be enabled on [pre-commit.ci](https://pre-commit.ci/)
-for the formatting/linting to run on each commit.
+## Tox
 
-Note: although it is based on `pre-commit`
-it does _not_ install its hooks by default.
+As seen above, [`tox`](https://pypi.org/project/tox) provides the answers.
 
-## Dependencies
+Tooling is like fashion, it keeps evolving and changing.
 
-This `tox` environment allows you to check
-if the distribution defines all its dependencies on `setup.py`.
+The great power behind `plone/meta` is that when we implement a better solution or tool,
+we can swiftly move all packages to the new approach, making it as painless as possible!
 
-```shell
-tox -e dependencies
-```
+## Configure a package
 
-Note: this `tox` environment does not run on GitHub Actions as of now.
+To get the above answers to any package, use the `config-package.py` script found in this repository's `config` folder.
 
-## Dependencies graph
-
-This `tox` environment generates an SVG graph with all the package dependencies.
-
-Really useful to see if unwanted dependencies are being pulled in,
-or to diagnose circular dependencies.
-
-```shell
-tox -e dependencies-graph
-```
-
-Note: this `tox` environment does not run on GitHub Actions as of now.
+See the [README](config/README.md) documentation for the details.
