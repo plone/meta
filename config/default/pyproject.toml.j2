@@ -12,6 +12,9 @@ title_format = "## {version} ({project_date})"
 template = "news/.changelog_template.jinja"
 underlines = ["", "", ""]
 {% endif %}
+{% if towncrier_issue_format %}
+issue_format = "%(towncrier_issue_format)s"
+{% endif %}
 
 [[tool.towncrier.type]]
 directory = "breaking"
