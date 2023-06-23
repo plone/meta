@@ -334,6 +334,16 @@ there are plenty of tools that can do that though.
 constraints_file = "https://my-server.com/constraints.txt"
 ```
 
+Extend the list of custom environment variables
+that the test and coverage environments can get by using the `test_environment_variables` key.
+
+```toml
+[tox]
+test_environment_variables = """
+    PIP_EXTRA_INDEX_URL=https://my-pypi.my-server.com/
+"""
+```
+
 ## Detailed script usage
 
 As said above, the `config-package.py` script is the tool to apply the configuration.
