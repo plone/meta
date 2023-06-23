@@ -242,6 +242,13 @@ check_manifest_ignores = """
 """
 ```
 
+Configure [`towncrier`](https://pypi.org/project/towncrier) [`issue_format`](https://towncrier.readthedocs.io/en/stable/configuration.html) by setting the new format in the `towncrier_issue_format` key.
+
+```toml
+[pyproject]
+towncrier_issue_format = "[#{issue}](https://github.com/plonegovbr/plonegovbr.portal/issues/{issue})"
+```
+
 Extend [`towncrier`](https://pypi.org/project/towncrier) configuration
 by setting the values for the `towncrier_extra_lines` key.
 
