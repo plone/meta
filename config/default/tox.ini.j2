@@ -29,6 +29,22 @@ commands =
     echo "Unrecognized environment name {envname}"
     false
 
+[testenv:init]
+description = Prepare environment
+skip_install = true
+{% if use_mxdev %}
+deps =
+    mxdev
+commands =
+    mxdev -c mx.ini
+    echo "Initial setup for mxdev"
+
+{% else %}
+commands =
+    echo "Initial setup complete"
+
+{% endif %}
+
 [testenv:format]
 description = automatically reformat code
 skip_install = true
@@ -69,15 +85,6 @@ deps =
 commands =
     sh -c 'pipdeptree --exclude setuptools,wheel,pipdeptree,zope.interface,zope.component --graph-output svg > dependencies.svg'
 
-{% if use_mxdev %}
-[testenv:mxdev]
-description = install and run mxdev
-deps =
-    mxdev
-commands =
-    mxdev -c mx.ini
-
-{% endif %}
 {% if test_runner == "pytest" %}
 [testenv:test]
 description = run the distribution tests
