@@ -125,7 +125,32 @@ _your own configuration lines_
 
 ### `.github/workflows/meta.yml`
 
-_At this time there are no configuration options_.
+Add the `[github]` TOML table in `.meta.toml`,
+and set the enabled jobs with the `jobs` key.
+
+```toml
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release-ready",
+    "circular",
+    ]
+"""
+```
+
+Extend github workflow configuration with additional jobs
+by setting the values for the `additional_jobs` key.
+
+```toml
+[github]
+additional_jobs = """
+  another:
+    uses: org/repo/.github/workflows/file.yml@main
+"""
+```
 
 ### `.gitlab-ci.yml`
 

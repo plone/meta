@@ -11,15 +11,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  qa:
-    uses: plone/meta/.github/workflows/qa.yml@main
-  test:
-    uses: plone/meta/.github/workflows/test.yml@main
-  coverage:
-    uses: plone/meta/.github/workflows/coverage.yml@main
-  dependencies:
-    uses: plone/meta/.github/workflows/dependencies.yml@main
-  release-ready:
-    uses: plone/meta/.github/workflows/release_ready.yml@main
-  circular:
-    uses: plone/meta/.github/workflows/circular.yml@main
+{% for job_name in jobs %}
+  %(job_name)s:
+    uses: plone/meta/.github/workflows/%( job_name | replace("-", "_") )s.yml@%( branch )s
+{% endfor %}
+%(additional_jobs)s
+##
+# Specify additional jobs in .meta.toml:
+#  [github]
+#  additional_jobs = """
+#  another:
+#    uses: org/repo/.github/workflows/file.yml@main
+#  """
+##
