@@ -32,7 +32,7 @@ PLONE_CONSTRAINTS_FILE = 'https://dist.plone.org/release/6.0-dev/constraints.txt
 
 DOCKER_IMAGE = 'python:3.11-bullseye'
 
-GHA_DEFAULT_BRANCH = "master"
+GHA_DEFAULT_BRANCH = "main"
 GHA_DEFAULT_JOBS = [
     "qa",
     "test",
