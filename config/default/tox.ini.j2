@@ -69,12 +69,21 @@ deps =
 commands =
     sh -c 'pipdeptree --exclude setuptools,wheel,pipdeptree,zope.interface,zope.component --graph-output svg > dependencies.svg'
 
+{% if use_mxdev %}
+[testenv:mxdev]
+description = install and run mxdev
+deps =
+    mxdev
+commands =
+    mxdev -c mx.ini
+
+{% endif %}
 {% if test_runner == "pytest" %}
 [testenv:test]
 description = run the distribution tests
 use_develop = true
 skip_install = false
-constrain_package_deps = true
+constrain_package_deps = %(constrain_package_deps)s
 set_env =
     ROBOT_BROWSER=headlesschrome
 %(test_environment_variables)s
@@ -84,12 +93,21 @@ set_env =
 #  test_environment_variables = """
 #      PIP_EXTRA_INDEX_URL=https://my-pypi.my-server.com/
 #  """
+#
+# Set constrain_package_deps .meta.toml:
+#  [tox]
+#  constrain_package_deps = false
 ##
 deps =
     pytest-plone
     pytest
     -c %(constraints_file)s
+    %(test_deps_additional)s
 ##
+# Specify additional deps in .meta.toml:
+#  [tox]
+#  test_deps_additional = "-esources/plonegovbr.portal_base[test]"
+#
 # Specify a custom constraints file in .meta.toml:
 #  [tox]
 #  constraints_file = "https://my-server.com/constraints.txt"
@@ -104,7 +122,7 @@ extras =
 description = get a test coverage report
 use_develop = true
 skip_install = false
-constrain_package_deps = true
+constrain_package_deps = %(constrain_package_deps)s
 set_env =
     ROBOT_BROWSER=headlesschrome
 %(test_environment_variables)s
@@ -114,12 +132,17 @@ set_env =
 #  test_environment_variables = """
 #      PIP_EXTRA_INDEX_URL=https://my-pypi.my-server.com/
 #  """
+#
+# Set constrain_package_deps .meta.toml:
+#  [tox]
+#  constrain_package_deps = "false"
 ##
 deps =
     pytest-plone
     pytest
     coverage
     -c %(constraints_file)s
+    %(test_deps_additional)s
 commands =
     coverage run --source %(package_name)s -m pytest  {posargs} --disable-warnings {toxinidir}%(test_path)s
     coverage report -m --format markdown
@@ -132,7 +155,7 @@ extras =
 description = run the distribution tests
 use_develop = true
 skip_install = false
-constrain_package_deps = true
+constrain_package_deps = %(constrain_package_deps)s
 set_env =
     ROBOT_BROWSER=headlesschrome
 %(test_environment_variables)s
@@ -142,11 +165,20 @@ set_env =
 #  test_environment_variables = """
 #      PIP_EXTRA_INDEX_URL=https://my-pypi.my-server.com/
 #  """
+#
+# Set constrain_package_deps .meta.toml:
+#  [tox]
+#  constrain_package_deps = "false"
 ##
 deps =
     zope.testrunner
     -c %(constraints_file)s
+    %(test_deps_additional)s
 ##
+# Specify additional deps in .meta.toml:
+#  [tox]
+#  test_deps_additional = "-esources/plonegovbr.portal_base[test]"
+#
 # Specify a custom constraints file in .meta.toml:
 #  [tox]
 #  constraints_file = "https://my-server.com/constraints.txt"
@@ -169,7 +201,7 @@ extras =
 description = get a test coverage report
 use_develop = true
 skip_install = false
-constrain_package_deps = true
+constrain_package_deps = %(constrain_package_deps)s
 set_env =
     ROBOT_BROWSER=headlesschrome
 %(test_environment_variables)s
@@ -184,6 +216,7 @@ deps =
     coverage
     zope.testrunner
     -c %(constraints_file)s
+    %(test_deps_additional)s
 commands =
     coverage run --branch --source %(package_name)s {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
     coverage report -m --format markdown
