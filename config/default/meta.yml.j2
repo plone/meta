@@ -15,6 +15,20 @@ jobs:
   %(job_name)s:
     uses: plone/meta/.github/workflows/%(job_name)s.yml@%(ref)s
 {% endfor %}
+
+##
+# To modify the list of default jobs being created add in .meta.toml:
+# [githb]
+# jobs = [
+#    "qa",
+#    "test",
+#    "coverage",
+#    "dependencies",
+#    "release_ready",
+#    "circular",
+#    ]
+##
+
 %(extra_lines)s
 ##
 # Specify additional jobs in .meta.toml:
