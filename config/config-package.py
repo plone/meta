@@ -32,6 +32,16 @@ PLONE_CONSTRAINTS_FILE = 'https://dist.plone.org/release/6.0-dev/constraints.txt
 
 DOCKER_IMAGE = 'python:3.11-bullseye'
 
+GHA_DEFAULT_REF = "main"
+GHA_DEFAULT_JOBS = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    "circular"
+]
+
 
 def handle_command_line_arguments():
     """Parse command line options"""
@@ -335,6 +345,23 @@ class PackageConfiguration:
         folder = self.path / '.github' / 'workflows'
         folder.mkdir(parents=True, exist_ok=True)
         destination = folder / 'meta.yml'
+        options = self._get_options_for(
+            'github',
+            (
+                'ref',
+                'jobs',
+                'extra_lines',
+            )
+        )
+        if not options.get("ref"):
+            options['ref'] = GHA_DEFAULT_REF
+        if not options.get("jobs"):
+            options['jobs'] = GHA_DEFAULT_JOBS
+        return self.copy_with_meta(
+            'meta.yml.j2',
+            destination=destination,
+            **options
+        )
         return self.copy_with_meta('meta.yml.j2', destination=destination)
 
     def gitlab_ci(self):

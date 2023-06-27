@@ -125,7 +125,42 @@ _your own configuration lines_
 
 ### `.github/workflows/meta.yml`
 
-_At this time there are no configuration options_.
+Add the `[github]` TOML table in `.meta.toml`,
+and set the enabled jobs with the `jobs` key.
+
+```toml
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    "circular",
+    ]
+```
+
+It is possible to configure from which branch/tag of `plone/meta`
+to get the workflow files by setting the value of the `ref` key:
+
+```toml
+[github]
+ref = "master"
+```
+
+In the previous example, all GitHub workflows would come from
+the `master` branch, instead of the default `main` branch.
+
+Extend github workflow configuration with additional jobs
+by setting the values for the `extra_lines` key.
+
+```toml
+[github]
+extra_lines = """
+  another:
+    uses: org/repo/.github/workflows/file.yml@main
+"""
+```
 
 ### `.gitlab-ci.yml`
 
