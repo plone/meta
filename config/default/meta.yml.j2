@@ -15,7 +15,7 @@ jobs:
   %(job_name)s:
     uses: plone/meta/.github/workflows/%(job_name)s.yml@%(ref)s
 {% endfor %}
-%(additional_jobs)s
+%(extra_lines)s
 ##
 # Specify additional jobs in .meta.toml:
 #  [github]

@@ -152,7 +152,7 @@ In the previous example, all GitHub workflows would come from
 the `master` branch, instead of the default `main` branch.
 
 Extend github workflow configuration with additional jobs
-by setting the values for the `additional_jobs` key.
+by setting the values for the `extra_lines` key.
 
 ```toml
 [github]
