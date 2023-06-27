@@ -32,13 +32,13 @@ PLONE_CONSTRAINTS_FILE = 'https://dist.plone.org/release/6.0-dev/constraints.txt
 
 DOCKER_IMAGE = 'python:3.11-bullseye'
 
-GHA_DEFAULT_BRANCH = "main"
+GHA_DEFAULT_REF = "main"
 GHA_DEFAULT_JOBS = [
     "qa",
     "test",
     "coverage",
     "dependencies",
-    "release-ready",
+    "release_ready",
     "circular"
 ]
 
@@ -348,14 +348,13 @@ class PackageConfiguration:
         options = self._get_options_for(
             'github',
             (
-                'branch',
+                'ref',
                 'jobs',
-                'additional_jobs',
+                'extra_lines',
             )
         )
-        options.update(self._test_cfg())
-        if not options.get("branch"):
-            options['branch'] = GHA_DEFAULT_BRANCH
+        if not options.get("ref"):
+            options['branch'] = GHA_DEFAULT_REF
         if not options.get("jobs"):
             options['jobs'] = GHA_DEFAULT_JOBS
         return self.copy_with_meta(

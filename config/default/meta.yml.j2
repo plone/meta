@@ -13,7 +13,7 @@ on:
 jobs:
 {% for job_name in jobs %}
   %(job_name)s:
-    uses: plone/meta/.github/workflows/%( job_name | replace("-", "_") )s.yml@%( branch )s
+    uses: plone/meta/.github/workflows/%(job_name)s.yml@%(ref)s
 {% endfor %}
 %(additional_jobs)s
 ##

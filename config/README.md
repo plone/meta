@@ -135,10 +135,9 @@ jobs = [
     "test",
     "coverage",
     "dependencies",
-    "release-ready",
+    "release_ready",
     "circular",
     ]
-"""
 ```
 
 Extend github workflow configuration with additional jobs
@@ -146,7 +145,7 @@ by setting the values for the `additional_jobs` key.
 
 ```toml
 [github]
-additional_jobs = """
+extra_lines = """
   another:
     uses: org/repo/.github/workflows/file.yml@main
 """
