@@ -5,6 +5,10 @@ on:
   # allow this workflow to be called
   # by other workflows from other repositories
   workflow_call:
+    inputs:
+      os-packages:
+        required: false
+        type: string
 
 jobs:
   test:
@@ -20,6 +24,9 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: install OS packages
+        if: inputs.os-packages != ''
+        run: sudo apt-get install -y ${{ inputs.os-packages }}
       - name: Cache packages
         uses: actions/cache@v3
         with:
