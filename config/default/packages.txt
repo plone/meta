@@ -20,6 +20,8 @@ plone.app.intid
 plone.app.iterate
 plone.app.layout
 plone.app.linkintegrity
+plone.app.locales
+plone.app.lockingbehavior
 plone.app.mosaic
 plone.app.multilingual
 plone.app.portlets
@@ -36,6 +38,7 @@ plone.app.uuid
 plone.app.versioningbehavior
 plone.app.viewletmanager
 plone.app.vocabularies
+plone.app.widgets
 plone.app.workflow
 plone.app.z3cform
 plone.autoform
