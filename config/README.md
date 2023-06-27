@@ -140,6 +140,17 @@ jobs = [
     ]
 ```
 
+It is possible to configure from which branch/tag of `plone/meta`
+to get the workflow files by setting the value of the `ref` key:
+
+```toml
+[github]
+ref = "master"
+```
+
+In the previous example, all GitHub workflows would come from
+the `master` branch, instead of the default `main` branch.
+
 Extend github workflow configuration with additional jobs
 by setting the values for the `additional_jobs` key.
 

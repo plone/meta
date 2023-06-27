@@ -354,7 +354,7 @@ class PackageConfiguration:
             )
         )
         if not options.get("ref"):
-            options['branch'] = GHA_DEFAULT_REF
+            options['ref'] = GHA_DEFAULT_REF
         if not options.get("jobs"):
             options['jobs'] = GHA_DEFAULT_JOBS
         return self.copy_with_meta(
