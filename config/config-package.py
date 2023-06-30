@@ -273,7 +273,9 @@ class PackageConfiguration:
         changes_extension = 'rst'
         if (self.path / 'CHANGES.md').exists():
             changes_extension = 'md'
-            destination = self.path / 'news' / '.changelog_template.jinja'
+            news = self.path / 'news'
+            news.mkdir(parents=True, exist_ok=True)
+            destination = news / '.changelog_template.jinja'
             shutil.copy(
                 self.config_type_path / 'changelog_template.jinja',
                 destination
