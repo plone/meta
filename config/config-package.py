@@ -350,6 +350,7 @@ class PackageConfiguration:
             (
                 'ref',
                 'jobs',
+                'os_dependencies',
                 'extra_lines',
             )
         )
@@ -367,7 +368,7 @@ class PackageConfiguration:
     def gitlab_ci(self):
         if not self.is_gitlab:
             return []
-        options = self._get_options_for('gitlab', ('custom_image', 'extra_lines', ))
+        options = self._get_options_for('gitlab', ('custom_image', 'os_dependencies', 'extra_lines' ))
         if not options['custom_image']:
             options['custom_image'] = DOCKER_IMAGE
         destination = self.path / '.gitlab-ci.yml'
