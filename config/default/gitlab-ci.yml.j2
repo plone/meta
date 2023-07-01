@@ -49,16 +49,32 @@ circular-dependencies:
 testing:
   stage: test
   script:
+%(os_dependencies)s
     - pip install tox
     - tox -e test
+##
+# Add extra test/coverage commands in .meta.toml:
+#  [gitlab]
+#  os_dependencies = """
+#      - apt-get install libxslt libxml2
+#  """
+##
   except:
     - schedules
 
 coverage:
   stage: test
   script:
+%(os_dependencies)s
     - pip install tox
     - tox -e coverage
+##
+# Add extra test/coverage commands in .meta.toml:
+#  [gitlab]
+#  os_dependencies = """
+#      - apt-get install libxslt libxml2
+#  """
+##
   artifacts:
     reports:
       coverage_report:
