@@ -275,6 +275,8 @@ class PackageConfiguration:
             changes_extension = 'md'
             news = self.path / 'news'
             news.mkdir(parents=True, exist_ok=True)
+            gitkeep = news / ".gitkeep"
+            gitkeep.touch(exist_ok=True)
             destination = news / '.changelog_template.jinja'
             shutil.copy(
                 self.config_type_path / 'changelog_template.jinja',
