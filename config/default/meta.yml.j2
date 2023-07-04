@@ -14,6 +14,10 @@ jobs:
 {% for job_name in jobs %}
   %(job_name)s:
     uses: plone/meta/.github/workflows/%(job_name)s.yml@%(ref)s
+  {% if job_name in ('test', 'coverage') and os_dependencies %}
+    with:
+        os-packages: '%(os_dependencies)s'
+  {% endif %}
 {% endfor %}
 
 ##
@@ -27,6 +31,13 @@ jobs:
 #    "release_ready",
 #    "circular",
 #    ]
+##
+
+##
+# To request that some OS level dependencies get installed
+# when running tests/coverage jobs, add in .meta.toml:
+# [githb]
+# os_dependencies = "git libxml2 libxslt"
 ##
 
 %(extra_lines)s

@@ -151,6 +151,14 @@ ref = "master"
 In the previous example, all GitHub workflows would come from
 the `master` branch, instead of the default `main` branch.
 
+To install specific OS level dependencies,
+note that they have to be Ubuntu package names, specify the following key:
+
+```toml
+[github]
+os_dependencies = "git libxml2"
+```
+
 Extend github workflow configuration with additional jobs
 by setting the values for the `extra_lines` key.
 
@@ -179,6 +187,15 @@ Specify a custom docker image if the default does not fit your needs on the `cus
 ```toml
 [gitlab]
 custom_image = "python:3.11-bullseye"
+```
+
+To install test/coverage specific dependencies, add the following:
+
+```toml
+[gitlab]
+os_dependencies = """
+    - apt-get install libxslt libxml2
+"""
 ```
 
 ### `.pre-commit-config.yaml`
