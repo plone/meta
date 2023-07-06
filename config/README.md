@@ -381,6 +381,13 @@ test_extras = """
 """
 ```
 
+If your package uses [`mxdev`](https://pypi.org/project/mxdev/) to handle source checkouts for dependencies, you can set the `use_mxdev` key to ensure `tox` will first run mxdev.
+
+```toml
+[tox]
+use_mxdev = true
+```
+
 When using `plone/meta` outside of plone core packages
 there might be extra version pins, or overrides over the official versions.
 To specify a custom constraints file, use the `constraints_file` key.
