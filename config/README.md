@@ -389,7 +389,9 @@ You also will need to manually set the installation of additional packages being
 [tox]
 use_mxdev = true
 constrain_package_deps = false
-test_deps_additional = "-esources/plonegovbr.portal_base[test]"
+test_deps_additional = """
+    -esources/plonegovbr.portal_base[test]
+"""
 ```
 
 When using `plone/meta` outside of plone core packages
