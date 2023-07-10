@@ -265,6 +265,7 @@ class PackageConfiguration:
                 'codespell_extra_lines',
                 'flake8_extra_lines',
                 'extra_lines',
+                'exclude_files'
             )
         )
 
