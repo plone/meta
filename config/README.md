@@ -388,7 +388,6 @@ You also will need to manually set the installation of additional packages being
 ```toml
 [tox]
 use_mxdev = true
-constrain_package_deps = false
 test_deps_additional = """
     -esources/plonegovbr.portal_base[test]
 """

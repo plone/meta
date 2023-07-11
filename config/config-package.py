@@ -28,8 +28,8 @@ See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
 
-MXDEV_CONSTRAINTS_FILE = 'constraints-mxdev.txt'
-PLONE_CONSTRAINTS_FILE = 'https://dist.plone.org/release/6.0-dev/constraints.txt'
+MXDEV_CONSTRAINTS = 'constraints-mxdev.txt'
+PLONE_CONSTRAINTS = 'https://dist.plone.org/release/6.0-dev/constraints.txt'
 
 DOCKER_IMAGE = 'python:3.11-bullseye'
 
@@ -327,13 +327,13 @@ class PackageConfiguration:
         use_mxdev = options.get("use_mxdev", False)
         options.update(self._test_cfg())
         options['package_name'] = self.path.name
+
         if not options['constrain_package_deps']:
-            options['constrain_package_deps'] = "true"
+            options['constrain_package_deps'] = "false"  if use_mxdev else "true"
         if not options['constraints_file']:
-            constraints_file = PLONE_CONSTRAINTS_FILE
-            if use_mxdev:
-                constraints_file = MXDEV_CONSTRAINTS_FILE
+            constraints_file = MXDEV_CONSTRAINTS if use_mxdev else PLONE_CONSTRAINTS
             options['constraints_file'] = constraints_file
+
         return self.copy_with_meta(
             'tox.ini.j2',
             **options
