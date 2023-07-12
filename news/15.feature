@@ -1,0 +1,2 @@
+Run distributions' tests.
+[@gforcada]
