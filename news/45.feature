@@ -1,2 +1,0 @@
-Generate coverage reports.
-[@gforcada]

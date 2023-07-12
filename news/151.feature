@@ -1,2 +1,0 @@
-Add `mxdev` support.
-[@ericof]
