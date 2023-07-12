@@ -4,3 +4,4 @@ pyupgrade==3.6.0
 toml==0.10.2
 tox==4.6.0
 zest.releaser==8.0.0
+towncrier==23.6.0
