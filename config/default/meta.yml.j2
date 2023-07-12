@@ -10,6 +10,21 @@ on:
       - main
   workflow_dispatch:
 
+{% if env %}
+env:
+%(env)s
+{% else %}
+##
+# To set environment variables for all jobs, add in .meta.toml:
+# [github]
+# env = """
+#     debug: 1
+#     image-name: 'org/image'
+#     image-tag: 'latest'
+# """
+##
+{% endif %}
+
 jobs:
 {% for job_name in jobs %}
   %(job_name)s:

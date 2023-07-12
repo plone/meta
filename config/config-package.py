@@ -368,6 +368,7 @@ class PackageConfiguration:
         options = self._get_options_for(
             'github',
             (
+                'env',
                 'ref',
                 'jobs',
                 'os_dependencies',
@@ -383,7 +384,6 @@ class PackageConfiguration:
             destination=destination,
             **options
         )
-        return self.copy_with_meta('meta.yml.j2', destination=destination)
 
     def gitlab_ci(self):
         if not self.is_gitlab:
