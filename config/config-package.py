@@ -265,7 +265,7 @@ class PackageConfiguration:
                 'codespell_extra_lines',
                 'flake8_extra_lines',
                 'extra_lines',
-                'exclude_files'
+                'i18ndude_extra_lines'
             )
         )
 
@@ -324,7 +324,7 @@ class PackageConfiguration:
                 'config_lines',
                 'test_extras',
                 'test_environment_variables',
-                'i18ndude_extra_lines',
+                'extra_lines',
             )
         )
         options.update(self._test_cfg())
