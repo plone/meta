@@ -1,0 +1,2 @@
+Move `check-manifest` configuration over to `pyproject.toml`.
+[@gforcada]
