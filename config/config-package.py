@@ -324,7 +324,7 @@ class PackageConfiguration:
                 'config_lines',
                 'test_extras',
                 'test_environment_variables',
-                'extra_lines',
+                'i18ndude_extra_lines',
             )
         )
         options.update(self._test_cfg())
