@@ -256,6 +256,19 @@ flake8_extra_lines = """
 """
 ```
 
+Extend [`i18ndude`](https://pypi.org/project/i18ndude) configuration
+by setting the values on the `i18ndude_extra_lines` key.
+
+Like to add extra plugins:
+
+```toml
+[pre_commit]
+i18ndude_extra_lines = """
+        additional_dependencies:
+          - toml
+"""
+```
+
 ### `pyproject.toml`
 
 `towncrier` configuration: depending on the extension of your `CHANGES` file,
