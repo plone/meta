@@ -151,6 +151,18 @@ ref = "master"
 In the previous example, all GitHub workflows would come from
 the `master` branch, instead of the default `main` branch.
 
+To set environment variables to be used by all jobs,
+specify the following key:
+
+```toml
+[github]
+env = """
+  debug: 1
+  image-name: 'org/image'
+  image-tag: 'latest'
+"""
+```
+
 To install specific OS level dependencies,
 note that they have to be Ubuntu package names, specify the following key:
 
