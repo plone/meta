@@ -1,3 +1,4 @@
+{% if news_folder_exists %}
 [tool.towncrier]
 directory = "news/"
 {% if changes_extension == 'rst' %}
@@ -46,6 +47,7 @@ directory = "tests"
 name = "Tests"
 showcontent = true
 %(towncrier_extra_lines)s
+{% endif %}
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]

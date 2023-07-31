@@ -234,7 +234,7 @@ class PackageConfiguration:
                 self.print_warning(prefix, f'please remove [{section_name}] section')
 
     def print_warning(self, prefix, message):
-        print(f'*** {prefix}" {message}\n')
+        print(f'*** {prefix}: {message}\n')
 
     def editorconfig(self):
         options = self._get_options_for(
@@ -278,19 +278,6 @@ class PackageConfiguration:
 
     def pyproject_toml(self):
         files = []
-        changes_extension = 'rst'
-        if (self.path / 'CHANGES.md').exists():
-            changes_extension = 'md'
-            news = self.path / 'news'
-            news.mkdir(parents=True, exist_ok=True)
-            gitkeep = news / ".gitkeep"
-            gitkeep.touch(exist_ok=True)
-            destination = news / '.changelog_template.jinja'
-            shutil.copy(
-                self.config_type_path / 'changelog_template.jinja',
-                destination
-            )
-            files.append(destination)
 
         options = self._get_options_for(
             'pyproject',
@@ -308,9 +295,30 @@ class PackageConfiguration:
             )
         )
 
+        options["changes_extension"] = 'rst'
+        if (self.path / 'CHANGES.md').exists():
+            options["changes_extension"] = 'md'
+
+        options["news_folder_exists"] = False
+        news = self.path / 'news'
+        if news.exists():
+            options["news_folder_exists"] = True
+            gitkeep = news / ".gitkeep"
+            gitkeep.touch(exist_ok=True)
+            if options["changes_extension"] == "md":
+                destination = news / '.changelog_template.jinja'
+                shutil.copy(
+                    self.config_type_path / 'changelog_template.jinja',
+                    destination
+                )
+                files.append(destination)
+        else:
+            self.print_warning(
+                "towncrier",
+                "If you want to use Towncrier, you have to create a 'news/' folder manually.")
+
         filename = self.copy_with_meta(
             'pyproject.toml.j2',
-            changes_extension=changes_extension,
             **options,
         )
         files.append(filename)
@@ -347,11 +355,14 @@ class PackageConfiguration:
         )
 
     def news_entry(self):
+        news = self.path / 'news'
+
+        if not news.exists():
+            return
+
         if self.args.branch_name == 'current':
             print('Updating current branch, so I do not add a news entry.')
             return
-        news = self.path / 'news'
-        news.mkdir(parents=True, exist_ok=True)
 
         destination = self.path / 'news' / f'{get_commit_id()}.internal'
         with open(destination, 'w') as f_:
