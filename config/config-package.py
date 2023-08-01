@@ -342,6 +342,7 @@ class PackageConfiguration:
         use_mxdev = options.get("use_mxdev", False)
         options.update(self._test_cfg())
         options['package_name'] = self.path.name
+        options["news_folder_exists"] = (self.path / 'news').exists()
 
         if not options['constrain_package_deps']:
             options['constrain_package_deps'] = "false"  if use_mxdev else "true"
