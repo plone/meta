@@ -43,6 +43,14 @@ GHA_DEFAULT_JOBS = [
     "circular"
 ]
 
+GITLAB_DEFAULT_JOBS = [
+    "lint",
+    "release-ready",
+    "dependencies",
+    "circular-dependencies",
+    "testing",
+    "coverage",
+]
 
 def handle_command_line_arguments():
     """Parse command line options"""
@@ -389,11 +397,21 @@ class PackageConfiguration:
     def gitlab_ci(self):
         if not self.is_gitlab:
             return []
-        options = self._get_options_for('gitlab', ('custom_image', 'os_dependencies', 'extra_lines' ))
+        options = self._get_options_for(
+            'gitlab',
+            (
+                'custom_image',
+                'os_dependencies',
+                'extra_lines',
+                'jobs',
+            ),
+        )
         if not options['custom_image']:
             options['custom_image'] = DOCKER_IMAGE
-        destination = self.path / '.gitlab-ci.yml'
-        return self.copy_with_meta('gitlab-ci.yml.j2', destination=destination, **options)
+        options["destination"] = self.path / '.gitlab-ci.yml'
+        if not options.get("jobs"):
+            options['jobs'] = GITLAB_DEFAULT_JOBS
+        return self.copy_with_meta('gitlab-ci.yml.j2', **options)
 
     def flake8(self):
         options = self._get_options_for('flake8', ('extra_lines', ))

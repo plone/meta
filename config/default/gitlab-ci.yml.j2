@@ -10,8 +10,22 @@ stages:
   - test
 
 ##
+# To modify the list of default jobs being created add in .meta.toml:
+# [gitlab]
+# jobs = [
+#    "lint",
+#    "release-ready",
+#    "dependencies",
+#    "circular-dependencies",
+#    "testing",
+#    "coverage",
+#    ]
+##
+
+##
 # JOBS
 ##
+{% if "lint" in jobs %}
 lint:
   stage: qa
   script:
@@ -19,7 +33,9 @@ lint:
     - tox -e lint
   except:
     - schedules
+{% endif %}
 
+{% if "release-ready" in jobs %}
 release-ready:
   stage: qa
   script:
@@ -27,7 +43,9 @@ release-ready:
     - tox -e release-check
   except:
     - schedules
+{% endif %}
 
+{% if "dependencies" in jobs %}
 dependencies:
   stage: qa
   script:
@@ -35,7 +53,9 @@ dependencies:
     - tox -e dependencies
   except:
     - schedules
+{% endif %}
 
+{% if "circular-dependencies" in jobs %}
 circular-dependencies:
   stage: qa
   script:
@@ -45,7 +65,9 @@ circular-dependencies:
     - tox -e circular
   except:
     - schedules
+{% endif %}
 
+{% if "testing" in jobs %}
 testing:
   stage: test
   script:
@@ -61,7 +83,9 @@ testing:
 ##
   except:
     - schedules
+{% endif %}
 
+{% if "coverage" in jobs %}
 coverage:
   stage: test
   script:
@@ -82,6 +106,7 @@ coverage:
         path: coverage.xml
   except:
     - schedules
+{% endif %}
 
 %(extra_lines)s
 ##
