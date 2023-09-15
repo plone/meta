@@ -210,6 +210,20 @@ os_dependencies = """
 """
 ```
 
+You can customize the enabled gitlab jobs with the `jobs` key:
+
+```toml
+[gitlab]
+jobs = [
+  "lint",
+  "release-ready",
+  "dependencies",
+  "circular-dependencies",
+  "testing",
+  "coverage",
+]
+```
+
 ### `.pre-commit-config.yaml`
 
 Add the `[pre_commit]` TOML table in `.meta.toml`,
