@@ -350,7 +350,7 @@ _custom configuration_
 """
 ```
 
-#### `towncrier`` configuration:
+#### `towncrier` configuration:
 
 If your project contains a `news/` folder, `plone/meta` will add
 the configuration for `towncrier`.
