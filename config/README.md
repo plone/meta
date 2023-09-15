@@ -285,9 +285,6 @@ i18ndude_extra_lines = """
 
 ### `pyproject.toml`
 
-`towncrier` configuration: depending on the extension of your `CHANGES` file,
-`plone/meta` will adapt the configuration for `towncrier`.
-
 It's automatic, you don't need to do anything!
 
 Add the `[pyproject]` TOML table in `.meta.toml`,
@@ -333,23 +330,6 @@ check_manifest_ignores = """
 """
 ```
 
-Configure [`towncrier`](https://pypi.org/project/towncrier) [`issue_format`](https://towncrier.readthedocs.io/en/stable/configuration.html) by setting the new format in the `towncrier_issue_format` key.
-
-```toml
-[pyproject]
-towncrier_issue_format = "[#{issue}](https://github.com/plonegovbr/plonegovbr.portal/issues/{issue})"
-```
-
-Extend [`towncrier`](https://pypi.org/project/towncrier) configuration
-by setting the values for the `towncrier_extra_lines` key.
-
-```toml
-[pyproject]
-towncrier_extra_lines = """
-_custom configuration_
-"""
-```
-
 Extend [`black`](https://pypi.org/project/black) configuration
 by setting the values for the `black_extra_lines` key.
 
@@ -366,6 +346,31 @@ by setting the values for the `isort_extra_lines` key.
 ```toml
 [pyproject]
 isort_extra_lines = """
+_custom configuration_
+"""
+```
+
+#### `towncrier`` configuration:
+
+If your project contains a `news/` folder, `plone/meta` will add
+the configuration for `towncrier`.
+
+If your `CHANGES` file has the extension `.md`, a `changelog_template.jinja`
+template will be generated inside the `news/` folder.
+
+Configure [`towncrier`](https://pypi.org/project/towncrier) [`issue_format`](https://towncrier.readthedocs.io/en/stable/configuration.html) by setting the new format in the `towncrier_issue_format` key.
+
+```toml
+[pyproject]
+towncrier_issue_format = "[#{issue}](https://github.com/plonegovbr/plonegovbr.portal/issues/{issue})"
+```
+
+Extend [`towncrier`](https://pypi.org/project/towncrier) configuration
+by setting the values for the `towncrier_extra_lines` key.
+
+```toml
+[pyproject]
+towncrier_extra_lines = """
 _custom configuration_
 """
 ```

@@ -242,14 +242,18 @@ skip_install = true
 deps =
     twine
     build
+{% if news_folder_exists %}
     towncrier
+{% endif %}
     -c %(constraints_file)s
     %(test_deps_additional)s
 commands =
+{% if news_folder_exists %}
     # fake version to not have to install the package
     # we build the change log as news entries might break
     # the README that is displayed on PyPI
     towncrier build --version=100.0.0 --yes
+{% endif %}
     python -m build --sdist --no-isolation
     twine check dist/*
 
