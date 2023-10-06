@@ -459,6 +459,9 @@ test_environment_variables = """
 """
 ```
 
+For packages that have `plone.app.robotframework` based tests,
+it automatically detects it and primes `playwright` to install the needed browsers.
+
 ## Detailed script usage
 
 As said above, the `config-package.py` script is the tool to apply the configuration.
