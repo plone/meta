@@ -326,3 +326,12 @@ commands =
 #  _your own configuration lines_
 #  """
 ##
+
+[testenv:release]
+description = create a new release
+skip_install = true
+deps =
+    zest.release[recommended]
+    -c %(constraints_file)s
+commands =
+    fullrelease
