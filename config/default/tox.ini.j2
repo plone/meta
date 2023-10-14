@@ -123,6 +123,9 @@ deps =
 #  constraints_file = "https://my-server.com/constraints.txt"
 ##
 commands =
+{% if prime_robotframework %}
+    rfbrowser init
+{% endif %}
     pytest --disable-warnings {posargs} {toxinidir}%(test_path)s
 extras =
     test
@@ -154,6 +157,9 @@ deps =
     -c %(constraints_file)s
     %(test_deps_additional)s
 commands =
+{% if prime_robotframework %}
+    rfbrowser init
+{% endif %}
     coverage run --source %(package_name)s -m pytest  {posargs} --disable-warnings {toxinidir}%(test_path)s
     coverage report -m --format markdown
     coverage xml
@@ -194,6 +200,9 @@ deps =
 #  constraints_file = "https://my-server.com/constraints.txt"
 ##
 commands =
+{% if prime_robotframework %}
+    rfbrowser init
+{% endif %}
     zope-testrunner --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
 extras =
     test
@@ -228,6 +237,9 @@ deps =
     -c %(constraints_file)s
     %(test_deps_additional)s
 commands =
+{% if prime_robotframework %}
+    rfbrowser init
+{% endif %}
     coverage run --branch --source %(package_name)s {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
     coverage report -m --format markdown
     coverage xml

@@ -352,6 +352,8 @@ class PackageConfiguration:
         options['package_name'] = self.path.name
         options["news_folder_exists"] = (self.path / 'news').exists()
 
+        options['prime_robotframework'] = self._detect_robotframework()
+
         if not options['constrain_package_deps']:
             options['constrain_package_deps'] = "false"  if use_mxdev else "true"
         if not options['constraints_file']:
@@ -362,6 +364,23 @@ class PackageConfiguration:
             'tox.ini.j2',
             **options
         )
+
+    def _detect_robotframework(self):
+        """Dynamically find out if robotframework is used in the package.
+
+        We look at the dependencies, as we expect the depenedency checker
+        to make it easy for us.
+        """
+        try_files = (
+            self.path / 'setup.py',
+            self.path / 'pyproject.toml',
+        )
+        for file_obj in try_files:
+            if file_obj.exists():
+                text = file_obj.read_text()
+                if 'plone.app.robotframework' in text:
+                    return True
+        return False
 
     def news_entry(self):
         news = self.path / 'news'
