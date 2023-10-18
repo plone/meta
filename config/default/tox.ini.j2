@@ -28,6 +28,14 @@ allowlist_externals =
 commands =
     echo "Unrecognized environment name {envname}"
     false
+%(testenv_options)s
+##
+# Add extra configuration options in .meta.toml:
+#  [tox]
+#  testenv_options = """
+#  basepython = /usr/bin/python3.8
+#  """
+##
 
 [testenv:init]
 description = Prepare environment

@@ -414,6 +414,15 @@ my_extra_top_level_tox_configuration_lines
 """
 ```
 
+Customize the default values for all `tox` environments by using the `testenv_options` key.
+
+```toml
+[tox]
+testenv_options = """
+basepython = /usr/bin/python3.8
+"""
+```
+
 Extend the list of `extras` that need to be installed to run the test suite
 and generate the coverage report by setting them on the `test_extras` key.
 

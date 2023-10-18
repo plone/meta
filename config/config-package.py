@@ -339,6 +339,7 @@ class PackageConfiguration:
                 'constrain_package_deps',
                 'constraints_file',
                 'envlist_lines',
+                'testenv_options',
                 'use_mxdev',
                 'config_lines',
                 'test_deps_additional',
