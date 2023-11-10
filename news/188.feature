@@ -1,0 +1,1 @@
+Add `ignore_errors` and `ignore_outcome` to `[testenv:format]` in tox to always run all formatting steps [@ericof]

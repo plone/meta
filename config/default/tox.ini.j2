@@ -55,6 +55,8 @@ commands =
 
 [testenv:format]
 description = automatically reformat code
+ignore_errors = true
+ignore_outcome = true
 skip_install = true
 deps =
     pre-commit
