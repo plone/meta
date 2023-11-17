@@ -425,6 +425,8 @@ _custom configuration_
 
 #### `tox.ini`
 
+##### Testing
+
 Depending on the test runner that you want to use, `plone.meta` will adapt `tox.ini` to it.
 
 In the `[tox]` TOML table in `.meta.toml`, set the value for the key `test_runner` to `pytest` if you want to use [`pytest`](https://pypi.org/project/pytest).
@@ -434,6 +436,23 @@ Likewise, the root path where the tests are to be found can be specified under t
 By default, it is set to nothing, that is, the repository's top level is already importable and thus the tests can be found directly.
 
 If either a `tests` or `src` folder exists, then they are used as safe fallbacks.
+
+##### Environments
+
+`plone/meta` generates the following `tox` environments:
+
+- `init`: prepares the environment (only if `mxdev` is used)
+- `test`: runs the package's python tests
+- `coverage`: runs the package's python tests and generates a coverage report out of it
+- `dependencies`: checks that all python dependencies are specified properly
+- `dependencies-graph`: generates a graph to visualize the dependencies tree/forest
+- `circular`: checks that within the dependency graph there are no circular imports
+- `release-check`: runs a few sanity checks to know if the distribution is ready to be released
+- `release`: releases a new version of the distribution
+- `format`: runs python/HTML/XML code formatters on the source code
+- `lint`: runs quite some python linters
+
+##### Options
 
 Add the `[tox]` TOML table in `.meta.toml`, and set the extra configuration for `tox` under the `extra_lines` key.
 
