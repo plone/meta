@@ -551,7 +551,7 @@ class PackageConfiguration:
                 files_changed.extend(files)
             else:
                 files_changed.append(files)
-        files_changed = filter(None, files_changed)
+        files_changed = [x for x in filter(None, files_changed)]
 
         self.remove_old_files()
         self.remove_toml_empty_sections()
