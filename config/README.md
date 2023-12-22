@@ -8,6 +8,7 @@ to follow the standards agreed upon by the Plone community.
 To configure a repository run the following commands:
 
 ```shell
+cd config
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
