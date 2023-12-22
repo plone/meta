@@ -126,6 +126,18 @@ _your own configuration lines_
 
 ### `.github/workflows/meta.yml`
 
+Note: `TEST_OS_VERSIONS` and `TEST_PYTHON_VERSIONS` variables need to exist,
+either at the GitHub organization level, or at the repository level.
+
+See the [GitHub documentation about variables](https://docs.github.com/en/actions/learn-github-actions/variables).
+
+These variables are expected to be **lists**:
+
+- `TEST_OS_VERSIONS`: `["ubuntu-latest",]`
+  - a list of valid Operating System names according [to GitHub Actions](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
+- `TEST_PYTHON_VERSIONS`: `["3.11", "3.10", ]`
+  - a list of valid Python versions according to [python-versions action](https://github.com/actions/python-versions/)
+
 Add the `[github]` TOML table in `.meta.toml`,
 and set the enabled jobs with the `jobs` key.
 
