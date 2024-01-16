@@ -1,0 +1,11 @@
+Editorconfig: Restructure the frontend config.
+
+- Add an xml type to the xml section.
+- Move the HTML type to the xml section.
+
+This allows more easily for frontend related files except HTML files to be
+reconfigured for an 4-space indentation. 4 spaces for JS/CSS related code is
+the default style in Patternslib/Mockup. style.
+
+Fixes: #197
+[thet]
