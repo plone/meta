@@ -296,6 +296,15 @@ i18ndude_extra_lines = """
 """
 ```
 
+If you want to disable the i18ndude check, add the following pre-commit config option to your `.meta.toml` file:
+
+```toml
+[pre_commit]
+i18ndude_extra_lines = """
+        pass_filenames: false
+"""
+```
+
 ### `pyproject.toml`
 
 It's automatic, you don't need to do anything!
