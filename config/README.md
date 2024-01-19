@@ -100,6 +100,16 @@ _your own configuration lines_
 """
 ```
 
+If you want to set the indentation for frontend related files to 4 spaces add the following to your `.meta.toml`:
+
+```toml
+[editorconfig]
+extra_lines = """
+[*.{json,jsonl,js,jsx,ts,tsx,css,less,scss}]
+indent_size = 4
+"""
+```
+
 ### `.flake8`
 
 Add the `[flake8]` TOML table in `.meta.toml`,
