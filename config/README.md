@@ -88,6 +88,16 @@ Please use the [issue tracker](https://github.com/plone/meta/issues/new)
 to ask for more extension points whenever `plone/meta`
 does not fulfill all your needs.
 
+### Applying a customized configuration
+
+To apply a customized configuration from `.meta.toml` just re-run the configuration script on a clean repository like so:
+
+```
+python config-package.py PATH/TO/PACKAGE
+```
+
+Make sure you have commited your changes before running the configuration script.
+
 ### `.editorconfig`
 
 Add the `[editorconfig]` TOML table in `.meta.toml`,
@@ -303,6 +313,15 @@ Like to add extra plugins:
 i18ndude_extra_lines = """
         additional_dependencies:
           - toml
+"""
+```
+
+If you want to disable the i18ndude check, add the following pre-commit config option to your `.meta.toml` file:
+
+```toml
+[pre_commit]
+i18ndude_extra_lines = """
+        pass_filenames: false
 """
 ```
 
