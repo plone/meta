@@ -28,7 +28,7 @@ jobs:
         if: inputs.os-packages != ''
         run: sudo apt-get install -y ${{ inputs.os-packages }}
       - name: Cache packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
