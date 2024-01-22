@@ -5,3 +5,6 @@ toml==0.10.2
 tox==4.6.0
 zest.releaser==8.0.0
 towncrier==23.6.0
+validate-pyproject[all]==0.15
+pyyaml==6.0.1
+editorconfig==0.12.3

@@ -10,10 +10,14 @@ from shared.toml_encoder import TomlArraySeparatorEncoderWithNewline
 
 import argparse
 import collections
+import configparser
+import editorconfig
 import jinja2
 import pathlib
 import shutil
 import toml
+import validate_pyproject
+import yaml
 
 
 META_HINT = """\
@@ -504,6 +508,44 @@ class PackageConfiguration:
             tox_path = shutil.which('tox') or (pathlib.Path(cwd) / 'bin' / 'tox')
             call(tox_path, '-e', 'format,lint')
 
+    def validate_files(self, files_changed):
+        """Ensure that files are not broken"""
+        for file_obj in files_changed:
+            if file_obj.suffix == '.toml':
+                self._validate_toml(file_obj)
+            elif file_obj.suffix in ('.yaml', '.yml'):
+                self._validate_yaml(file_obj)
+            elif file_obj.suffix == '.ini' or file_obj.stem == '.flake8':
+                self._validate_ini(file_obj)
+            elif file_obj.stem == '.editorconfig':
+                self._validate_editorconfig(file_obj)
+
+    def _validate_toml(self, file_obj):
+        """Validate files that are in TOML format"""
+        with change_dir(self.path):
+            data = toml.load(file_obj)
+
+            if self.path.stem == 'pyproject':
+                validator = validate_pyproject.api.Validator()
+                validator(data)
+
+    def _validate_yaml(self, file_obj):
+        """Validate files that are in YAML format"""
+        with change_dir(self.path):
+            data = file_obj.read_text()
+            _ = yaml.safe_load(data)
+
+    def _validate_ini(self, file_obj):
+        """Validate files that are in INI format"""
+        config = configparser.ConfigParser()
+        with change_dir(self.path):
+            _ = config.read(file_obj)
+
+    def _validate_editorconfig(self, file_obj):
+        """Validate .editorconfig file"""
+        with change_dir(self.path):
+            editorconfig.get_properties(file_obj.resolve())
+
     @property
     def _commit_msg(self):
         return self.args.commit_msg or 'Configuring with plone/meta'
@@ -551,7 +593,7 @@ class PackageConfiguration:
                 files_changed.extend(files)
             else:
                 files_changed.append(files)
-        files_changed = filter(None, files_changed)
+        files_changed = [x for x in filter(None, files_changed)]
 
         self.remove_old_files()
         self.remove_toml_empty_sections()
@@ -561,10 +603,10 @@ class PackageConfiguration:
         with change_dir(self.path):
             updating = git_branch(self.branch_name)
 
+        self.validate_files(files_changed)
         self.commit_and_push(files_changed)
         self.warn_on_setup_cfg()
         self.final_help_tips(updating)
-
 
 def main():
     args = handle_command_line_arguments()
