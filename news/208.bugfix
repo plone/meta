@@ -1,0 +1,3 @@
+Moved inline comments in .editorconfig to their own lines: the spec at
+https://spec.editorconfig.org/#no-inline-comments forbids it.
+[reinout]
