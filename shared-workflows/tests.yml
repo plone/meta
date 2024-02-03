@@ -14,25 +14,11 @@ jobs:
   test:
     name: Run tests
     runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        python-version: ${{ fromJSON(vars.TEST_PYTHON_VERSIONS) }}
-        os: ${{ fromJSON(vars.TEST_OS_VERSIONS) }}
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: python -m pip install tox
-      - name: Run tests
-        run: tox -e test
+      - name: 'Deprecation warning'
+        run: |
+          echo "This GHA is deprecated, please re-run plone/meta on your repository"
+          echo "If you are still relying on this jobs, "
+          echo "please create an issue in https://github.com/plone/meta/issues/new"
+          exit 1
