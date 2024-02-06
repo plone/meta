@@ -14,6 +14,7 @@ import configparser
 import editorconfig
 import jinja2
 import pathlib
+import re
 import shutil
 import toml
 import validate_pyproject
@@ -477,6 +478,10 @@ class PackageConfiguration:
                 destination = self.path / template_name[:-3]  # remove `.j2`
             else:
                 destination = self.path / template_name
+
+        # Get rid of spaces on lines with only spaces, like happens in the generated
+        # tox.ini
+        content = re.sub(r"\n\ +\n", r"\n\n", content)
 
         # Get rid of empty lines at the end.
         content = content.strip() + "\n"
