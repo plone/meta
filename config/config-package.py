@@ -304,6 +304,7 @@ class PackageConfiguration:
                 'towncrier_extra_lines',
                 'isort_extra_lines',
                 'black_extra_lines',
+                'check_manifest_extra_lines',
                 'extra_lines',
             )
         )
