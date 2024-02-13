@@ -73,7 +73,13 @@ testing:
   script:
 %(os_dependencies)s
     - pip install tox
-    - tox -e test
+    - tox -e test -- --xml reports
+  artifacts:
+      when: always
+      reports:
+        junit:
+          - reports/testreports/*.xml
+
 ##
 # Add extra test/coverage commands in .meta.toml:
 #  [gitlab]
