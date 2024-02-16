@@ -402,8 +402,11 @@ class PackageConfiguration:
 
         destination = self.path / 'news' / f'{get_commit_id()}.internal'
         with open(destination, 'w') as f_:
-            f_.write('Update configuration files.\n')
-            f_.write('[plone devs]\n')
+            if (self.path / 'CHANGES.md').exists():
+                f_.write('Update configuration files @plone')
+            else:
+                f_.write('Update configuration files.\n')
+                f_.write('[plone devs]\n')
 
         return destination.relative_to(self.path)
 
