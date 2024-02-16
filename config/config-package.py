@@ -400,7 +400,7 @@ class PackageConfiguration:
             print('Updating current branch, so I do not add a news entry.')
             return
 
-        destination = self.path / 'news' / f'{get_commit_id()}.internal'
+        destination = self.path / 'news' / '+meta.internal'
         with open(destination, 'w') as f_:
             if (self.path / 'CHANGES.md').exists():
                 f_.write('Update configuration files @plone')
