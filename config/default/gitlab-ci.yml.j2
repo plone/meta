@@ -110,6 +110,7 @@ coverage:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+  coverage: '/TOTAL.* \*\*(\d+)\%\*\*/'
   except:
     - schedules
 {% endif %}
