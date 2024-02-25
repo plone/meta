@@ -315,8 +315,6 @@ class PackageConfiguration:
         news = self.path / 'news'
         if news.exists():
             options["news_folder_exists"] = True
-            gitkeep = news / ".gitkeep"
-            gitkeep.touch(exist_ok=True)
             if options["changes_extension"] == "md":
                 destination = news / '.changelog_template.jinja'
                 shutil.copy(
@@ -324,6 +322,11 @@ class PackageConfiguration:
                     destination
                 )
                 files.append(destination)
+            else:
+                # only add the `.gitkeep` file if there is no jinja template
+                gitkeep = news / ".gitkeep"
+                gitkeep.touch(exist_ok=True)
+
         else:
             self.print_warning(
                 "towncrier",
@@ -397,10 +400,13 @@ class PackageConfiguration:
             print('Updating current branch, so I do not add a news entry.')
             return
 
-        destination = self.path / 'news' / f'{get_commit_id()}.internal'
+        destination = self.path / 'news' / '+meta.internal'
         with open(destination, 'w') as f_:
-            f_.write('Update configuration files.\n')
-            f_.write('[plone devs]\n')
+            if (self.path / 'CHANGES.md').exists():
+                f_.write('Update configuration files @plone')
+            else:
+                f_.write('Update configuration files.\n')
+                f_.write('[plone devs]\n')
 
         return destination.relative_to(self.path)
 
