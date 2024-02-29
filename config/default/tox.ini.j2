@@ -251,6 +251,7 @@ commands =
     coverage run --branch --source %(package_name)s {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
     coverage report -m --format markdown
     coverage xml
+    coverage html
 extras =
     test
 %(test_extras)s
