@@ -14,6 +14,7 @@ import configparser
 import editorconfig
 import jinja2
 import pathlib
+import re
 import shutil
 import toml
 import validate_pyproject
@@ -303,6 +304,7 @@ class PackageConfiguration:
                 'towncrier_extra_lines',
                 'isort_extra_lines',
                 'black_extra_lines',
+                'check_manifest_extra_lines',
                 'extra_lines',
             )
         )
@@ -353,6 +355,7 @@ class PackageConfiguration:
                 'test_extras',
                 'test_environment_variables',
                 'extra_lines',
+                'use_pytest_plone',
             )
         )
         use_mxdev = options.get("use_mxdev", False)
@@ -367,6 +370,9 @@ class PackageConfiguration:
         if not options['constraints_file']:
             constraints_file = MXDEV_CONSTRAINTS if use_mxdev else PLONE_CONSTRAINTS
             options['constraints_file'] = constraints_file
+        if options["use_pytest_plone"] is not False:
+            # Default is '', so turn it into True
+            options["use_pytest_plone"] = True
 
         return self.copy_with_meta(
             'tox.ini.j2',
@@ -376,7 +382,7 @@ class PackageConfiguration:
     def _detect_robotframework(self):
         """Dynamically find out if robotframework is used in the package.
 
-        We look at the dependencies, as we expect the depenedency checker
+        We look at the dependencies, as we expect the dependency checker
         to make it easy for us.
         """
         try_files = (
@@ -483,6 +489,10 @@ class PackageConfiguration:
                 destination = self.path / template_name[:-3]  # remove `.j2`
             else:
                 destination = self.path / template_name
+
+        # Get rid of spaces on lines with only spaces, like happens in the generated
+        # tox.ini
+        content = re.sub(r"\n\ +\n", r"\n\n", content)
 
         # Get rid of empty lines at the end.
         content = content.strip() + "\n"

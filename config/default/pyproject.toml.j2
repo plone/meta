@@ -157,12 +157,18 @@ ignore = [
     "mx.ini",
 %(check_manifest_ignores)s
 ]
+%(check_manifest_extra_lines)s
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]
 #  check_manifest_ignores = """
 #      "*.map.js",
 #      "*.pyc",
+#  """
+#  check_manifest_extra_lines = """
+#  ignore-bad-ideas = [
+#      "some/test/file/PKG-INFO",
+#  ]
 #  """
 ##
 

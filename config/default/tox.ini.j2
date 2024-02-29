@@ -114,7 +114,8 @@ set_env =
 #  constrain_package_deps = false
 ##
 deps =
-    pytest-plone
+{% if use_pytest_plone %}    pytest-plone
+{% endif %}
     pytest
     -c %(constraints_file)s
 %(test_deps_additional)s
@@ -159,7 +160,8 @@ set_env =
 #  constrain_package_deps = "false"
 ##
 deps =
-    pytest-plone
+{% if use_pytest_plone %}    pytest-plone
+{% endif %}
     pytest
     coverage
     -c %(constraints_file)s
