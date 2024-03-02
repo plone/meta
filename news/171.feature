@@ -1,2 +1,1 @@
-Allow customizing enabled gitlab-ci jobs.
-[petschki]
+Allow customizing enabled gitlab-ci jobs @petschki

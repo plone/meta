@@ -1,2 +1,1 @@
-Only run a GHA on Linux, while we wait for a counterpart for Windows.
-[gforcada]
+Only run a GHA on Linux, while we wait for a counterpart for Windows @gforcada

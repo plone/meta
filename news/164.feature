@@ -1,1 +1,1 @@
-Allow setting gha environment variables [@ericof]
+Allow setting GHA environment variables @ericof

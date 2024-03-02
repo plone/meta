@@ -1,1 +1,1 @@
-Ignore .*project in git. [@wesleybl]
+Ignore `.*project` in git @wesleybl
