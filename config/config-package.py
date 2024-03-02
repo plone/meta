@@ -104,10 +104,10 @@ def handle_command_line_arguments():
         'If not given it is constructed automatically and includes '
         'the configuration type. Use "current" to update the current branch.')
     parser.add_argument(
-        '--no-track',
+        '--track',
         dest='track_package',
-        action='store_false',
-        default=True,
+        action='store_true',
+        default=False,
         help='Whether to add the package being configured in packages.txt.')
 
     args = parser.parse_args()
