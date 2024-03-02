@@ -536,7 +536,7 @@ __Tip:__ Use `current` to update the current branch.
 
 `--tox`: whether to run `tox` on the repository. By default it is not run.
 
-`--no-track`: whether the package being configured should _not_ be added on `defaults/packages.txt`. By default, packages' names are added to it.
+`--track`: whether the package being configured should be added on `defaults/packages.txt`. By default, they are _not_ added.
 
 The following options are only needed one time
 as their values are stored in `.meta.toml.`.
