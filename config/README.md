@@ -178,11 +178,11 @@ to get the workflow files by setting the value of the `ref` key:
 
 ```toml
 [github]
-ref = "master"
+ref = "v3"
 ```
 
 In the previous example, all GitHub workflows would come from
-the `master` branch, instead of the default `main` branch.
+the `v3` tag, instead of the default `main` branch.
 
 To set environment variables to be used by all jobs,
 specify the following key:
