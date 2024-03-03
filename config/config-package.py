@@ -436,11 +436,14 @@ class PackageConfiguration:
             options['ref'] = GHA_DEFAULT_REF
         if not options.get("jobs"):
             options['jobs'] = GHA_DEFAULT_JOBS
-        return self.copy_with_meta(
+        meta_file = self.copy_with_meta(
             'meta.yml.j2',
             destination=destination,
             **options
         )
+        dependabot = self.copy_with_meta('dependabot.yml')
+
+        return [meta_file, dependabot]
 
     def gitlab_ci(self):
         if not self.is_gitlab:
