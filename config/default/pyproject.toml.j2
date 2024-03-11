@@ -150,11 +150,12 @@ ignore-packages = %(dependencies_ignores)s
 [tool.check-manifest]
 ignore = [
     ".editorconfig",
+    ".flake8",
     ".meta.toml",
     ".pre-commit-config.yaml",
-    "tox.ini",
-    ".flake8",
+    "dependabot.yml",
     "mx.ini",
+    "tox.ini",
 %(check_manifest_ignores)s
 ]
 %(check_manifest_extra_lines)s
