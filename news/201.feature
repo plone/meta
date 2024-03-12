@@ -1,1 +1,1 @@
-Configure `dependabot` to get GHA updates @gforcada
+Configure `dependabot` to get GHA updates. @gforcada
