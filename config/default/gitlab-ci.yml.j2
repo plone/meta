@@ -28,6 +28,11 @@ stages:
 {% if "lint" in jobs %}
 lint:
   stage: qa
+  variables:
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+  cache:
+    paths:
+      - ${PRE_COMMIT_HOME}
   script:
     - pip install tox
     - tox -e lint
