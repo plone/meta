@@ -429,6 +429,7 @@ class PackageConfiguration:
                 'ref',
                 'jobs',
                 'os_dependencies',
+                'py_versions',
                 'extra_lines',
             )
         )

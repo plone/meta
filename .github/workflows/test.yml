@@ -9,14 +9,18 @@ on:
       os-packages:
         required: false
         type: string
+      py-versions:
+        required: false
+        default: '["3.11", "3.10", "3.9", "3.8"]'
+        type: string
 
 jobs:
   test:
-    name: Tests report
+    name: Plone 6.0 / py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: ${{ fromJson( inputs.py-versions) }}
         os: ["ubuntu-latest"]
     steps:
       - uses: actions/checkout@v4
