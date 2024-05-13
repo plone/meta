@@ -11,7 +11,7 @@ on:
         type: string
       py-versions:
         required: false
-        default: '["3.11", "3.10", "3.9", "3.8"]'
+        default: '["3.12", "3.10"]'
         type: string
 
 jobs:
