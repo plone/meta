@@ -204,6 +204,18 @@ note that they have to be Ubuntu package names, specify the following key:
 os_dependencies = "git libxml2"
 ```
 
+To run tests against specific python versions,
+specify the following key:
+
+Note: the GHA expects a string to be parsed as a JSON array.
+
+Note 2: unfortunately, quotes need to be escaped :-/
+
+```toml
+[github]
+py_versions = "[\"3.11\", \"3.10\"]"
+```
+
 Extend github workflow configuration with additional jobs
 by setting the values for the `extra_lines` key.
 
