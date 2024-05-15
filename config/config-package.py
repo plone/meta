@@ -361,7 +361,7 @@ class PackageConfiguration:
         )
         use_mxdev = options.get("use_mxdev", False)
         options.update(self._test_cfg())
-        package_name = options.get("package_name", self.path.name)
+        options["package_name"] = options.get("package_name") or self.path.name
         options["news_folder_exists"] = (self.path / 'news').exists()
 
         options['prime_robotframework'] = self._detect_robotframework()
