@@ -356,11 +356,12 @@ class PackageConfiguration:
                 'test_environment_variables',
                 'extra_lines',
                 'use_pytest_plone',
+                'package_name'
             )
         )
         use_mxdev = options.get("use_mxdev", False)
         options.update(self._test_cfg())
-        options['package_name'] = self.path.name
+        options["package_name"] = options.get("package_name") or self.path.name
         options["news_folder_exists"] = (self.path / 'news').exists()
 
         options['prime_robotframework'] = self._detect_robotframework()

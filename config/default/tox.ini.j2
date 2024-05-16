@@ -158,6 +158,13 @@ set_env =
 # Set constrain_package_deps .meta.toml:
 #  [tox]
 #  constrain_package_deps = "false"
+#
+# Explicitly set the package name .meta.toml:
+#  (For cases where the repository name is not the same of
+#   the package name)
+#  [tox]
+#  package_name = "pytest_plone"
+#
 ##
 deps =
 {% if use_pytest_plone %}    pytest-plone
