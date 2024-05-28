@@ -5,7 +5,7 @@ def dump_string(value):
     if "\n" in value:
         # Return a multi line string as a multi line string,
         # instead of on one line with literal '\n' in it.
-        return f'"""\n{value}"""'
+        return f"'''\n{value}'''"
     return toml.encoder._dump_str(value)
 
 
