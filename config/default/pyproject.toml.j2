@@ -130,6 +130,7 @@ Zope = [
   'Products.CMFCore', 'Products.CMFDynamicViewFTI',
 ]
 python-dateutil = ['dateutil']
+pytest-plone = ['pytest', 'zope.pytestlayer', 'plone.testing', 'plone.app.testing']
 {% if dependencies_ignores %}
 ignore-packages = %(dependencies_ignores)s
 {% endif %}
