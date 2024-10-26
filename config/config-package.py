@@ -6,7 +6,6 @@ from shared.git import get_commit_id
 from shared.git import git_branch
 from shared.git import git_server_url
 from shared.path import change_dir
-from shared.toml_encoder import TomlArraySeparatorEncoderWithNewline
 
 import argparse
 import collections
@@ -16,7 +15,7 @@ import jinja2
 import pathlib
 import re
 import shutil
-import toml
+import tomlkit
 import validate_pyproject
 import yaml
 
@@ -144,7 +143,8 @@ class PackageConfiguration:
         """Read and update meta configuration"""
         meta_toml_path = self.path / '.meta.toml'
         if meta_toml_path.exists():
-            meta_cfg = toml.load(meta_toml_path)
+            with open(meta_toml_path, 'rb') as meta_f:
+                meta_cfg = tomlkit.load(meta_f)
             meta_cfg = collections.defaultdict(dict, **meta_cfg)
         else:
             meta_cfg = collections.defaultdict(dict)
@@ -519,10 +519,7 @@ class PackageConfiguration:
             with open('.meta.toml', 'w') as meta_f:
                 meta_f.write(META_HINT.format(config_type=self.config_type))
                 meta_f.write('\n')
-                toml.dump(
-                    meta_cfg, meta_f,
-                    TomlArraySeparatorEncoderWithNewline(
-                        separator=',\n   ', indent_first_line=True))
+                tomlkit.dump(meta_cfg, meta_f)
 
     def run_tox(self):
         with change_dir(self.path) as cwd:
@@ -544,7 +541,9 @@ class PackageConfiguration:
     def _validate_toml(self, file_obj):
         """Validate files that are in TOML format"""
         with change_dir(self.path):
-            data = toml.load(file_obj)
+            
+            with open(file_obj, 'rb') as meta_f:
+                data = tomlkit.load(meta_f)
 
             if self.path.stem == 'pyproject':
                 validator = validate_pyproject.api.Validator()
