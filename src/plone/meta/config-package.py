@@ -568,7 +568,7 @@ class PackageConfiguration:
 
     @property
     def _commit_msg(self):
-        return self.args.commit_msg or 'Configuring with plone/meta'
+        return self.args.commit_msg or 'Configuring with plone.meta'
 
     def commit_and_push(self, filenames):
         if not self.args.commit:

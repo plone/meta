@@ -49,7 +49,7 @@ As seen above, [`tox`](https://pypi.org/project/tox) provides the answers.
 
 Tooling is like fashion, it keeps evolving and changing.
 
-The great power behind `plone/meta` is that when we implement a better solution or tool,
+The great power behind `plone.meta` is that when we implement a better solution or tool,
 we can swiftly move all packages to the new approach, making it as painless as possible!
 
 ## Configure a package

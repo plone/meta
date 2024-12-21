@@ -22,11 +22,11 @@ to adapt the repository just configured!
 
 ## Configuration files
 
-In a nutshell `plone/meta`, puts some configuration files on the repository.
+In a nutshell `plone.meta`, puts some configuration files on the repository.
 
-Currently the files managed by `plone/meta` are the following.
+Currently the files managed by `plone.meta` are the following.
 
-- `.meta.toml`: `plone/meta`'s configuration file
+- `.meta.toml`: `plone.meta`'s configuration file
 - `.editorconfig`: configuration meant to be read by code editors
 - `.flake8`: [`flake8`](https://pypi.org/project/flake8) configuration
 - `.gitignore`: list of file/folders patterns that `git` should ignore
@@ -37,7 +37,7 @@ Currently the files managed by `plone/meta` are the following.
 - `tox.ini`: [`tox`](https://pypi.org/project/tox) configuration, __the most important file__
 
 You can find the _template_ files for each of these files
-in the `config/default` folder of this `plone/meta` repository.
+in the `config/default` folder of this `plone.meta` repository.
 
 You will notice that they have a `.jinja` extension.
 That's because the files are not merely copied over to the target repository,
@@ -49,21 +49,21 @@ See the next section about how to extend and modify these configuration files.
 
 It is one thing to standardize, yet another to be flexible enough to adapt to each repository's particular needs.
 
-Fortunately `plone/meta` tries its best to accomplish both:
+Fortunately `plone.meta` tries its best to accomplish both:
 
 - it provides sane defaults
 - it allows extension of the defaults with custom configuration
 
 The files mentioned above have comments all over them
 with instructions on how to extend, modify, and influence
-what `plone/meta` ends up adding on those files.
+what `plone.meta` ends up adding on those files.
 
 Those options are to be stored,
 as it is mentioned on the comments themselves,
 in `.meta.toml`.
 
 This way, when the configuration files get regenerated,
-`plone/meta` reads the configuration in `.meta.toml`
+`plone.meta` reads the configuration in `.meta.toml`
 and reapplies the specific configuration on the other files.
 
 See the specific configuration files sections below on how to extend and modify each configuration file.
@@ -71,7 +71,7 @@ See the specific configuration files sections below on how to extend and modify 
 ### Configuration philosophy
 
 The idea behind the configuration system
-in `plone/meta` controlled configuration files is to make it as simple as possible.
+in `plone.meta` controlled configuration files is to make it as simple as possible.
 
 Rather than adding plenty of configuration options,
 almost all configuration files have an `extra_lines` section
@@ -85,7 +85,7 @@ where the simple approach described above is not enough.
 ### More configuration options
 
 Please use the [issue tracker](https://github.com/plone/meta/issues/new)
-to ask for more extension points whenever `plone/meta`
+to ask for more extension points whenever `plone.meta`
 does not fulfill all your needs.
 
 ### Applying a customized configuration
@@ -173,7 +173,7 @@ jobs = [
     ]
 ```
 
-It is possible to configure from which branch/tag of `plone/meta`
+It is possible to configure from which branch/tag of `plone.meta`
 to get the workflow files by setting the value of the `ref` key:
 
 ```toml
@@ -406,7 +406,7 @@ _custom configuration_
 
 #### `towncrier` configuration:
 
-If your project contains a `news/` folder, `plone/meta` will add
+If your project contains a `news/` folder, `plone.meta` will add
 the configuration for `towncrier`.
 
 If your `CHANGES` file has the extension `.md`, a `changelog_template.jinja`
@@ -432,7 +432,7 @@ _custom configuration_
 ### `tox.ini`
 
 Depending on the test runner that you want to use,
-`plone/meta` will adapt `tox.ini` to it.
+`plone.meta` will adapt `tox.ini` to it.
 
 In the `[tox]` TOML table in `.meta.toml`, set the value for the key `test_runner` to `pytest` if you want to use [`pytest`](https://pypi.org/project/pytest).
 By default, it falls back to use [`zope.testrunner`]((https://pypi.org/project/zope.testrunner)).
@@ -500,11 +500,11 @@ test_deps_additional = """
 """
 ```
 
-When using `plone/meta` outside of plone core packages
+When using `plone.meta` outside of plone core packages
 there might be extra version pins, or overrides over the official versions.
 To specify a custom constraints file, use the `constraints_file` key.
 
-Generating a custom constraints.txt is out of scope for `plone/meta` itself,
+Generating a custom constraints.txt is out of scope for `plone.meta` itself,
 there are plenty of tools that can do that though.
 
 ```toml
