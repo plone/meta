@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
-from shared.call import call
-from shared.packages import list_packages
-from shared.path import change_dir
-from shared.path import path_factory
+from .shared.call import call
+from .shared.packages import list_packages
+from .shared.path import change_dir
+from .shared.path import path_factory
 import argparse
 import sys
 

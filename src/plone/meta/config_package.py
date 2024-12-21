@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
 from functools import cached_property
-from shared.call import call
-from shared.git import get_branch_name
-from shared.git import get_commit_id
-from shared.git import git_branch
-from shared.git import git_server_url
-from shared.path import change_dir
+from .shared.call import call
+from .shared.git import get_branch_name
+from .shared.git import get_commit_id
+from .shared.git import git_branch
+from .shared.git import git_server_url
+from .shared.path import change_dir
 
 import argparse
 import collections
