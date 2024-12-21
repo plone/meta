@@ -1,6 +1,6 @@
 # meta
 
-This repository's aim is to define and standarize a common set
+This repository's aim is to define and standardize a common set
 of configuration files across Plone related repositories.
 
 By using these files, you can have the same developer experience (DX)

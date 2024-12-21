@@ -96,7 +96,7 @@ To apply a customized configuration from `.meta.toml` just re-run the configurat
 python config-package.py PATH/TO/PACKAGE
 ```
 
-Make sure you have commited your changes before running the configuration script.
+Make sure you have committed your changes before running the configuration script.
 
 ### `.editorconfig`
 

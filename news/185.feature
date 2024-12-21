@@ -1,1 +1,1 @@
-`tox`: allow to configure what gets in `testenv` envrionment @gforcada
+`tox`: allow to configure what gets in `testenv` environment @gforcada
