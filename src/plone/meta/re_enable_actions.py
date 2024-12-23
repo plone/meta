@@ -11,20 +11,6 @@ base_path = pathlib.Path(__file__).parent
 types = ['buildout-recipe', 'c-code', 'pure-python', 'zope-product']
 
 
-parser = argparse.ArgumentParser(
-    description='Re-enable GitHub Actions for all repos in a packages.txt'
-                ' files.')
-parser.add_argument(
-    '--force-run',
-    help='Run workflow even it is already enabled.',
-    action='store_true')
-
-args = parser.parse_args()
-repos = itertools.chain(
-    *[list_packages(base_path / type / 'packages.txt')
-      for type in types])
-
-
 def run_workflow(base_url, org, repo):
     """Manually start the tests.yml workflow of a repository."""
     result = call('gh', 'workflow', 'run', 'tests.yml', '-R', f'{org}/{repo}')
@@ -37,18 +23,34 @@ def run_workflow(base_url, org, repo):
     return True
 
 
-for repo in repos:
-    print(repo)
-    wfs = call(
-        'gh', 'workflow', 'list', '--all', '-R', f'{org}/{repo}',
-        capture_output=True).stdout
-    test_line = [x for x in wfs.splitlines() if x.startswith('test')][0]
-    if 'disabled_inactivity' not in test_line:
-        print('    ☑️  already enabled')
-        if args.force_run:
-            run_workflow(base_url, org, repo)
-        continue
-    test_id = test_line.split()[-1]
-    call('gh', 'workflow', 'enable', test_id, '-R', f'{org}/{repo}')
-    if run_workflow(base_url, org, repo):
-        print('    ✅ enabled')
+def main():
+    parser = argparse.ArgumentParser(
+        description='Re-enable GitHub Actions for all repos in a packages.txt'
+                    ' files.')
+    parser.add_argument(
+        '--force-run',
+        help='Run workflow even it is already enabled.',
+        action='store_true')
+
+    args = parser.parse_args()
+
+    repos = itertools.chain(
+        *[list_packages(base_path / type / 'packages.txt')
+          for type in types])
+
+
+    for repo in repos:
+        print(repo)
+        wfs = call(
+            'gh', 'workflow', 'list', '--all', '-R', f'{org}/{repo}',
+            capture_output=True).stdout
+        test_line = [x for x in wfs.splitlines() if x.startswith('test')][0]
+        if 'disabled_inactivity' not in test_line:
+            print('    ☑️  already enabled')
+            if args.force_run:
+                run_workflow(base_url, org, repo)
+            continue
+        test_id = test_line.split()[-1]
+        call('gh', 'workflow', 'enable', test_id, '-R', f'{org}/{repo}')
+        if run_workflow(base_url, org, repo):
+            print('    ✅ enabled')

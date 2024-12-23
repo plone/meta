@@ -632,6 +632,3 @@ def main():
 
     package = PackageConfiguration(args)
     package.configure()
-
-
-main()
