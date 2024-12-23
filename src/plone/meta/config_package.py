@@ -540,7 +540,7 @@ class PackageConfiguration:
     def _validate_toml(self, file_obj):
         """Validate files that are in TOML format"""
         with change_dir(self.path):
-            
+
             with open(file_obj, 'rb') as meta_f:
                 data = tomlkit.load(meta_f)
 
