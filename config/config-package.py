@@ -87,7 +87,7 @@ def handle_command_line_arguments():
         ],
         default='default',
         dest='type',
-        help='type of the configuration to be used, see README.rst. '
+        help='type of the configuration to be used, see README.md. '
         'Only required when running on a repository for the first time.')
     parser.add_argument(
         '--tox',
