@@ -5,10 +5,10 @@ import itertools
 import pathlib
 
 
-org = 'zopefoundation'
+org = 'plone'
 base_url = f'https://github.com/{org}'
 base_path = pathlib.Path(__file__).parent
-types = ['buildout-recipe', 'c-code', 'pure-python', 'zope-product']
+types = ['default']
 
 
 def run_workflow(base_url, org, repo):
@@ -16,7 +16,7 @@ def run_workflow(base_url, org, repo):
     result = call('gh', 'workflow', 'run', 'tests.yml', '-R', f'{org}/{repo}')
     if result.returncode != 0:
         print('To enable manually starting workflows clone the repository'
-              ' and run meta/config/config-package.py on it.')
+              ' and run config-package on it.')
         print('Command to clone:')
         print(f'git clone {base_url}/{repo}.git')
         return False
@@ -44,7 +44,14 @@ def main():
         wfs = call(
             'gh', 'workflow', 'list', '--all', '-R', f'{org}/{repo}',
             capture_output=True).stdout
-        test_line = [x for x in wfs.splitlines() if x.startswith('test')][0]
+        test_lines = [x for x in wfs.splitlines() if x.startswith('Meta')]
+        if not test_lines:
+            print('Meta is not in the workflows. Clone the repository'
+                ' and run config-package on it.')
+            print('Command to clone:')
+            print(f'git clone {base_url}/{repo}.git')
+            continue
+        test_line = test_lines[0]
         if 'disabled_inactivity' not in test_line:
             print('    ☑️  already enabled')
             if args.force_run:
