@@ -1,1 +1,1 @@
-Turn this repository into a proper python distribution @gforcada
+Turn this repository into a proper Python distribution. @gforcada
