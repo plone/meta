@@ -21,12 +21,12 @@ import yaml
 
 META_HINT = """\
 # Generated from:
-# https://github.com/plone/meta/tree/main/config/{config_type}
+# https://github.com/plone/meta/tree/main/src/plone/meta/{config_type}
 # See the inline comments on how to expand/tweak this configuration file"""
 META_HINT_MARKDOWN = """\
 <!--
 Generated from:
-https://github.com/plone/meta/tree/main/config/{config_type}
+https://github.com/plone/meta/tree/main/src/plone/meta/{config_type}
 See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
