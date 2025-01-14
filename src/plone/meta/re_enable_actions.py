@@ -15,7 +15,7 @@ def run_workflow(base_url, org, repo):
     """Manually start the tests.yml workflow of a repository."""
     result = call('gh', 'workflow', 'run', 'tests.yml', '-R', f'{org}/{repo}')
     if result.returncode != 0:
-        print('To enable manually starting workflows clone the repository'
+        print('To enable starting workflows manually, clone the repository'
               ' and run config-package on it.')
         print('Command to clone:')
         print(f'git clone {base_url}/{repo}.git')
