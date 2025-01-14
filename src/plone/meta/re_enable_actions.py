@@ -3,20 +3,27 @@ from .shared.packages import list_packages
 import argparse
 import itertools
 import pathlib
+import sys
 
 
 org = 'plone'
 base_url = f'https://github.com/{org}'
 base_path = pathlib.Path(__file__).parent
 types = ['default']
+config_package_command = sys.argv[0].replace(
+    "re-enable-actions",
+    "config-package",
+)
 
 
 def run_workflow(base_url, org, repo):
     """Manually start the tests.yml workflow of a repository."""
     result = call('gh', 'workflow', 'run', 'tests.yml', '-R', f'{org}/{repo}')
     if result.returncode != 0:
-        print('To enable starting workflows manually, clone the repository'
-              ' and run config-package on it.')
+        print(
+            'To enable starting workflows manually, clone the repository'
+            f' and run {config_package_command} on it.'
+        )
         print('Command to clone:')
         print(f'git clone {base_url}/{repo}.git')
         return False
@@ -46,8 +53,10 @@ def main():
             capture_output=True).stdout
         test_lines = [x for x in wfs.splitlines() if x.startswith('Meta')]
         if not test_lines:
-            print('Meta is not in the workflows. Clone the repository'
-                ' and run config-package on it.')
+            print(
+                'Meta is not in the workflows. Clone the repository'
+                f' and run {config_package_command} on it.'
+            )
             print('Command to clone:')
             print(f'git clone {base_url}/{repo}.git')
             continue
