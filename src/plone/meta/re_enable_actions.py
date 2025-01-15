@@ -33,7 +33,7 @@ def run_workflow(base_url, org, repo):
 def main():
     parser = argparse.ArgumentParser(
         description='Re-enable GitHub Actions for all repos in a packages.txt'
-                    ' files.')
+                    ' file.')
     parser.add_argument(
         '--force-run',
         help='Run workflow even it is already enabled.',
