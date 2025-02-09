@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools < 74"]
+build-backend = "setuptools.build_meta"
+
 [tool.towncrier]
 directory = "news/"
 filename = "CHANGES.md"

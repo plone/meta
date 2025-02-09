@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
 from functools import cached_property
-from shared.call import call
-from shared.git import get_branch_name
-from shared.git import get_commit_id
-from shared.git import git_branch
-from shared.git import git_server_url
-from shared.path import change_dir
+from .shared.call import call
+from .shared.git import get_branch_name
+from .shared.git import get_commit_id
+from .shared.git import git_branch
+from .shared.git import git_server_url
+from .shared.path import change_dir
 
 import argparse
 import collections
@@ -22,12 +21,12 @@ import yaml
 
 META_HINT = """\
 # Generated from:
-# https://github.com/plone/meta/tree/main/config/{config_type}
+# https://github.com/plone/meta/tree/main/src/plone/meta/{config_type}
 # See the inline comments on how to expand/tweak this configuration file"""
 META_HINT_MARKDOWN = """\
 <!--
 Generated from:
-https://github.com/plone/meta/tree/main/config/{config_type}
+https://github.com/plone/meta/tree/main/src/plone/meta/{config_type}
 See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
@@ -541,7 +540,7 @@ class PackageConfiguration:
     def _validate_toml(self, file_obj):
         """Validate files that are in TOML format"""
         with change_dir(self.path):
-            
+
             with open(file_obj, 'rb') as meta_f:
                 data = tomlkit.load(meta_f)
 
@@ -568,7 +567,7 @@ class PackageConfiguration:
 
     @property
     def _commit_msg(self):
-        return self.args.commit_msg or 'Configuring with plone/meta'
+        return self.args.commit_msg or 'Configuring with plone.meta'
 
     def commit_and_push(self, filenames):
         if not self.args.commit:
@@ -633,6 +632,3 @@ def main():
 
     package = PackageConfiguration(args)
     package.configure()
-
-
-main()

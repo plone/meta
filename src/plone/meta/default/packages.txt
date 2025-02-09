@@ -1,6 +1,7 @@
 # Do not edit the file by hand but use the script config-package.py as
 # described in README.rst
 # Packages configured for Plone are listed here.
+# Only packages in the `plone` GitHub organization should be listed here.
 borg.localrole
 five.intid
 plone.alterego
@@ -20,7 +21,6 @@ plone.app.intid
 plone.app.iterate
 plone.app.layout
 plone.app.linkintegrity
-plone.app.locales
 plone.app.lockingbehavior
 plone.app.mosaic
 plone.app.multilingual

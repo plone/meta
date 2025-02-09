@@ -1,0 +1,14 @@
+include *.md
+include tox.ini
+include .pre-commit-config.yaml
+
+recursive-include src *.py
+recursive-include src *.j2
+recursive-include src *.jinja
+recursive-include src *.sh
+recursive-include src *.txt
+recursive-include src *.yml
+
+recursive-exclude news *
+recursive-exclude config *
+recursive-exclude shared-workflows *

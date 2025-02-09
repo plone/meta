@@ -24,5 +24,10 @@ def call(*args, capture_output=False, cwd=None, allowed_return_codes=(0, )):
     result = subprocess.run(
         args, capture_output=capture_output, text=True, cwd=cwd)
     if result.returncode not in allowed_return_codes:
+        print(f"ERROR: exit code {result.returncode}.")
+        print("output:")
+        print(result.stdout)
+        print("ERROR:")
+        print(result.stderr)
         abort(result.returncode)
     return result

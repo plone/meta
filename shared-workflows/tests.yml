@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: 'Deprecation warning'
         run: |
-          echo "This GHA is deprecated, please re-run plone/meta on your repository"
+          echo "This GHA is deprecated, please re-run plone.meta on your repository"
           echo "If you are still relying on this jobs, "
           echo "please create an issue in https://github.com/plone/meta/issues/new"
           exit 1
