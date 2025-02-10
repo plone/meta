@@ -61,25 +61,25 @@ issue_format = "[#{issue}](https://github.com/plone/meta/issues/{issue})"
 
 [[tool.towncrier.type]]
 directory = "breaking"
-name = "Breaking changes:"
+name = "Breaking changes"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "feature"
-name = "New features:"
+name = "New features"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "bugfix"
-name = "Bug fixes:"
+name = "Bug fixes"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "internal"
-name = "Internal:"
+name = "Internal"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "documentation"
-name = "Documentation:"
+name = "Documentation"
 showcontent = true
