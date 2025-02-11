@@ -1,3 +1,7 @@
+> [!TIP]
+> Since February 11th 2025 `plone.meta` is not using `main` branch for development anymore,
+> have a look at the current default branch on GitHub UI.
+
 # plone/meta
 
 `plone/meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
