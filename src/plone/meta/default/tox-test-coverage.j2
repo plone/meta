@@ -6,6 +6,7 @@ constrain_package_deps = {[base]constrain_package_deps}
 set_env = {[base]set_env}
 deps =
     {[test_runner]deps}
+    %(single_constraints_file)s
 commands = {[test_runner]test}
 extras = {[base]extras}
 %(testenv_options)s
@@ -30,6 +31,7 @@ set_env = {[base]set_env}
 deps =
     {[test_runner]deps}
     coverage
+    %(single_constraints_file)s
 commands = {[test_runner]coverage}
 extras = {[base]extras}
 %(testenv_options)s

@@ -38,7 +38,6 @@ TOX_TEST_MATRIX = {
 }
 
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
-PLONE_CONSTRAINTS = "https://dist.plone.org/release/6.0-dev/constraints.txt"
 
 DOCKER_IMAGE = "python:3.11-bullseye"
 
@@ -353,7 +352,7 @@ class PackageConfiguration:
             "tox",
             (
                 "constrain_package_deps",
-                "constraints_file",
+                "constraints_files",
                 "envlist_lines",
                 "testenv_options",
                 "use_mxdev",
@@ -376,17 +375,49 @@ class PackageConfiguration:
 
         if not options["constrain_package_deps"]:
             options["constrain_package_deps"] = "false" if use_mxdev else "true"
-        if not options["constraints_file"]:
-            constraints_file = MXDEV_CONSTRAINTS if use_mxdev else PLONE_CONSTRAINTS
-            options["constraints_file"] = constraints_file
+
         if options["use_pytest_plone"] is not False:
             # Default is '', so turn it into True
             options["use_pytest_plone"] = True
 
+        options.update(self._handle_constraints_files(options))
         options["plone_envlist_lines"] = self._handle_testing_matrix(
             options["test_matrix"]
         )
         return self.copy_with_meta("tox.ini.j2", **options)
+
+    def _handle_constraints_files(self, options):
+        if options.get("use_mxdev", False):
+            constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
+        else:
+            constraints = options["constraints_files"]
+            test_matrix = options.get("test_matrix")
+            if not test_matrix:
+                test_matrix = TOX_TEST_MATRIX
+            plone_versions = list(test_matrix.keys())
+
+            single_constraints = f"-c https://dist.plone.org/release/{plone_versions[0]}-dev/constraints.txt"
+            if constraints:
+                first_plone_version = list(constraints.keys())[0]
+                single_constraints = f"-c {constraints[first_plone_version]}"
+                if len(test_matrix.keys()) != len(constraints.keys()):
+                    raise ValueError(
+                        "`constraints_files` and `test_matrix` need to provide the same Plone versions."
+                        f"They provide {list(constraints.keys())} and {list(test_matrix.keys())} respectively."
+                    )
+
+            lines = []
+            for plone_version in plone_versions:
+                no_dot = plone_version.replace(".", "")
+                url = f"https://dist.plone.org/release/{plone_version}-dev/constraints.txt"
+                if constraints:
+                    url = constraints[plone_version]
+                lines.append(f"plone{no_dot}: -c {url}")
+            constraints = "\n    ".join(lines)
+        return {
+            "constraints_file": constraints,
+            "single_constraints_file": single_constraints,
+        }
 
     def _handle_testing_matrix(self, test_matrix):
         """Generate the tox environments matrix of Python and Plone versions to test
