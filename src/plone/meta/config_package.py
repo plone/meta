@@ -31,6 +31,12 @@ See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
 
+# List all python versions we want to test a given Plone version against
+TOX_TEST_MATRIX = {
+    "6.1": ["3.13", "3.12", "3.11", "3.10"],
+    "6.0": ["3.13", "3.12", "3.11", "3.10", "3.9"],
+}
+
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
 PLONE_CONSTRAINTS = "https://dist.plone.org/release/6.0-dev/constraints.txt"
 
@@ -358,6 +364,7 @@ class PackageConfiguration:
                 "extra_lines",
                 "use_pytest_plone",
                 "package_name",
+                "test_matrix",
             ),
         )
         use_mxdev = options.get("use_mxdev", False)
@@ -376,7 +383,32 @@ class PackageConfiguration:
             # Default is '', so turn it into True
             options["use_pytest_plone"] = True
 
+        options["plone_envlist_lines"] = self._handle_testing_matrix(
+            options["test_matrix"]
+        )
         return self.copy_with_meta("tox.ini.j2", **options)
+
+    def _handle_testing_matrix(self, options):
+        """Generate the tox environments matrix of Python and Plone versions to test
+
+        Either `options` provides a dictionary like:
+        {
+          'PLONE_VERSION_1': [LIST_OF_PYTHON_VERSIONS],
+          'PLONE_VERSION_2': [LIST_OF_PYTHON_VERSIONS],
+        }
+
+        Or the default `TOX_TEST_MATRIX` is used.
+        """
+        lines = []
+        matrix = TOX_TEST_MATRIX
+        if options:
+            matrix = options
+        for plone_version, python_versions in matrix.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for python_version in python_versions:
+                no_dot_python = python_version.replace(".", "")
+                lines.append(f"py{no_dot_python}-plone{no_dot_plone}")
+        return "\n    ".join(lines)
 
     def _detect_robotframework(self):
         """Dynamically find out if robotframework is used in the package.

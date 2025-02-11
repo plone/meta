@@ -4,6 +4,7 @@ min_version = 4.4.0
 envlist =
     lint
     test
+    %(plone_envlist_lines)s
     dependencies
 %(envlist_lines)s
 %(config_lines)s
@@ -15,25 +16,6 @@ envlist =
 #  """
 #  config_lines = """
 #  my_extra_top_level_tox_configuration_lines
-#  """
-##
-
-[testenv]
-skip_install = true
-allowlist_externals =
-    echo
-    false
-# Make sure typos like `tox -e formaat` are caught instead of silently doing nothing.
-# See https://github.com/tox-dev/tox/issues/2858.
-commands =
-    echo "Unrecognized environment name {envname}"
-    false
-%(testenv_options)s
-##
-# Add extra configuration options in .meta.toml:
-#  [tox]
-#  testenv_options = """
-#  basepython = /usr/bin/python3.8
 #  """
 ##
 
