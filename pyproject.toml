@@ -2,6 +2,54 @@
 requires = ["setuptools < 74"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "plone.meta"
+version = "2.0.0.dev0"
+description = "Applies a standard set of configuration files for Plone repositories"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">= 3.9"
+authors = [
+  { name = "Plone Foundation", email = "releaseteam@plone.org" },
+  { name = "Gil Forcada Codinachs", email = "gil.gnome@gmail.com" },
+]
+keywords = ["plone", "packaging"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "setuptools",
+  "Jinja2",
+  "editorconfig",
+  "pyyaml",
+  "tomlkit",
+  "tox",
+  "validate-pyproject[all]",
+]
+
+[project.urls]
+Homepage = "https://github.com/plone/meta"
+"Issue Tracker" = "https://github.com/plone/meta/issues"
+Changelog = "https://github.com/plone/meta/blob/main/CHANGES.md"
+Documentation = "https://6.docs.plone.org/developer-guide/standardize-python-project-configuration.html"
+
+[project.scripts]
+config-package = "plone.meta.config_package:main"
+multi-call = "plone.meta.multi_call:main"
+re-enable-actions = "plone.meta.re_enable_actions:main"
+
 [tool.towncrier]
 directory = "news/"
 filename = "CHANGES.md"
@@ -9,28 +57,29 @@ start_string = "<!-- towncrier release notes start -->\n"
 title_format = "## {version} ({project_date})"
 template = "news/.changelog_template.jinja"
 underlines = ["", "", ""]
+issue_format = "[#{issue}](https://github.com/plone/meta/issues/{issue})"
 
 [[tool.towncrier.type]]
 directory = "breaking"
-name = "Breaking changes:"
+name = "Breaking changes"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "feature"
-name = "New features:"
+name = "New features"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "bugfix"
-name = "Bug fixes:"
+name = "Bug fixes"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "internal"
-name = "Internal:"
+name = "Internal"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "documentation"
-name = "Documentation:"
+name = "Documentation"
 showcontent = true
