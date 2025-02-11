@@ -9,6 +9,71 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0 (2025-02-11)
+
+
+### New features
+
+- Allow to configure extra options on `i18ndude`'s `pre-commit` configuration @Akshat2Jain [#133](https://github.com/plone/meta/issues/133)
+- Install browsers (for playwright) on packages that run
+  plone.app.robotframework tests @gforcada [#155](https://github.com/plone/meta/issues/155)
+- Allow setting GHA environment variables @ericof [#164](https://github.com/plone/meta/issues/164)
+- Implement conditional towncrier configuration depending on
+  existing `news/` folder @petschki [#170](https://github.com/plone/meta/issues/170)
+- Allow customizing enabled gitlab-ci jobs @petschki [#171](https://github.com/plone/meta/issues/171)
+- In generated `pyproject.toml` files, add `build-system` requiring `setuptools` 68.2+.
+  Also, build the package in isolation, so the build is free to use the required `setuptools` version.
+  This combination fixes possible `ModuleNotFoundErrors` for `plone.app.*` packages @mauritsvanrees [#172](https://github.com/plone/meta/issues/172)
+- Ignore `.*project` in git @wesleybl [#179](https://github.com/plone/meta/issues/179)
+- `tox`: allow to configure what gets in `testenv` environment @gforcada [#185](https://github.com/plone/meta/issues/185)
+- Configure `dependabot` to get GHA updates. @gforcada [#201](https://github.com/plone/meta/issues/201)
+- GHA: Allow to run `tox -e test` with multiple python versions @gforcada [#210](https://github.com/plone/meta/issues/210)
+- Made `pytest-plone` test dependency in `tox.ini` optional. Specify `use_pytest_plone =
+  false` if you don't want to use it.
+  Also added `check_manifest_extra_lines` for `pyproject.toml`, you can use it for
+  specifying corner cases like `ignore-bad-ideas` @reinout [#212](https://github.com/plone/meta/issues/212)
+- Use tomlkit for TOML read/write operations
+  it allow custom regexes with backslahes in meta.toml
+  it is a port of https://github.com/zopefoundation/meta/pull/215 [#229](https://github.com/plone/meta/issues/229)
+- Turn this repository into a proper Python distribution. @gforcada [#239](https://github.com/plone/meta/issues/239)
+- Make `plone.meta` an actual python distribution releasable in PyPI @gforcada [#248](https://github.com/plone/meta/issues/248)
+- When creating a branch, use the git commit hash from meta repository @gforcada 
+
+
+### Bug fixes
+
+- Only run a GHA on Linux, while we wait for a counterpart for Windows @gforcada [#180](https://github.com/plone/meta/issues/180)
+- Moved inline comments in .editorconfig to their own lines: the spec at
+  https://spec.editorconfig.org/#no-inline-comments forbids it @reinout [#208](https://github.com/plone/meta/issues/208)
+- Stop relying on GitHub repository/organization variables @gforcada [#210](https://github.com/plone/meta/issues/210)
+- Preventing lines with only spaces in the generated tox.ini @reinout [#212](https://github.com/plone/meta/issues/212)
+- On `.meta.toml` file installed by `plone.meta`, write `plone.meta`'s version on `commit-id` rather than a commit.
+  We are no longer running `plone.meta` out of a checkout, but rather from a release version @gforcada [#248](https://github.com/plone/meta/issues/248)
+- Fix `dependabot.yml` location @gforcada [#252](https://github.com/plone/meta/issues/252)
+- Do not track packages on `packages.txt` by default @gforcada 
+- Ensure that `prettier`'s default line length is respected @gforcada 
+- Mark old `shared-workflows` GHA as deprecated @gforcada 
+
+
+### Internal
+
+- Add .gitignore @wesleybl [#178](https://github.com/plone/meta/issues/178)
+- Editorconfig: Restructure the frontend config.
+
+  - Add an xml type to the xml section.
+  - Move the HTML type to the xml section.
+
+  This allows more easily for frontend related files except HTML files to be
+  reconfigured for an 4-space indentation. 4 spaces for JS/CSS related code is
+  the default style in Patternslib/Mockup. style @thet [#197](https://github.com/plone/meta/issues/197)
+
+
+### Documentation
+
+- Add a note on how to disable i18ndude checks.
+  Add a note on how to apply a customized configuration.
+  @thet [#200](https://github.com/plone/meta/issues/200)
+
 ## 1.0.0 (2023-07-12)
 
 

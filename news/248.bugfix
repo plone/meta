@@ -1,2 +1,0 @@
-On `.meta.toml` file installed by `plone.meta`, write `plone.meta`'s version on `commit-id` rather than a commit.
-We are no longer running `plone.meta` out of a checkout, but rather from a release version @gforcada
