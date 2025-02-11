@@ -7,7 +7,7 @@ deps =
 {% if news_folder_exists %}
     towncrier
 {% endif %}
-    -c %(constraints_file)s
+    %(single_constraints_file)s
     %(test_deps_additional)s
 commands =
 {% if news_folder_exists %}
@@ -40,7 +40,7 @@ allowlist_externals =
 deps =
     pipdeptree
     pipforester
-    -c %(constraints_file)s
+    %(single_constraints_file)s
     %(test_deps_additional)s
 commands =
     # Generate the full dependency tree

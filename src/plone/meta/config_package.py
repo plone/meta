@@ -38,7 +38,7 @@ TOX_TEST_MATRIX = {
 }
 
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
-PLONE_CONSTRAINTS = "https://dist.plone.org/release/6.0-dev/constraints.txt"
+PLONE_VERSIONS = list(TOX_TEST_MATRIX.keys())
 
 DOCKER_IMAGE = "python:3.11-bullseye"
 
@@ -376,17 +376,39 @@ class PackageConfiguration:
 
         if not options["constrain_package_deps"]:
             options["constrain_package_deps"] = "false" if use_mxdev else "true"
-        if not options["constraints_file"]:
-            constraints_file = MXDEV_CONSTRAINTS if use_mxdev else PLONE_CONSTRAINTS
-            options["constraints_file"] = constraints_file
+
         if options["use_pytest_plone"] is not False:
             # Default is '', so turn it into True
             options["use_pytest_plone"] = True
 
+        options.update(self._handle_constraints_files(options))
         options["plone_envlist_lines"] = self._handle_testing_matrix(
             options["test_matrix"]
         )
         return self.copy_with_meta("tox.ini.j2", **options)
+
+    def _handle_constraints_files(self, options):
+        use_mxdev = options.get("use_mxdev", False)
+        constraints = options["constraints_file"]
+        single_constraints = (
+            f"-c https://dist.plone.org/release/{PLONE_VERSIONS[0]}-dev/constraints.txt"
+        )
+        if constraints:
+            constraints = single_constraints = f"-c {constraints}"
+        elif use_mxdev:
+            constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
+        else:
+            lines = []
+            for plone_version in PLONE_VERSIONS:
+                no_dot = plone_version.replace(".", "")
+                lines.append(
+                    f"plone{no_dot}: -c https://dist.plone.org/release/{plone_version}-dev/constraints.txt"
+                )
+            constraints = "\n    ".join(lines)
+        return {
+            "constraints_file": constraints,
+            "single_constraints_file": single_constraints,
+        }
 
     def _handle_testing_matrix(self, options):
         """Generate the tox environments matrix of Python and Plone versions to test
