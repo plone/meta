@@ -1,0 +1,39 @@
+[testenv:format]
+description = automatically reformat code
+skip_install = true
+deps =
+    pre-commit
+commands =
+    pre-commit run -a pyupgrade
+    pre-commit run -a isort
+    pre-commit run -a black
+    pre-commit run -a zpretty
+
+[testenv:lint]
+description = run linters that will help improve the code style
+skip_install = true
+deps =
+    pre-commit
+commands =
+    pre-commit run -a
+
+[testenv:dependencies]
+description = check if the package defines all its dependencies
+skip_install = true
+deps =
+    build
+    z3c.dependencychecker==2.14.3
+commands =
+    python -m build --sdist
+    dependencychecker
+
+[testenv:dependencies-graph]
+description = generate a graph out of the dependencies of the package
+skip_install = false
+allowlist_externals =
+    sh
+deps =
+    pipdeptree==2.5.1
+    graphviz  # optional dependency of pipdeptree
+commands =
+    sh -c 'pipdeptree --exclude setuptools,wheel,pipdeptree,zope.interface,zope.component --graph-output svg > dependencies.svg'

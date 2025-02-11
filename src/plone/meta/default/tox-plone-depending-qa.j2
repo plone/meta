@@ -1,0 +1,51 @@
+[testenv:release-check]
+description = ensure that the distribution is ready to release
+skip_install = true
+deps =
+    twine
+    build
+{% if news_folder_exists %}
+    towncrier
+{% endif %}
+    -c %(constraints_file)s
+    %(test_deps_additional)s
+commands =
+{% if news_folder_exists %}
+    # fake version to not have to install the package
+    # we build the change log as news entries might break
+    # the README that is displayed on PyPI
+    towncrier build --version=100.0.0 --yes
+{% endif %}
+    python -m build --sdist
+    twine check dist/*
+
+[testenv:circular]
+description = ensure there are no cyclic dependencies
+use_develop = true
+skip_install = false
+# Here we must always constrain the package deps to what is already installed,
+# otherwise we simply get the latest from PyPI, which may not work.
+constrain_package_deps = true
+set_env =
+%(test_environment_variables)s
+##
+# Specify extra test environment variables in .meta.toml:
+#  [tox]
+#  test_environment_variables = """
+#      PIP_EXTRA_INDEX_URL=https://my-pypi.my-server.com/
+#  """
+##
+allowlist_externals =
+    sh
+deps =
+    pipdeptree
+    pipforester
+    -c %(constraints_file)s
+    %(test_deps_additional)s
+commands =
+    # Generate the full dependency tree
+    sh -c 'pipdeptree -j > forest.json'
+    # Generate a DOT graph with the circular dependencies, if any
+    pipforester -i forest.json -o forest.dot --cycles
+    # Report if there are any circular dependencies, i.e. error if there are any
+    pipforester -i forest.json --check-cycles -o /dev/null

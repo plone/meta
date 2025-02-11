@@ -1,0 +1,24 @@
+[testenv:test]
+description = run the distribution tests
+use_develop = {[base]use_develop}
+skip_install = {[base]skip_install}
+constrain_package_deps = {[base]constrain_package_deps}
+set_env = {[base]set_env}
+deps =
+    {[test_runner]deps}
+commands = {[test_runner]test}
+extras = {[base]extras}
+%(testenv_options)s
+
+[testenv:coverage]
+description = get a test coverage report
+use_develop = {[base]use_develop}
+skip_install = {[base]skip_install}
+constrain_package_deps = {[base]constrain_package_deps}
+set_env = {[base]set_env}
+deps =
+    {[test_runner]deps}
+    coverage
+commands = {[test_runner]coverage}
+extras = {[base]extras}
+%(testenv_options)s
