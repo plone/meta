@@ -1,10 +1,10 @@
 from .shared.call import call
 from .shared.git import get_branch_name
-from .shared.git import get_commit_id
 from .shared.git import git_branch
 from .shared.git import git_server_url
 from .shared.path import change_dir
 from functools import cached_property
+from importlib.metadata import version
 
 import argparse
 import collections
@@ -134,7 +134,7 @@ class PackageConfiguration:
 
         self.meta_cfg = self._read_meta_configuration()
         self.meta_cfg["meta"]["template"] = self.config_type
-        self.meta_cfg["meta"]["commit-id"] = get_commit_id()
+        self.meta_cfg["meta"]["commit-id"] = self._get_version()
 
         with change_dir(self.path):
             server_url = git_server_url()
@@ -145,6 +145,9 @@ class PackageConfiguration:
                 "CI configuration",
                 "The repository is not hosted in github nor in gitlab, no CI configuration will be done!",
             )
+
+    def _get_version(self):
+        return version("plone.meta")
 
     def _read_meta_configuration(self):
         """Read and update meta configuration"""
