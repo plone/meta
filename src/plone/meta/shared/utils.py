@@ -1,7 +1,5 @@
 from copy import deepcopy
 
-import textwrap
-
 
 def cleanup_data_for_jinja(data):
     """Take a dictionary and cleanup before passing to Jinja.
