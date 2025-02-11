@@ -36,7 +36,14 @@ PLONE_CONSTRAINTS = "https://dist.plone.org/release/6.0-dev/constraints.txt"
 
 DOCKER_IMAGE = "python:3.11-bullseye"
 
-GHA_DEFAULT_REF = "main"
+# Rather than pointing configured repositories to `plone.meta`'s `main` branch
+# to get their GHA workflows, point them to an ever evolving branch.
+#
+# This has a few benefits:
+# - configured repositories do not point to outdated GHA workflows
+# - `plone.meta` can do breaking changes on GHA workflows and roll them gradually
+GHA_DEFAULT_REF = "2.x"
+
 GHA_DEFAULT_JOBS = [
     "qa",
     "test",
