@@ -83,3 +83,15 @@ showcontent = true
 directory = "documentation"
 name = "Documentation"
 showcontent = true
+
+[tool.isort]
+profile = "plone"
+
+[tool.black]
+target-version = ["py313"]
+
+[tool.codespell]
+ignore-words-list = "discreet,thet,"
+
+[tool.check-manifest]
+ignore = [".editorconfig", ".flake8", ".pre-commit-config.yaml", "tox.ini"]

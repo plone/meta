@@ -1,0 +1,36 @@
+ci:
+  autofix_prs: false
+  autoupdate_schedule: monthly
+
+repos:
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+      - id: pyupgrade
+        args: [--py38-plus]
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        additional_dependencies:
+          - tomli
+  - repo: https://github.com/mgedmin/check-manifest
+    rev: "0.50"
+    hooks:
+      - id: check-manifest
+  - repo: https://github.com/regebro/pyroma
+    rev: "4.2"
+    hooks:
+      - id: pyroma
