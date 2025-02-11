@@ -411,9 +411,10 @@ class PackageConfiguration:
     def gha_workflows(self):
         if not self.is_github:
             return []
-        folder = self.path / ".github" / "workflows"
-        folder.mkdir(parents=True, exist_ok=True)
-        destination = folder / "meta.yml"
+        github_folder = self.path / ".github"
+        workflows_folder = github_folder / "workflows"
+        workflows_folder.mkdir(parents=True, exist_ok=True)
+        destination = workflows_folder / "meta.yml"
         options = self._get_options_for(
             "github",
             (
@@ -432,7 +433,15 @@ class PackageConfiguration:
         meta_file = self.copy_with_meta(
             "meta.yml.j2", destination=destination, **options
         )
-        dependabot = self.copy_with_meta("dependabot.yml")
+        dependabot = self.copy_with_meta(
+            "dependabot.yml", destination=github_folder / "dependabot.yml"
+        )
+
+        if (self.path / "dependabot.yml").exists():
+            self.print_warning(
+                "CI configuration",
+                "A `dependabot.yml` file at the top-level was found, please remove it",
+            )
 
         return [meta_file, dependabot]
 
