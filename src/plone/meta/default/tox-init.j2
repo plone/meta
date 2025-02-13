@@ -1,6 +1,8 @@
 [testenv:init]
 description = Prepare environment
 skip_install = true
+allowlist_externals =
+    echo
 {% if use_mxdev %}
 deps =
     mxdev
