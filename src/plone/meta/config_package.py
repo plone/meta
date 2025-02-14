@@ -31,8 +31,14 @@ See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
 
+# List all python versions we want to test a given Plone version against
+TOX_TEST_MATRIX = {
+    "6.1": ["3.13", "3.12", "3.11", "3.10"],
+    "6.0": ["3.13", "3.12", "3.11", "3.10", "3.9"],
+}
+
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
-PLONE_CONSTRAINTS = "https://dist.plone.org/release/6.0-dev/constraints.txt"
+PLONE_VERSIONS = list(TOX_TEST_MATRIX.keys())
 
 DOCKER_IMAGE = "python:3.11-bullseye"
 
@@ -46,7 +52,6 @@ GHA_DEFAULT_REF = "2.x"
 
 GHA_DEFAULT_JOBS = [
     "qa",
-    "test",
     "coverage",
     "dependencies",
     "release_ready",
@@ -358,6 +363,7 @@ class PackageConfiguration:
                 "extra_lines",
                 "use_pytest_plone",
                 "package_name",
+                "test_matrix",
             ),
         )
         use_mxdev = options.get("use_mxdev", False)
@@ -369,14 +375,61 @@ class PackageConfiguration:
 
         if not options["constrain_package_deps"]:
             options["constrain_package_deps"] = "false" if use_mxdev else "true"
-        if not options["constraints_file"]:
-            constraints_file = MXDEV_CONSTRAINTS if use_mxdev else PLONE_CONSTRAINTS
-            options["constraints_file"] = constraints_file
+
         if options["use_pytest_plone"] is not False:
             # Default is '', so turn it into True
             options["use_pytest_plone"] = True
 
+        options.update(self._handle_constraints_files(options))
+        options["plone_envlist_lines"] = self._handle_testing_matrix(
+            options["test_matrix"]
+        )
         return self.copy_with_meta("tox.ini.j2", **options)
+
+    def _handle_constraints_files(self, options):
+        use_mxdev = options.get("use_mxdev", False)
+        constraints = options["constraints_file"]
+        single_constraints = (
+            f"-c https://dist.plone.org/release/{PLONE_VERSIONS[0]}-dev/constraints.txt"
+        )
+        if constraints:
+            constraints = single_constraints = f"-c {constraints}"
+        elif use_mxdev:
+            constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
+        else:
+            lines = []
+            for plone_version in PLONE_VERSIONS:
+                no_dot = plone_version.replace(".", "")
+                lines.append(
+                    f"plone{no_dot}: -c https://dist.plone.org/release/{plone_version}-dev/constraints.txt"
+                )
+            constraints = "\n    ".join(lines)
+        return {
+            "constraints_file": constraints,
+            "single_constraints_file": single_constraints,
+        }
+
+    def _handle_testing_matrix(self, options):
+        """Generate the tox environments matrix of Python and Plone versions to test
+
+        Either `options` provides a dictionary like:
+        {
+          'PLONE_VERSION_1': [LIST_OF_PYTHON_VERSIONS],
+          'PLONE_VERSION_2': [LIST_OF_PYTHON_VERSIONS],
+        }
+
+        Or the default `TOX_TEST_MATRIX` is used.
+        """
+        lines = []
+        matrix = TOX_TEST_MATRIX
+        if options:
+            matrix = options
+        for plone_version, python_versions in matrix.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for python_version in python_versions:
+                no_dot_python = python_version.replace(".", "")
+                lines.append(f"py{no_dot_python}-plone{no_dot_plone}")
+        return "\n    ".join(lines)
 
     def _detect_robotframework(self):
         """Dynamically find out if robotframework is used in the package.
@@ -450,7 +503,23 @@ class PackageConfiguration:
                 "A `dependabot.yml` file at the top-level was found, please remove it",
             )
 
-        return [meta_file, dependabot]
+        options["gh_config_lines"] = self.handle_gh_actions()
+        testing_file = self.copy_with_meta(
+            "gha.yml.j2", destination=workflows_folder / "tests.yml", **options
+        )
+
+        return [meta_file, dependabot, testing_file]
+
+    def handle_gh_actions(self):
+        combinations = []
+        for plone_version, python_versions in TOX_TEST_MATRIX.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for py_version in (python_versions[0], python_versions[-1]):
+                no_dot_python = py_version.replace(".", "")
+                combinations.append(
+                    f'["{py_version}", "{plone_version} on py{py_version}", "py{no_dot_python}-plone{no_dot_plone}"]'
+                )
+        return "\n        - ".join(combinations)
 
     def gitlab_ci(self):
         if not self.is_gitlab:
