@@ -504,7 +504,23 @@ class PackageConfiguration:
                 "A `dependabot.yml` file at the top-level was found, please remove it",
             )
 
-        return [meta_file, dependabot]
+        options["gh_config_lines"] = self.handle_gh_actions()
+        testing_file = self.copy_with_meta(
+            "gha.yml.j2", destination=workflows_folder / "tests.yml", **options
+        )
+
+        return [meta_file, dependabot, testing_file]
+
+    def handle_gh_actions(self):
+        combinations = []
+        for plone_version, python_versions in TOX_TEST_MATRIX.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for py_version in (python_versions[0], python_versions[-1]):
+                no_dot_python = py_version.replace(".", "")
+                combinations.append(
+                    f'["{py_version}", "{plone_version} on py{py_version}", "py{no_dot_python}-plone{no_dot_plone}"]'
+                )
+        return "\n        - ".join(combinations)
 
     def gitlab_ci(self):
         if not self.is_gitlab:
