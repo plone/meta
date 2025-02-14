@@ -51,7 +51,6 @@ GHA_DEFAULT_REF = "2.x"
 
 GHA_DEFAULT_JOBS = [
     "qa",
-    "test",
     "coverage",
     "dependencies",
     "release_ready",
@@ -492,7 +491,6 @@ class PackageConfiguration:
                 "ref",
                 "jobs",
                 "os_dependencies",
-                "py_versions",
                 "extra_lines",
             ),
         )
