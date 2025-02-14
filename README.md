@@ -10,9 +10,15 @@ It does not cover the following.
 
 ## Setup
 
-Clone `plone.meta` to any machine, then change your current working directory into `meta/config`, create a Python virtual environment, and install `plone.meta`'s requirements.
+Install `plone.meta` like any other python distribution,
+either from PyPI or a git clone.
 
 ```shell
+# from PyPI
+python3 -m venv venv
+venv/bin/pip install plone.meta
+
+# local clone
 git clone https://github.com/plone/meta.git
 cd meta
 python3 -m venv venv
