@@ -1,42 +1,46 @@
-# plone/meta
+# plone.meta
 
-`plone/meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
+`plone.meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
 It does not cover the following.
 
--   Volto or any other JavaScript-based project, which has its own ecosystem.
--   Monorepo projects with backend and frontend code bases, such as those created by [Cookieplone](https://github.com/plone/cookieplone).
-    Repositories must have a single Python package at the top level.
--   Projects that support multiple versions of Plone in the same branch.
-
+- Volto or any other JavaScript-based project, which has its own ecosystem.
+- Monorepo projects with backend and frontend code bases, such as those created by [Cookieplone](https://github.com/plone/cookieplone).
+  Repositories must have a single Python package at the top level.
+- Projects that support multiple versions of Plone in the same branch.
 
 ## Setup
 
-Clone `plone/meta` to any machine, then change your current working directory into `meta/config`, create a Python virtual environment, and install `plone/meta`'s requirements.
+Install `plone.meta` like any other python distribution,
+either from PyPI or a git clone.
 
 ```shell
+# from PyPI
+python3 -m venv venv
+venv/bin/pip install plone.meta
+
+# local clone
 git clone https://github.com/plone/meta.git
 cd meta
 python3 -m venv venv
 venv/bin/pip install -e .
 ```
 
-
 ## `config-package` usage
 
-The command `config-package` from `plone/meta` creates or overwrites configuration files for your project.
-See a current list of [configuration files](#configuration-files) that it will create or overwrite.
+The command `config-package` from `plone.meta` creates or overwrites configuration files for your project.
+See a current list of [configuration files](#config-package-configuration-files) that it will create or overwrite.
 
-This command has several [command line options](#cli-arguments) that you can use to override the default options.
+This command has several [command line options](#config-package-command-line-options) that you can use to override the default options.
 
 When you run this command, it automatically goes through the following steps.
 
-1.  It creates a new git branch from the current branch in your project.
-1.  If the file {file}`.meta.toml` is not present in the project, then it creates this and the other new configuration files from `plone/meta`'s Jinja2 templates.
-    Otherwise, it reads the file {file}`.meta.toml` for regenerating the configuration files.
-1.  It writes the configuration files.
-1.  It creates a change log entry.
-1.  By default, it commits changes.
-1.  It optionally adds packages, pushes commits, or runs tox from the configuration files. 
+1. It creates a new git branch from the current branch in your project.
+1. If the file {file}`.meta.toml` is not present in the project, then it creates this and the other new configuration files from `plone.meta`'s Jinja2 templates.
+   Otherwise, it reads the file {file}`.meta.toml` for regenerating the configuration files.
+1. It writes the configuration files.
+1. It creates a change log entry.
+1. By default, it commits changes.
+1. It optionally adds packages, pushes commits, or runs tox from the configuration files.
 
 > [!TIP]
 > If you prefer to name the new git branch instead of letting the command name it using its default naming scheme, then either create a new branch `my-new-branch`, switch to it, and use the `--branch current` option, or do all that in one step with the `--branch my-new-branch` option.
@@ -50,8 +54,7 @@ For help for `config-package`, use the following command.
 venv/bin/config-package --help
 ```
 
-You can request more extension points if `plone/meta` does not fulfill your needs in the [issue tracker](https://github.com/plone/meta/issues/new).
-
+You can request more extension points if `plone.meta` does not fulfill your needs in the [issue tracker](https://github.com/plone/meta/issues/new).
 
 ### Generate configuration files
 
@@ -61,13 +64,16 @@ Now you can run the command `config-package` to generate configuration files fro
 venv/bin/config-package [OPTIONS] PATH/TO/PACKAGE
 ```
 
-
 ### Manage configuration files
 
-For each of the configuration files, you should edit its [corresponding stanza](#applying-a-customized-configuration) in the file `.meta.toml`.
+To customize how the managed files are created,
+set their options on `.meta.toml` file.
+
+Read further to see which options can be tweaked,
+or look at the files themselves that already provide hints on how to do it.
 
 > [!WARNING]
-> Do not directly edit the configuration files that `plone/meta` manages.
+> Do not directly edit the configuration files that `plone.meta` manages.
 Anytime someone runs the command `config-package`, any changes made in these files will get clobbered.
 
 Commit your changes, then run the command `config-package` to regenerate configuration files from your project's `.meta.toml`.
@@ -76,43 +82,41 @@ Commit your changes, then run the command `config-package` to regenerate configu
 venv/bin/config-package [OPTIONS] PATH/TO/PACKAGE
 ```
 
-
 ### `config-package` command line options
 
 `config-package` supports the following command line options.
 
--   `--branch BRANCH_NAME`: Define a specific git branch name to create for the changes.
-    By default, the script creates one, which includes the name of the configuration type.
-    > [!TIP]
-    > Use `current` to update the current branch.
--   `--commit-msg MSG`: Use `MSG` as the commit message instead of the default one.
--   `--no-commit`: Don't automatically commit changes after the configuration run.
--   `-h, --help`: Display help.
--   `--push`: Push changes at the end of the configuration run.
-    By default, the changes are _not_ pushed.
--   `--tox`: Whether to run `tox` on the repository.
-    By default, it does not run.
--   `--track`: Whether the package being configured should be added to `defaults/packages.txt`.
-    By default, they are _not_ added.
--   `-t, --type`: define the configuration type.
-    At this time, `default` is the only option.
-    This option is only needed one time as their values are stored in `.meta.toml`.
-
+- `--branch BRANCH_NAME`: Define a specific git branch name to create for the changes.
+  By default, the script creates one, which includes the name of the configuration type.
+  > [!TIP]
+  > Use `current` to update the current branch.
+- `--commit-msg MSG`: Use `MSG` as the commit message instead of the default one.
+- `--no-commit`: Don't automatically commit changes after the configuration run.
+- `-h, --help`: Display help.
+- `--push`: Push changes at the end of the configuration run.
+  By default, the changes are _not_ pushed.
+- `--tox`: Whether to run `tox` on the repository.
+  By default, it does not run.
+- `--track`: Whether the package being configured should be added to `defaults/packages.txt`.
+  By default, they are _not_ added.
+- `-t, --type`: define the configuration type.
+  At this time, `default` is the only option.
+  This option is only needed one time as their values are stored in `.meta.toml`.
 
 ### `config-package` configuration files
 
 `plone.meta` generates configuration files in your local repository.
 Currently, the files that `plone.meta` manages are the following.
 
--   `.meta.toml`: `plone.meta`'s configuration file
--   `.editorconfig`: configuration meant to be read by code editors
--   `.flake8`: [`flake8`](https://pypi.org/project/flake8) configuration
--   `.gitignore`: list of file/folders patterns that `git` should ignore
--   `.github/workflows/meta.yml`: GitHub workflows to run the testing and code quality and analysis tools on GitHub, provided the repository is hosted at github.com
--   `.gitlab-ci.yml`: GitLab CI configuration, provided the repository is hosted at gitlab.com
--   `.pre-commit-config.yaml`: [`pre-commit`](https://pypi.org/project/pre-commit) configuration
--   `pyproject.toml`: configuration options for a wide variety of Python tooling
--   `tox.ini`: [`tox`](https://pypi.org/project/tox) configuration, _the most important file_
+- `.meta.toml`: `plone.meta`'s configuration file
+- `.editorconfig`: configuration meant to be read by code editors
+- `.flake8`: [`flake8`](https://pypi.org/project/flake8) configuration
+- `.gitignore`: list of file/folders patterns that `git` should ignore
+- `.github/workflows/meta.yml`: GitHub workflows to run the testing and code quality and analysis tools on GitHub, provided the repository is hosted at github.com
+- `.gitlab-ci.yml`: GitLab CI configuration, provided the repository is hosted at gitlab.com
+- `.pre-commit-config.yaml`: [`pre-commit`](https://pypi.org/project/pre-commit) configuration
+- `pyproject.toml`: configuration options for a wide variety of Python tooling
+- `tox.ini`: [`tox`](https://pypi.org/project/tox) configuration, _the most important file_
 
 You can find the _template_ files for each of these files in the `config/default` folder of this `plone.meta` repository.
 
@@ -120,7 +124,6 @@ You will notice that they have a `.jinja` extension.
 That's because the files are not merely copied over to the target repository, but rather they are enhanced and adapted on the way to their destination.
 
 The following sections describe how to configure each of the configuration files.
-
 
 #### `.editorconfig`
 
@@ -143,7 +146,6 @@ indent_size = 4
 """
 ```
 
-
 #### `.flake8`
 
 Add the `[flake8]` TOML table in `.meta.toml`, and set the extra configuration for `flake8` under the `extra_lines` key.
@@ -154,7 +156,6 @@ extra_lines = """
 _your own configuration lines_
 """
 ```
-
 
 #### `.gitignore`
 
@@ -167,7 +168,6 @@ _your own configuration lines_
 """
 ```
 
-
 #### `.github/workflows/meta.yml`
 
 > [!NOTE]
@@ -177,10 +177,10 @@ See the [GitHub documentation about variables](https://docs.github.com/en/action
 
 These variables are expected to be lists.
 
--   `TEST_OS_VERSIONS`: `["ubuntu-latest",]`
-    -   a list of valid operating system names according [to GitHub Actions](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
--   `TEST_PYTHON_VERSIONS`: `["3.13", "3.12", "3.11", "3.10", ]`
-    -   a list of valid Python versions according to [python-versions action](https://github.com/actions/python-versions/)
+- `TEST_OS_VERSIONS`: `["ubuntu-latest",]`
+  - a list of valid operating system names according [to GitHub Actions](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
+- `TEST_PYTHON_VERSIONS`: `["3.13", "3.12", "3.11", "3.10", ]`
+  - a list of valid Python versions according to [python-versions action](https://github.com/actions/python-versions/)
 
 Add the `[github]` TOML table in `.meta.toml`, and set the enabled jobs with the `jobs` key.
 
@@ -196,7 +196,7 @@ jobs = [
     ]
 ```
 
-It is possible to configure from which branch or tag of `plone/meta` to get the workflow files by setting the value of the `ref` key.
+It is possible to configure from which branch or tag of `plone.meta` to get the workflow files by setting the value of the `ref` key.
 In the following example, all GitHub workflows would come from the `v3` tag, instead of the default `main` branch.
 
 ```toml
@@ -243,7 +243,6 @@ extra_lines = """
 """
 ```
 
-
 #### `.gitlab-ci.yml`
 
 Add the `[gitlab]` TOML table in `.meta.toml`, and set the extra configuration for GitLab CI under the `extra_lines` key.
@@ -284,7 +283,6 @@ jobs = [
   "coverage",
 ]
 ```
-
 
 #### `.pre-commit-config.yaml`
 
@@ -347,7 +345,6 @@ i18ndude_extra_lines = """
 """
 ```
 
-
 #### `pyproject.toml`
 
 Add the `[pyproject]` TOML table in `.meta.toml`, and set configuration for any extra tool that you use for the `extra_lines` key.
@@ -406,8 +403,7 @@ _custom configuration_
 """
 ```
 
-
-##### `towncrier` configuration
+#### `towncrier` configuration
 
 If your project contains a `news/` folder, `plone.meta` will add the configuration for `towncrier`.
 
@@ -428,7 +424,6 @@ towncrier_extra_lines = """
 _custom configuration_
 """
 ```
-
 
 #### `tox.ini`
 
@@ -516,8 +511,6 @@ test_environment_variables = """
 
 For packages that have `plone.app.robotframework` based tests, it automatically detects it and primes [Playwright](https://playwright.dev/) to install the needed browsers.
 
-
-
 ### Manage multiple repositories with `multi-call`
 
 The `config-package` command runs only on a single repository.
@@ -526,10 +519,10 @@ It runs on all repositories listed in a `packages.txt` file.
 
 To run `multi-call` on all packages listed in a `packages.txt` file use the following command with positional arguments as shown.
 
--   The file path the Python script to be called.
--   The file path to `packages.txt`, which lists repositories of packages on which the Python script will be called.
--   The file path to the directory where the clones of the repositories are stored.
--   Arguments to pass into the Python script.
+- The file path the Python script to be called.
+- The file path to `packages.txt`, which lists repositories of packages on which the Python script will be called.
+- The file path to the directory where the clones of the repositories are stored.
+- Arguments to pass into the Python script.
 
 ```shell
 bin/multi-call <name-of-the-script.py> <path-to-packages.txt> <path-to-clones> <arguments-for-script>
@@ -537,16 +530,14 @@ bin/multi-call <name-of-the-script.py> <path-to-packages.txt> <path-to-clones> <
 
 The script performs the following steps for each line in the given `packages.txt` that does not start with a hash mark (`#`).
 
-1.  Check if there is a repository in `<path-to-clones>` with the name of the repository.
-    If it does not exist, then clone it.
-    If it exists, then clean the clone from changes, switch to the `master` branch, and pull from the origin.
-2.  Call the given script with the package name and arguments for the script.
+1. Check if there is a repository in `<path-to-clones>` with the name of the repository.
+   If it does not exist, then clone it.
+   If it exists, then clean the clone from changes, switch to the `master` branch, and pull from the origin.
+2. Call the given script with the package name and arguments for the script.
 
 > [!CAUTION]
 > Running this script stashes any uncommitted changes in the repositories.
 > Run `git stash pop` to recover them.
-
-
 
 ### Re-enable GitHub Actions with `re-enable-actions`
 
@@ -555,14 +546,12 @@ You can re-enable them manually per repository.
 `re-enable-actions` can do this for all repositories.
 It does no harm if Actions are already enabled for a repository.
 
-
 #### Setup GitHub CLI
 
--   Install [GitHub's CLI application](https://github.com/cli/cli).
--   Authorize using the application:
-    -   `gh auth login`
-    - It is probably enough to do it once.
-
+- Install [GitHub's CLI application](https://github.com/cli/cli).
+- Authorize using the application:
+  - `gh auth login`
+  - It is probably enough to do it once.
 
 #### `re-enable-actions` usage
 
@@ -572,15 +561,13 @@ Use the following command.
 venv/bin/re-enable-actions
 ```
 
-
 ## Explanation
 
-This section provides explanation of design decisions and capabilities of `plone/meta`.
-
+This section provides explanation of design decisions and capabilities of `plone.meta`.
 
 ### Project management
 
-By using `plone/meta`, you can have the same developer experience (DX)
+By using `plone.meta`, you can have the same developer experience (DX)
 across all Plone related packages.
 
 The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
@@ -590,14 +577,14 @@ and even your own private packages for your customers.
 With this configuration in place,
 any developer has the answer to the following questions at their fingertips:
 
--   Do the tests of this package pass?
--   What's the coverage of the test suite?
--   Is the package ready to be released?
--   Are all dependencies clearly defined?
--   What does the dependency graph look like?
--   Are there any circular dependency problems?
--   Is the code formatted to some agreed upon standards?
--   Do all agreed upon code quality checks pass?
+- Do the tests of this package pass?
+- What's the coverage of the test suite?
+- Is the package ready to be released?
+- Are all dependencies clearly defined?
+- What does the dependency graph look like?
+- Are there any circular dependency problems?
+- Is the code formatted to some agreed upon standards?
+- Do all agreed upon code quality checks pass?
 
 To find the answers to these questions, you can run the following commands.
 
@@ -626,7 +613,6 @@ Tooling is like fashion, it keeps evolving and changing.
 
 The great power behind `plone.meta` is that when we implement a better solution or tool,
 we can swiftly move all packages to the new approach, making it as painless as possible!
-
 
 ### Configuration philosophy
 
@@ -662,4 +648,3 @@ In this way, it provides a simple, yet powerful, extension mechanism.
 
 There are a few, and growing, other configuration options in a few files,
 where the simple approach described above is not enough.
-
