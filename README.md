@@ -1,6 +1,6 @@
-# plone/meta
+# plone.meta
 
-`plone/meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
+`plone.meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
 It does not cover the following.
 
 - Volto or any other JavaScript-based project, which has its own ecosystem.
@@ -10,7 +10,7 @@ It does not cover the following.
 
 ## Setup
 
-Clone `plone/meta` to any machine, then change your current working directory into `meta/config`, create a Python virtual environment, and install `plone/meta`'s requirements.
+Clone `plone.meta` to any machine, then change your current working directory into `meta/config`, create a Python virtual environment, and install `plone.meta`'s requirements.
 
 ```shell
 git clone https://github.com/plone/meta.git
@@ -21,7 +21,7 @@ venv/bin/pip install -e .
 
 ## `config-package` usage
 
-The command `config-package` from `plone/meta` creates or overwrites configuration files for your project.
+The command `config-package` from `plone.meta` creates or overwrites configuration files for your project.
 See a current list of [configuration files](#config-package-configuration-files) that it will create or overwrite.
 
 This command has several [command line options](#config-package-command-line-options) that you can use to override the default options.
@@ -29,7 +29,7 @@ This command has several [command line options](#config-package-command-line-opt
 When you run this command, it automatically goes through the following steps.
 
 1. It creates a new git branch from the current branch in your project.
-1. If the file {file}`.meta.toml` is not present in the project, then it creates this and the other new configuration files from `plone/meta`'s Jinja2 templates.
+1. If the file {file}`.meta.toml` is not present in the project, then it creates this and the other new configuration files from `plone.meta`'s Jinja2 templates.
    Otherwise, it reads the file {file}`.meta.toml` for regenerating the configuration files.
 1. It writes the configuration files.
 1. It creates a change log entry.
@@ -48,7 +48,7 @@ For help for `config-package`, use the following command.
 venv/bin/config-package --help
 ```
 
-You can request more extension points if `plone/meta` does not fulfill your needs in the [issue tracker](https://github.com/plone/meta/issues/new).
+You can request more extension points if `plone.meta` does not fulfill your needs in the [issue tracker](https://github.com/plone/meta/issues/new).
 
 ### Generate configuration files
 
@@ -67,7 +67,7 @@ Read further to see which options can be tweaked,
 or look at the files themselves that already provide hints on how to do it.
 
 > [!WARNING]
-> Do not directly edit the configuration files that `plone/meta` manages.
+> Do not directly edit the configuration files that `plone.meta` manages.
 Anytime someone runs the command `config-package`, any changes made in these files will get clobbered.
 
 Commit your changes, then run the command `config-package` to regenerate configuration files from your project's `.meta.toml`.
@@ -190,7 +190,7 @@ jobs = [
     ]
 ```
 
-It is possible to configure from which branch or tag of `plone/meta` to get the workflow files by setting the value of the `ref` key.
+It is possible to configure from which branch or tag of `plone.meta` to get the workflow files by setting the value of the `ref` key.
 In the following example, all GitHub workflows would come from the `v3` tag, instead of the default `main` branch.
 
 ```toml
@@ -557,11 +557,11 @@ venv/bin/re-enable-actions
 
 ## Explanation
 
-This section provides explanation of design decisions and capabilities of `plone/meta`.
+This section provides explanation of design decisions and capabilities of `plone.meta`.
 
 ### Project management
 
-By using `plone/meta`, you can have the same developer experience (DX)
+By using `plone.meta`, you can have the same developer experience (DX)
 across all Plone related packages.
 
 The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
