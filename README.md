@@ -22,9 +22,9 @@ venv/bin/pip install -e .
 ## `config-package` usage
 
 The command `config-package` from `plone/meta` creates or overwrites configuration files for your project.
-See a current list of [configuration files](#configuration-files) that it will create or overwrite.
+See a current list of [configuration files](#config-package-configuration-files) that it will create or overwrite.
 
-This command has several [command line options](#cli-arguments) that you can use to override the default options.
+This command has several [command line options](#config-package-command-line-options) that you can use to override the default options.
 
 When you run this command, it automatically goes through the following steps.
 
@@ -60,7 +60,11 @@ venv/bin/config-package [OPTIONS] PATH/TO/PACKAGE
 
 ### Manage configuration files
 
-For each of the configuration files, you should edit its [corresponding stanza](#applying-a-customized-configuration) in the file `.meta.toml`.
+To customize how the managed files are created,
+set their options on `.meta.toml` file.
+
+Read further to see which options can be tweaked,
+or look at the files themselves that already provide hints on how to do it.
 
 > [!WARNING]
 > Do not directly edit the configuration files that `plone/meta` manages.
@@ -393,7 +397,7 @@ _custom configuration_
 """
 ```
 
-##### `towncrier` configuration
+#### `towncrier` configuration
 
 If your project contains a `news/` folder, `plone.meta` will add the configuration for `towncrier`.
 
