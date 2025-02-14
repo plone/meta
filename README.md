@@ -36,7 +36,7 @@ When you run this command, it automatically goes through the following steps.
 1.  It writes the configuration files.
 1.  It creates a change log entry.
 1.  By default, it commits changes.
-1.  It optionally adds packages, pushes commits, or runs tox from the configuration files. 
+1.  It optionally adds packages, pushes commits, or runs tox from the configuration files.
 
 > [!TIP]
 > If you prefer to name the new git branch instead of letting the command name it using its default naming scheme, then either create a new branch `my-new-branch`, switch to it, and use the `--branch current` option, or do all that in one step with the `--branch my-new-branch` option.
@@ -517,7 +517,6 @@ test_environment_variables = """
 For packages that have `plone.app.robotframework` based tests, it automatically detects it and primes [Playwright](https://playwright.dev/) to install the needed browsers.
 
 
-
 ### Manage multiple repositories with `multi-call`
 
 The `config-package` command runs only on a single repository.
@@ -547,7 +546,6 @@ The script performs the following steps for each line in the given `packages.txt
 > Run `git stash pop` to recover them.
 
 
-
 ### Re-enable GitHub Actions with `re-enable-actions`
 
 After a certain period of time without commits to a repository, GitHub automatically disables Actions.
@@ -561,7 +559,7 @@ It does no harm if Actions are already enabled for a repository.
 -   Install [GitHub's CLI application](https://github.com/cli/cli).
 -   Authorize using the application:
     -   `gh auth login`
-    - It is probably enough to do it once.
+    -   It is probably enough to do it once.
 
 
 #### `re-enable-actions` usage
@@ -662,4 +660,3 @@ In this way, it provides a simple, yet powerful, extension mechanism.
 
 There are a few, and growing, other configuration options in a few files,
 where the simple approach described above is not enough.
-
