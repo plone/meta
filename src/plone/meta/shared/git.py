@@ -1,7 +1,5 @@
 from .call import call
-from .path import change_dir
-
-import pathlib
+from importlib.metadata import version
 
 
 def get_commit_id():
@@ -22,8 +20,8 @@ def get_branch_name(override, config_type):
             "git", "branch", "--show-current", capture_output=True
         ).stdout.splitlines()[0]
 
-    with change_dir(pathlib.Path(__file__).parent):
-        return override or f"config-with-{config_type}-template-{get_commit_id()}"
+    meta_version = version("plone.meta")
+    return override or f"config-with-{config_type}-template-{meta_version}"
 
 
 def git_branch(branch_name) -> bool:
