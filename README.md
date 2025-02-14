@@ -166,19 +166,21 @@ _your own configuration lines_
 ```
 
 
-#### `.github/workflows/meta.yml`
+#### `.github/workflows/test-matrix.yml`
+
+Run the distribution test on a combination of Plone and Python versions.
 
 > [!NOTE]
-> The variables `TEST_OS_VERSIONS` and `TEST_PYTHON_VERSIONS` variables need to exist, either at the GitHub organization level, or at the repository level.
+> See the `test_matrix` option in [`tox`](#toxini) configuration file.
 
-See the [GitHub documentation about variables](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables).
+> [!TIP]
+> 🍀 `plone.meta` tries to be a bit more environmentally friendly.
+> On GitHub, only the first and last Python versions will be added for testing.
 
-These variables are expected to be lists.
 
--   `TEST_OS_VERSIONS`: `["ubuntu-latest",]`
-    -   a list of valid operating system names according [to GitHub Actions](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
--   `TEST_PYTHON_VERSIONS`: `["3.13", "3.12", "3.11", "3.10", ]`
-    -   a list of valid Python versions according to [python-versions action](https://github.com/actions/python-versions/)
+#### `.github/workflows/meta.yml`
+
+Customize the GitHub Action jobs run on every change pushed to GitHub.
 
 Add the `[github]` TOML table in `.meta.toml`, and set the enabled jobs with the `jobs` key.
 
@@ -186,7 +188,6 @@ Add the `[github]` TOML table in `.meta.toml`, and set the enabled jobs with the
 [github]
 jobs = [
     "qa",
-    "test",
     "coverage",
     "dependencies",
     "release_ready",
@@ -220,17 +221,6 @@ To install specific operating system level dependencies, which must be Ubuntu pa
 os_dependencies = "git libxml2"
 ```
 
-To run tests against specific Python versions, specify the `py_versions` key as follows.
-
-> [!NOTE]
-> The GitHub Action expects a string to be parsed as a JSON array.
-> Unfortunately, quotes need to be escaped.
-
-```toml
-[github]
-py_versions = "[\"3.11\", \"3.10\"]"
-```
-
 Extend GitHub workflow configuration with additional jobs by setting the values for the `extra_lines` key.
 
 ```toml
@@ -253,12 +243,17 @@ _your own configuration lines_
 """
 ```
 
-Specify a custom Docker image, if the default does not fit your needs, in the `custom_image` key.
+Specify custom Docker images in the `custom_images` key.
+
+The dictionary keys needs to be Python versions and the value a Docker image for that Python version.
 
 ```toml
 [gitlab]
-custom_image = "python:3.11-bullseye"
+custom_images = {"3.13" = "python:3.13-bookworm", "3.12" = "python:3.12-bookworm"}
 ```
+
+> [!TIP]
+> To tweak the jobs that will be run, you can customize the `test_matrix` option from `[tox]` table.
 
 To install specific test and coverage dependencies, add the `os_dependencies` key as follows.
 
@@ -449,6 +444,15 @@ _your own configuration lines_
 """
 ```
 
+`plone.meta` generates a list of Python and Plone version combinations to run the distribution tests.
+
+You can customize that by defining your testing matrix:
+
+```toml
+[tox]
+test_matrix = { "6.1" = ["3.13", "3.10"], "6.0": ["3.13", "3.9"] }
+```
+
 Extend the list of default `tox` environments in the `envlist_lines` key.
 Add extra top level configuration for `tox` in the `config_lines` key.
 
@@ -493,14 +497,17 @@ test_deps_additional = """
 ```
 
 When using `plone.meta` outside of plone core packages, there might be extra version pins, or overrides over the official versions.
-To specify a custom constraints file, use the `constraints_file` key.
+To specify a custom constraints file, use the `constraints_files` key.
 
 Generating a custom `constraints.txt` is out of scope for `plone.meta` itself.
 There are plenty of tools that can do that though.
 
+> [!WARNING]
+> You need to specify the same Plone versions as in the `test_matrix` option or the default provided by `plone.meta`.
+
 ```toml
 [tox]
-constraints_file = "https://my-server.com/constraints.txt"
+constraints_files = { "6.1" = "https://my-server.com/constraints-6.1.txt", "6.0" = "https://my-server.com/constraints-6.0.txt" }
 ```
 
 Extend the list of custom environment variables that the test and coverage environments can get in the `test_environment_variables` key.
