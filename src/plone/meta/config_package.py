@@ -39,7 +39,13 @@ TOX_TEST_MATRIX = {
 
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
 
-DOCKER_IMAGE = "python:3.11-bullseye"
+DOCKER_IMAGES = {
+    "3.13": "python:3.13-bookworm",
+    "3.12": "python:3.12-bookworm",
+    "3.11": "python:3.11-bookworm",
+    "3.10": "python:3.10-bookworm",
+    "3.9": "python:3.9-bookworm",
+}
 
 # Rather than pointing configured repositories to `plone.meta`'s `main` branch
 # to get their GHA workflows, point them to an ever evolving branch.
@@ -539,18 +545,41 @@ class PackageConfiguration:
         options = self._get_options_for(
             "gitlab",
             (
-                "custom_image",
+                "custom_images",
                 "os_dependencies",
                 "extra_lines",
                 "jobs",
             ),
         )
-        if not options["custom_image"]:
-            options["custom_image"] = DOCKER_IMAGE
+        options.update(self._gitlab_testing_matrix(options["custom_images"]))
         options["destination"] = self.path / ".gitlab-ci.yml"
         if not options.get("jobs"):
             options["jobs"] = GITLAB_DEFAULT_JOBS
         return self.copy_with_meta("gitlab-ci.yml.j2", **options)
+
+    def _gitlab_testing_matrix(self, custom_images):
+        options = self._get_options_for("tox", ("test_matrix",))
+        test_matrix = getattr(options, "test_matrix", TOX_TEST_MATRIX)
+        combinations = []
+        image = ""
+        for plone_version, python_versions in test_matrix.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for py_version in (python_versions[0], python_versions[-1]):
+                no_dot_python = py_version.replace(".", "")
+                image = DOCKER_IMAGES.get(py_version)
+                if custom_images:
+                    image = custom_images.get(py_version)
+                if not image:
+                    raise ValueError(
+                        f"There is no Docker image defined for Python {py_version}. "
+                        "Either provide it in the `custom_images` option or report an issue to `plone.meta`."
+                    )
+
+                combinations.append((image, f"py{no_dot_python}-plone{no_dot_plone}"))
+        return {
+            "testing_matrix": combinations,
+            "custom_image": image,
+        }
 
     def flake8(self):
         options = self._get_options_for("flake8", ("extra_lines",))
