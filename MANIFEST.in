@@ -1,6 +1,7 @@
 include *.md
 include tox.ini
 include .pre-commit-config.yaml
+include .vscode/settings.json
 
 recursive-include src *.py
 recursive-include src *.j2
