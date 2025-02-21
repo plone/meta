@@ -1,6 +1,6 @@
-# plone/meta
+# plone.meta
 
-`plone/meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
+`plone.meta` defines and standardizes a common set of configuration files across Plone related Python repositories.
 It does not cover the following.
 
 -   Volto or any other JavaScript-based project, which has its own ecosystem.
@@ -11,32 +11,30 @@ It does not cover the following.
 
 ## Setup
 
-Clone `plone/meta` to any machine, then change your current working directory into `meta/config`, create a Python virtual environment, and install `plone/meta`'s requirements.
+Create a Python virtual environment and install `plone.meta` via pip.
 
 ```shell
-git clone https://github.com/plone/meta.git
-cd meta
 python3 -m venv venv
-venv/bin/pip install -e .
+venv/bin/pip install plone.meta
 ```
 
 
 ## `config-package` usage
 
-The command `config-package` from `plone/meta` creates or overwrites configuration files for your project.
-See a current list of [configuration files](#configuration-files) that it will create or overwrite.
+The command `config-package` from `plone.meta` creates or overwrites configuration files for your project.
+See a current list of [configuration files](#config-package-configuration-files) that it will create or overwrite.
 
-This command has several [command line options](#cli-arguments) that you can use to override the default options.
+This command has several [command line options](#config-package-command-line-options) that you can use to override the default options.
 
 When you run this command, it automatically goes through the following steps.
 
 1.  It creates a new git branch from the current branch in your project.
-1.  If the file {file}`.meta.toml` is not present in the project, then it creates this and the other new configuration files from `plone/meta`'s Jinja2 templates.
+1.  If the file {file}`.meta.toml` is not present in the project, then it creates this and the other new configuration files from `plone.meta`'s Jinja2 templates.
     Otherwise, it reads the file {file}`.meta.toml` for regenerating the configuration files.
 1.  It writes the configuration files.
 1.  It creates a change log entry.
 1.  By default, it commits changes.
-1.  It optionally adds packages, pushes commits, or runs tox from the configuration files. 
+1.  It optionally adds packages, pushes commits, or runs tox from the configuration files.
 
 > [!TIP]
 > If you prefer to name the new git branch instead of letting the command name it using its default naming scheme, then either create a new branch `my-new-branch`, switch to it, and use the `--branch current` option, or do all that in one step with the `--branch my-new-branch` option.
@@ -50,7 +48,7 @@ For help for `config-package`, use the following command.
 venv/bin/config-package --help
 ```
 
-You can request more extension points if `plone/meta` does not fulfill your needs in the [issue tracker](https://github.com/plone/meta/issues/new).
+You can request more extension points if `plone.meta` does not fulfill your needs in the [issue tracker](https://github.com/plone/meta/issues/new).
 
 
 ### Generate configuration files
@@ -64,10 +62,10 @@ venv/bin/config-package [OPTIONS] PATH/TO/PACKAGE
 
 ### Manage configuration files
 
-For each of the configuration files, you should edit its [corresponding stanza](#applying-a-customized-configuration) in the file `.meta.toml`.
+For each of the configuration files, you should edit its [corresponding stanza](#config-package-configuration-files) in the file `.meta.toml` to customize them.
 
 > [!WARNING]
-> Do not directly edit the configuration files that `plone/meta` manages.
+> Do not directly edit the configuration files that `plone.meta` manages.
 Anytime someone runs the command `config-package`, any changes made in these files will get clobbered.
 
 Commit your changes, then run the command `config-package` to regenerate configuration files from your project's `.meta.toml`.
@@ -196,7 +194,7 @@ jobs = [
     ]
 ```
 
-It is possible to configure from which branch or tag of `plone/meta` to get the workflow files by setting the value of the `ref` key.
+It is possible to configure from which branch or tag of `plone.meta` to get the workflow files by setting the value of the `ref` key.
 In the following example, all GitHub workflows would come from the `v3` tag, instead of the default `main` branch.
 
 ```toml
@@ -517,7 +515,6 @@ test_environment_variables = """
 For packages that have `plone.app.robotframework` based tests, it automatically detects it and primes [Playwright](https://playwright.dev/) to install the needed browsers.
 
 
-
 ### Manage multiple repositories with `multi-call`
 
 The `config-package` command runs only on a single repository.
@@ -547,7 +544,6 @@ The script performs the following steps for each line in the given `packages.txt
 > Run `git stash pop` to recover them.
 
 
-
 ### Re-enable GitHub Actions with `re-enable-actions`
 
 After a certain period of time without commits to a repository, GitHub automatically disables Actions.
@@ -561,7 +557,7 @@ It does no harm if Actions are already enabled for a repository.
 -   Install [GitHub's CLI application](https://github.com/cli/cli).
 -   Authorize using the application:
     -   `gh auth login`
-    - It is probably enough to do it once.
+    -   It is probably enough to do it once.
 
 
 #### `re-enable-actions` usage
@@ -575,12 +571,12 @@ venv/bin/re-enable-actions
 
 ## Explanation
 
-This section provides explanation of design decisions and capabilities of `plone/meta`.
+This section provides explanation of design decisions and capabilities of `plone.meta`.
 
 
 ### Project management
 
-By using `plone/meta`, you can have the same developer experience (DX)
+By using `plone.meta`, you can have the same developer experience (DX)
 across all Plone related packages.
 
 The idea is to make it mandatory for repositories under the [GitHub Plone organization](https://github.com/plone),
@@ -662,4 +658,3 @@ In this way, it provides a simple, yet powerful, extension mechanism.
 
 There are a few, and growing, other configuration options in a few files,
 where the simple approach described above is not enough.
-
