@@ -29,13 +29,6 @@ jobs:
 {% for job_name in jobs %}
   %(job_name)s:
     uses: plone/meta/.github/workflows/%(job_name)s.yml@%(ref)s
-  {% if job_name == 'test' and (os_dependencies or py_versions) %}
-    with:
-{% if os_dependencies %}       os-packages: '%(os_dependencies)s'{% endif %}
-
-{% if py_versions %}       py-versions: '%(py_versions)s'{% endif %}
-
-  {% endif %}
   {% if job_name == 'coverage' and os_dependencies %}
     with:
        os-packages: '%(os_dependencies)s'
@@ -47,7 +40,6 @@ jobs:
 # [github]
 # jobs = [
 #    "qa",
-#    "test",
 #    "coverage",
 #    "dependencies",
 #    "release_ready",
@@ -60,13 +52,6 @@ jobs:
 # when running tests/coverage jobs, add in .meta.toml:
 # [github]
 # os_dependencies = "git libxml2 libxslt"
-##
-
-##
-# To test against a specific matrix of python versions
-# when running tests jobs, add in .meta.toml:
-# [github]
-# py_versions = "['3.12', '3.11']"
 ##
 
 %(extra_lines)s

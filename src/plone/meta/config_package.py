@@ -31,10 +31,21 @@ See the inline comments on how to expand/tweak this configuration file
 --> """
 DEFAULT = object()
 
-MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
-PLONE_CONSTRAINTS = "https://dist.plone.org/release/6.0-dev/constraints.txt"
+# List all python versions we want to test a given Plone version against
+TOX_TEST_MATRIX = {
+    "6.1": ["3.13", "3.12", "3.11", "3.10"],
+    "6.0": ["3.13", "3.12", "3.11", "3.10", "3.9"],
+}
 
-DOCKER_IMAGE = "python:3.11-bullseye"
+MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
+
+DOCKER_IMAGES = {
+    "3.13": "python:3.13-bookworm",
+    "3.12": "python:3.12-bookworm",
+    "3.11": "python:3.11-bookworm",
+    "3.10": "python:3.10-bookworm",
+    "3.9": "python:3.9-bookworm",
+}
 
 # Rather than pointing configured repositories to `plone.meta`'s `main` branch
 # to get their GHA workflows, point them to an ever evolving branch.
@@ -46,7 +57,6 @@ GHA_DEFAULT_REF = "2.x"
 
 GHA_DEFAULT_JOBS = [
     "qa",
-    "test",
     "coverage",
     "dependencies",
     "release_ready",
@@ -347,7 +357,7 @@ class PackageConfiguration:
             "tox",
             (
                 "constrain_package_deps",
-                "constraints_file",
+                "constraints_files",
                 "envlist_lines",
                 "testenv_options",
                 "use_mxdev",
@@ -358,6 +368,7 @@ class PackageConfiguration:
                 "extra_lines",
                 "use_pytest_plone",
                 "package_name",
+                "test_matrix",
             ),
         )
         use_mxdev = options.get("use_mxdev", False)
@@ -369,14 +380,71 @@ class PackageConfiguration:
 
         if not options["constrain_package_deps"]:
             options["constrain_package_deps"] = "false" if use_mxdev else "true"
-        if not options["constraints_file"]:
-            constraints_file = MXDEV_CONSTRAINTS if use_mxdev else PLONE_CONSTRAINTS
-            options["constraints_file"] = constraints_file
+
         if options["use_pytest_plone"] is not False:
             # Default is '', so turn it into True
             options["use_pytest_plone"] = True
 
+        options.update(self._handle_constraints_files(options))
+        options["plone_envlist_lines"] = self._handle_testing_matrix(
+            options["test_matrix"]
+        )
         return self.copy_with_meta("tox.ini.j2", **options)
+
+    def _handle_constraints_files(self, options):
+        if options.get("use_mxdev", False):
+            constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
+        else:
+            constraints = options["constraints_files"]
+            test_matrix = options.get("test_matrix")
+            if not test_matrix:
+                test_matrix = TOX_TEST_MATRIX
+            plone_versions = list(test_matrix.keys())
+
+            single_constraints = f"-c https://dist.plone.org/release/{plone_versions[0]}-dev/constraints.txt"
+            if constraints:
+                first_plone_version = list(constraints.keys())[0]
+                single_constraints = f"-c {constraints[first_plone_version]}"
+                if len(test_matrix.keys()) != len(constraints.keys()):
+                    raise ValueError(
+                        "`constraints_files` and `test_matrix` need to provide the same Plone versions."
+                        f"They provide {list(constraints.keys())} and {list(test_matrix.keys())} respectively."
+                    )
+
+            lines = []
+            for plone_version in plone_versions:
+                no_dot = plone_version.replace(".", "")
+                url = f"https://dist.plone.org/release/{plone_version}-dev/constraints.txt"
+                if constraints:
+                    url = constraints[plone_version]
+                lines.append(f"plone{no_dot}: -c {url}")
+            constraints = "\n    ".join(lines)
+        return {
+            "constraints_file": constraints,
+            "single_constraints_file": single_constraints,
+        }
+
+    def _handle_testing_matrix(self, test_matrix):
+        """Generate the tox environments matrix of Python and Plone versions to test
+
+        Either `options` provides a dictionary like:
+        {
+          'PLONE_VERSION_1': [LIST_OF_PYTHON_VERSIONS],
+          'PLONE_VERSION_2': [LIST_OF_PYTHON_VERSIONS],
+        }
+
+        Or the default `TOX_TEST_MATRIX` is used.
+        """
+        lines = []
+        matrix = TOX_TEST_MATRIX
+        if test_matrix:
+            matrix = test_matrix
+        for plone_version, python_versions in matrix.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for python_version in python_versions:
+                no_dot_python = python_version.replace(".", "")
+                lines.append(f"py{no_dot_python}-plone{no_dot_plone}")
+        return "\n    ".join(lines)
 
     def _detect_robotframework(self):
         """Dynamically find out if robotframework is used in the package.
@@ -429,7 +497,6 @@ class PackageConfiguration:
                 "ref",
                 "jobs",
                 "os_dependencies",
-                "py_versions",
                 "extra_lines",
             ),
         )
@@ -450,7 +517,27 @@ class PackageConfiguration:
                 "A `dependabot.yml` file at the top-level was found, please remove it",
             )
 
-        return [meta_file, dependabot]
+        options["gh_config_lines"] = self.handle_gh_actions()
+        testing_file = self.copy_with_meta(
+            "test-matrix.yml.j2",
+            destination=workflows_folder / "test-matrix.yml",
+            **options,
+        )
+
+        return [meta_file, dependabot, testing_file]
+
+    def handle_gh_actions(self):
+        options = self._get_options_for("tox", ("test_matrix",))
+        test_matrix = getattr(options, "test_matrix", TOX_TEST_MATRIX)
+        combinations = []
+        for plone_version, python_versions in test_matrix.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for py_version in (python_versions[0], python_versions[-1]):
+                no_dot_python = py_version.replace(".", "")
+                combinations.append(
+                    f'["{py_version}", "{plone_version} on py{py_version}", "py{no_dot_python}-plone{no_dot_plone}"]'
+                )
+        return "\n        - ".join(combinations)
 
     def gitlab_ci(self):
         if not self.is_gitlab:
@@ -458,18 +545,41 @@ class PackageConfiguration:
         options = self._get_options_for(
             "gitlab",
             (
-                "custom_image",
+                "custom_images",
                 "os_dependencies",
                 "extra_lines",
                 "jobs",
             ),
         )
-        if not options["custom_image"]:
-            options["custom_image"] = DOCKER_IMAGE
+        options.update(self._gitlab_testing_matrix(options["custom_images"]))
         options["destination"] = self.path / ".gitlab-ci.yml"
         if not options.get("jobs"):
             options["jobs"] = GITLAB_DEFAULT_JOBS
         return self.copy_with_meta("gitlab-ci.yml.j2", **options)
+
+    def _gitlab_testing_matrix(self, custom_images):
+        options = self._get_options_for("tox", ("test_matrix",))
+        test_matrix = getattr(options, "test_matrix", TOX_TEST_MATRIX)
+        combinations = []
+        image = ""
+        for plone_version, python_versions in test_matrix.items():
+            no_dot_plone = plone_version.replace(".", "")
+            for py_version in (python_versions[0], python_versions[-1]):
+                no_dot_python = py_version.replace(".", "")
+                image = DOCKER_IMAGES.get(py_version)
+                if custom_images:
+                    image = custom_images.get(py_version)
+                if not image:
+                    raise ValueError(
+                        f"There is no Docker image defined for Python {py_version}. "
+                        "Either provide it in the `custom_images` option or report an issue to `plone.meta`."
+                    )
+
+                combinations.append((image, f"py{no_dot_python}-plone{no_dot_plone}"))
+        return {
+            "testing_matrix": combinations,
+            "custom_image": image,
+        }
 
     def flake8(self):
         options = self._get_options_for("flake8", ("extra_lines",))

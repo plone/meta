@@ -2,7 +2,7 @@ image: %(custom_image)s
 ##
 # Add extra configuration options in .meta.toml:
 #  [gitlab]
-#  custom_image = "python:3.11-bullseye"
+#  custom_images = {"3.13" = "python:3.13-bookworm", "3.12" = "python:3.12-bookworm"}
 ##
 
 stages:
@@ -75,10 +75,17 @@ circular-dependencies:
 {% if "testing" in jobs %}
 testing:
   stage: test
+  image: $DOCKER_IMAGE
   script:
 %(os_dependencies)s
     - pip install tox
-    - tox -e test -- --xml reports
+    - tox -e $TOX_ENV -- --xml reports
+  parallel:
+    matrix:
+{% for docker_image, tox_env in testing_matrix %}
+      - DOCKER_IMAGE: %(docker_image)s
+        TOX_ENV: %(tox_env)s
+{% endfor %}
   artifacts:
       when: always
       reports:

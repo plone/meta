@@ -1,0 +1,15 @@
+[testenv:init]
+description = Prepare environment
+skip_install = true
+allowlist_externals =
+    echo
+{% if use_mxdev %}
+deps =
+    mxdev
+commands =
+    mxdev -c mx.ini
+    echo "Initial setup for mxdev"
+{% else %}
+commands =
+    echo "Initial setup complete"
+{% endif %}
