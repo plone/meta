@@ -396,9 +396,7 @@ class PackageConfiguration:
             constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
         else:
             constraints = options["constraints_files"]
-            test_matrix = options.get("test_matrix")
-            if not test_matrix:
-                test_matrix = TOX_TEST_MATRIX
+            test_matrix = options.get("test_matrix") or TOX_TEST_MATRIX
             plone_versions = list(test_matrix.keys())
 
             single_constraints = f"-c https://dist.plone.org/release/{plone_versions[0]}-dev/constraints.txt"
@@ -528,7 +526,7 @@ class PackageConfiguration:
 
     def handle_gh_actions(self):
         options = self._get_options_for("tox", ("test_matrix",))
-        test_matrix = getattr(options, "test_matrix", TOX_TEST_MATRIX)
+        test_matrix = options.get("test_matrix") or TOX_TEST_MATRIX
         combinations = []
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
@@ -559,7 +557,7 @@ class PackageConfiguration:
 
     def _gitlab_testing_matrix(self, custom_images):
         options = self._get_options_for("tox", ("test_matrix",))
-        test_matrix = getattr(options, "test_matrix", TOX_TEST_MATRIX)
+        test_matrix = options.get("test_matrix") or TOX_TEST_MATRIX
         combinations = []
         image = ""
         for plone_version, python_versions in test_matrix.items():
