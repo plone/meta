@@ -531,7 +531,9 @@ class PackageConfiguration:
         combinations = []
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
-            for py_version in {python_versions[0], python_versions[-1]}:
+            top_bottom_versions = {python_versions[0], python_versions[-1]}
+            sorted_versions = sorted(top_bottom_versions, reverse=True)
+            for py_version in sorted_versions:
                 no_dot_python = py_version.replace(".", "")
                 combinations.append(
                     f'["{py_version}", "{plone_version} on py{py_version}", "py{no_dot_python}-plone{no_dot_plone}"]'
@@ -563,7 +565,9 @@ class PackageConfiguration:
         image = ""
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
-            for py_version in {python_versions[0], python_versions[-1]}:
+            top_bottom_versions = {python_versions[0], python_versions[-1]}
+            sorted_versions = sorted(top_bottom_versions, reverse=True)
+            for py_version in sorted_versions:
                 no_dot_python = py_version.replace(".", "")
                 image = DOCKER_IMAGES.get(py_version)
                 if custom_images:
