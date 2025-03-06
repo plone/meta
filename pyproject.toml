@@ -1,5 +1,7 @@
 [build-system]
 requires = ["setuptools>=68.2,<=75.8.0", "wheel"]
+# We must set a build-backend, because the default build-backend needs a setup.py.
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "plone.meta"
