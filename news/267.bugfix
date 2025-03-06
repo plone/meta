@@ -1,0 +1,5 @@
+Restrict `setuptools` to 75.8.0 as maximum when building a package.
+Require `wheel` as well in the `build-system`.
+Explicitly set the build backend to use `setuptools`.
+See also [pep 517](https://peps.python.org/pep-0517/) and [pep 518](https://peps.python.org/pep-0518/).
+[maurits]
