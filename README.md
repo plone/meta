@@ -450,7 +450,7 @@ You can customize that by defining your testing matrix:
 
 ```toml
 [tox]
-test_matrix = { "6.1" = ["3.13", "3.10"], "6.0": ["3.13", "3.9"] }
+test_matrix = { "6.1" = ["3.13", "3.10"], "6.0" = ["3.13", "3.9"] }
 ```
 
 Extend the list of default `tox` environments in the `envlist_lines` key.
