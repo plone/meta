@@ -13,22 +13,22 @@ on:
         required: false
         default: '.'
         type: string
-      check_typing:
+      check-typing:
         default: false
         type: boolean
-      version_ruff:
+      version-ruff:
         required: false
         default: 'latest'
         type: string
-      version_zpretty:
+      version-zpretty:
         required: false
         default: 'latest'
         type: string
-      version_pyroma:
+      version-pyroma:
         required: false
         default: 'latest'
         type: string
-      version_check_python:
+      version-check-python:
         required: false
         default: 'latest'
         type: string
@@ -59,38 +59,38 @@ jobs:
         id: ruff-format
         shell: bash
         run: |
-          uvx ruff@${{ inputs.version_ruff }} format --diff
+          uvx ruff@${{ inputs.version-ruff }} format --diff
 
       - name: Check lint
         if: ${{ success() || failure() }}
         id: ruff-lint
         shell: bash
         run: |
-          uvx ruff@${{ inputs.version_ruff }} check --diff
+          uvx ruff@${{ inputs.version-ruff }} check --diff
 
       - name: Check XML / ZCML
         if: ${{ success() || failure() }}
         id: zpretty
         shell: bash
         run: |
-          uvx zpretty@${{ inputs.version_zpretty }} --check src
+          uvx zpretty@${{ inputs.version-zpretty }} --check src
 
       - name: Check Package Metadata
         if: ${{ success() || failure() }}
         id: pyroma
         shell: bash
         run: |
-          uvx pyroma@${{ inputs.version_pyroma }} -d .
+          uvx pyroma@${{ inputs.version-pyroma }} -d .
 
       - name: Check Python Versions
         if: ${{ success() || failure() }}
         id: py-versions
         shell: bash
         run: |
-          uvx check-python-versions@${{ inputs.version_check_python }} .
+          uvx check-python-versions@${{ inputs.version-check-python }} .
 
       - name: Check typing
-        if: ${{ (success() || failure()) && inputs.check_typing }}
+        if: ${{ (success() || failure()) && inputs.check-typing }}
         id: typing
         run: |
           uv run mypy src

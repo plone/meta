@@ -11,10 +11,10 @@ on:
         type: string
         required: false
         default: '.'
-      check_links:
+      check-links:
         default: true
         type: boolean
-      check_vale:
+      check-vale:
         default: true
         type: boolean
 
@@ -39,7 +39,7 @@ jobs:
         run: make install
 
       - name: Check for broken links
-        if: ${{ inputs.check_links }}
+        if: ${{ inputs.check-links }}
         shell: bash
         run: |
           make linkcheckbroken
@@ -50,7 +50,7 @@ jobs:
           make build
 
       - name: Run vale checks
-        if: ${{ inputs.check_vale }}
+        if: ${{ inputs.check-vale }}
         shell: bash
         run: |
           make vale VALEOPTS="--minAlertLevel='warning'"
