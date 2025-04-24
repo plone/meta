@@ -86,14 +86,6 @@ jobs:
             type=pep440,pattern={{major}}
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Debug
-        shell: bash
-        run: |
-          echo "base-tag=${{ inputs.base-tag }}"
-          echo "working-directory=${{ inputs.working-directory }}"
-          echo "build-args=${{ inputs.build-args }}"
-
-
       - name: Build Image
         uses: docker/build-push-action@v6
         with:
