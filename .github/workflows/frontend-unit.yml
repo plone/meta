@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup codebase
-        uses: plone/meta/.github/actions/setup_frontend@issue-277-gha
+        uses: plone/meta/.github/actions/setup_frontend@2.x
         with:
           node-version: ${{ inputs.node-version }}
           working-directory: ${{ inputs.working-directory }}

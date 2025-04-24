@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup codebase
-        uses: plone/meta/.github/actions/setup_backend_uv@issue-277-gha
+        uses: plone/meta/.github/actions/setup_backend_uv@2.x
         with:
           python-version: ${{ inputs.python-version }}
           plone-version: ${{ inputs.plone-version }}
