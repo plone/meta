@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup uv
-        uses: ./.github/actions/setup_uv
+        uses: plone/meta/.github/actions/setup_uv@issue-277-gha
         with:
           python-version: ${{ inputs.python-version }}
           working-directory: ${{ inputs.working-directory }}
