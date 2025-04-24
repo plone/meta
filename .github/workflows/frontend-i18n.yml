@@ -1,0 +1,34 @@
+name: i18n checks
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        required: true
+      working-directory:
+        type: string
+        required: false
+        default: '.'
+
+jobs:
+  i18n:
+    name: i18n checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: Main checkout
+        uses: actions/checkout@v4
+
+      - name: Setup codebase
+        uses: ./.github/actions/setup_frontend
+        with:
+          node-version: ${{ inputs.node-version }}
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Test i18n command
+        shell: bash
+        run: |
+          make i18n

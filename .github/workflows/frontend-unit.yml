@@ -1,0 +1,35 @@
+name: Unit tests
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        required: true
+      working-directory:
+        type: string
+        required: false
+        default: '.'
+
+jobs:
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: Main checkout
+        uses: actions/checkout@v4
+
+      - name: Setup codebase
+        uses: ./.github/actions/setup_frontend
+        with:
+          node-version: ${{ inputs.node-version }}
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Unit tests
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: |
+          make ci-test

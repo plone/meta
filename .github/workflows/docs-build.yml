@@ -1,0 +1,56 @@
+name: Documentation
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+        default: '3.12'
+      working-directory:
+        type: string
+        required: false
+        default: '.'
+      check_links:
+        default: true
+        type: boolean
+      check_vale:
+        default: true
+        type: boolean
+
+jobs:
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: ./.github/actions/setup_uv
+        with:
+          python-version: ${{ inputs.python-version }}
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Install Dependencies
+        shell: bash
+        run: make install
+
+      - name: Check for broken links
+        if: ${{ inputs.check_links }}
+        shell: bash
+        run: |
+          make linkcheckbroken
+
+      - name: Build HTML documentation
+        shell: bash
+        run: |
+          make build
+
+      - name: Run vale checks
+        if: ${{ inputs.check_vale }}
+        shell: bash
+        run: |
+          make vale VALEOPTS="--minAlertLevel='warning'"

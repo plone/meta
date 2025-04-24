@@ -1,0 +1,97 @@
+name: Container Image Generation
+description: Generate and publish an image to be used in other tests
+
+on:
+  workflow_call:
+    inputs:
+      base-tag:
+        required: true
+        type: string
+      working-directory:
+        required: true
+        type: string
+        default: "."
+      image-name-prefix:
+        required: true
+        type: string
+      image-name-suffix:
+        required: true
+        type: string
+      platforms:
+        required: false
+        default: "linux/amd64"
+        type: string
+      dockerfile:
+        required: false
+        default: Dockerfile
+        type: string
+      registry:
+        required: false
+        default: "ghcr.io"
+        type: string
+      build-args:
+        required: false
+        default: ""
+        type: string
+      push:
+        required: true
+        type: boolean
+    secrets:
+        username:
+            required: true
+        password:
+            required: true
+
+jobs:
+
+  build:
+    name: "Image ${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}:${{ inputs.base-tag }}"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}
+          flavor:
+            latest=false
+          tags: |
+            type=ref,event=branch
+            type=sha
+            type=raw,value=${{ inputs.base-tag }}
+            type=pep440,pattern={{version}}
+            type=pep440,pattern={{major}}.{{minor}}
+            type=pep440,pattern={{major}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build Image
+        uses: docker/build-push-action@v6
+        with:
+          context:  ${{ inputs.working-directory }}
+          file: ${{ inputs.working-directory }}/${{ inputs.dockerfile }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ inputs.push }}
+          build-args: ${{ inputs.build-args }}
