@@ -1,0 +1,44 @@
+name: Storybook
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        required: true
+      working-directory:
+        type: string
+        required: false
+        default: '.'
+      deploy:
+        type: boolean
+        default: false
+
+jobs:
+  storybook:
+    name: Storybook
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: Main checkout
+        uses: actions/checkout@v4
+
+      - name: Setup codebase
+        uses: plone/meta/.github/actions/setup_frontend@2.x
+        with:
+          node-version: ${{ inputs.node-version }}
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Generate Storybook
+        shell: bash
+        run: |
+          make storybook-build
+
+      - name: Deploy to GitHub pages
+        if: ${{ github.ref == 'refs/heads/main' && inputs.deploy }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ${{ inputs.working-directory }}/.storybook-build

@@ -1,0 +1,47 @@
+name: "Coverage Python codebase with pytest"
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      plone-version:
+        required: true
+        type: string
+      working-directory:
+        required: false
+        default: '.'
+        type: string
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    env:
+      PYTHON_VERSION: ${{ inputs.python-version }}
+      PLONE_VERSION: ${{ inputs.plone-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup codebase
+        uses: plone/meta/.github/actions/setup_backend_uv@2.x
+        with:
+          python-version: ${{ inputs.python-version }}
+          plone-version: ${{ inputs.plone-version }}
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Run coverage
+        shell: bash
+        run: |
+          make test-coverage
+
+      - name: Report Coverage
+        shell: bash
+        run: |
+          echo "# Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "$(uv run coverage report --format markdown)" >> $GITHUB_STEP_SUMMARY
