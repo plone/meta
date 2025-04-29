@@ -670,30 +670,30 @@ where the simple approach described above is not enough.
 
 To avoid [duplicating](https://docs.github.com/en/actions/sharing-automations/avoiding-duplication) workflow content across Plone projects, the [`plone/meta` repository](https://github.com/plone/meta) provides a set of reusable workflows and composite actions.
 
-These actions and workflows are used by codebases generated with [`Cookieplone`](https://github.com/plone/cookieplone) and [`cookieplone-templates`](https://github.com/plone/cookieplone-templates).
+These actions and workflows are used by code bases generated with [`Cookieplone`](https://github.com/plone/cookieplone) and [`cookieplone-templates`](https://github.com/plone/cookieplone-templates).
 
-## Composite Actions
+## Composite actions
 
 Composite actions combine commonly used steps into reusable units that simplify writing GitHub workflows.
 
 ### `setup_backend_uv`
 
-Sets up and installs a backend codebase using [UV](https://github.com/astral-sh/uv).
-Also handles package caching using [`actions/cache`](https://github.com/actions/cache).
+The action `setup_backend_uv` sets up and installs a backend code base using [uv](https://github.com/astral-sh/uv).
+It also handles package caching using [`actions/cache`](https://github.com/actions/cache).
 
 This action assumes:
 
-* The codebase uses UV for dependency management.
+* The codebase uses uv for dependency management.
 * A `Makefile` provides an `install` target.
 * The `Makefile` supports overriding `PYTHON_VERSION` and `PLONE_VERSION` via environment variables.
 
-##### Inputs
+#### Inputs
 
 * `python-version`: Python version to use.
 * `plone-version`: Plone version to use.
-* `working-directory`: Path to the backend codebase.
+* `working-directory`: Path to the backend code base.
 
-##### Example usage
+#### Example usage
 
 ```yaml
 - name: Setup backend codebase
@@ -706,20 +706,20 @@ This action assumes:
 
 ### `setup_frontend`
 
-Sets up and installs a frontend codebase using [pnpm](https://pnpm.io/).
-Also handles package caching using [`actions/cache`](https://github.com/actions/cache).
+The action `setup_frontend` sets up and installs a frontend code base using [pnpm](https://pnpm.io/).
+It also handles package caching using [`actions/cache`](https://github.com/actions/cache).
 
 This action assumes:
 
-* The codebase uses pnpm for dependency management and was generated with [Cookieplone](https://github.com/plone/cookieplone).
+* The code base uses pnpm for dependency management and was generated with [Cookieplone](https://github.com/plone/cookieplone).
 * A `Makefile` provides an `install` target.
 
-##### Inputs
+#### Inputs
 
 * `node-version`: Node.js version to use.
 * `working-directory`: Path to the frontend codebase.
 
-##### Example usage
+#### Example usage
 
 ```yaml
 - name: Setup frontend codebase
@@ -731,53 +731,56 @@ This action assumes:
 
 ### `setup_uv`
 
-Sets up [UV](https://github.com/astral-sh/uv) and configures package caching.
+The action `setup_uv` sets up [uv](https://github.com/astral-sh/uv) and configures package caching.
 
 This action assumes:
 
-* The codebase uses UV for dependency management.
+* The code base uses uv for dependency management.
 
-##### Inputs
+#### Inputs
 
 * `python-version`: Python version to use.
-* `working-directory`: Path to the Python codebase.
+* `working-directory`: Path to the Python code base.
 
-##### Example usage
+#### Example usage
 
 ```yaml
-- name: Setup UV
+- name: Set up uv
   uses: plone/meta/.github/actions/setup_uv@2.x
   with:
     python-version: 3.12
     working-directory: docs
 ```
 
-## Reusable Workflows
+## Reusable workflows
 
 Reusable workflows automate testing, building, documentation, and deployment tasks.
 They are grouped into:
 
-- **Backend workflows**: Python/Plone projects
-- **Frontend workflows**: Node.js/Volto projects
+- **Backend workflows**: Python-based projects for Plone
+- **Frontend workflows**: Node.js-based projects for Plone
 - **Documentation workflows**: Building and validating documentation
 - **Container workflows**: Building and publishing Docker images
 
-Each workflow assumes the use of UV (Python) or pnpm (Node.js) for dependency management and standard Makefile targets.
+Each workflow assumes the use of uv for Python-based projects or pnpm for Node.js-based projects for dependency management and standard Makefile targets.
 
-### Backend Workflows
+### Backend workflows
+
+The following sections describe the workflows for the Plone backend.
+
 
 #### `backend-lint`
 
-Lints and performs static analysis on a backend codebase, including formatting, XML/ZCML validation, package metadata checking, Python version checking, and optional type checking.
+The workflow `backend-lint` lints and performs static analysis on a backend code base, including formatting, XML/ZCML validation, package metadata checking, Python version checking, and optional type checking.
 
 ##### Inputs
 
-* `python-version`: Python version to use. (Required)
-* `plone-version`: Plone version to use. (Required)
-* `working-directory`: Path to the backend codebase. Defaults to `.`.
+* `python-version`: Python version to use. Required.
+* `plone-version`: Plone version to use. Required.
+* `working-directory`: Path to the backend code base. Defaults to `.`.
 * `check-typing`: Whether to run static typing checks using `mypy`. Defaults to `false`.
 * `version-ruff`: Version of [ruff](https://github.com/astral-sh/ruff) to use. Defaults to `latest`.
-* `version-zpretty`: Version of [zpretty](https://github.com/plone/zpretty) to use. Defaults to `latest`.
+* `version-zpretty`: Version of [zpretty](https://github.com/collective/zpretty) to use. Defaults to `latest`.
 * `version-pyroma`: Version of [pyroma](https://github.com/regebro/pyroma) to use. Defaults to `latest`.
 * `version-check-python`: Version of [check-python-versions](https://pypi.org/project/check-python-versions/) to use. Defaults to `latest`.
 
@@ -796,13 +799,13 @@ jobs:
 
 #### `backend-pytest`
 
-Runs backend tests using [pytest](https://docs.pytest.org/).
+The workflow `backend-pytest` runs backend tests using [pytest](https://docs.pytest.org/en/stable/).
 
 ##### Inputs
 
-* `python-version`: Python version to use. (Required)
-* `plone-version`: Plone version to use. (Required)
-* `working-directory`: Path to the backend codebase. Defaults to `.`.
+* `python-version`: Python version to use. Required.
+* `plone-version`: Plone version to use. Required.
+* `working-directory`: Path to the backend code base. Defaults to `.`.
 
 ##### Example usage
 
@@ -819,13 +822,13 @@ jobs:
 
 #### `backend-pytest-coverage`
 
-Runs backend tests and generates a coverage report with [coverage.py](https://coverage.readthedocs.io/).
+The workflow `backend-pytest-coverage` runs backend tests and generates a coverage report with [coverage.py](https://coverage.readthedocs.io/en/latest/).
 
 ##### Inputs
 
-* `python-version`: Python version to use. (Required)
-* `plone-version`: Plone version to use. (Required)
-* `working-directory`: Path to the backend codebase. Defaults to `.`.
+* `python-version`: Python version to use. Required.
+* `plone-version`: Plone version to use. Required.
+* `working-directory`: Path to the backend code base. Defaults to `.`.
 
 ##### Example usage
 
@@ -840,16 +843,20 @@ jobs:
       working-directory: backend
 ```
 
-### Documentation Workflows
+### Documentation workflows
+
+The following sections describe the workflows for documentation.
+
 
 #### `docs-build`
 
-Builds HTML documentation, checks for broken links, and runs writing style checks using [Vale](https://vale.sh/).
+The workflow `docs-build` builds HTML documentation, checking for MyST syntax errors, and checks for broken links.
+It also checks American English spelling, grammar, and syntax, and checks for compliance with the [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/) using [Vale](https://vale.sh/).
 
 ##### Inputs
 
 * `python-version`: Python version to use. Defaults to `3.12`.
-* `working-directory`: Path to the documentation project. Defaults to `.`.
+* `working-directory`: Path to the documentation scaffold. Defaults to `.`.
 * `check-links`: Whether to run broken link checks. Defaults to `true`.
 * `check-vale`: Whether to run Vale checks. Defaults to `true`.
 
@@ -867,16 +874,20 @@ jobs:
       check-vale: true
 ```
 
-### Frontend Workflows
+
+### Frontend workflows
+
+The following sections describe the workflows for the Plone frontend.
+
 
 #### `frontend-acceptance`
 
-Runs frontend acceptance tests using [Cypress](https://www.cypress.io/), including server startup and artifact uploads (screenshots, videos).
+The workflow `frontend-acceptance` runs frontend acceptance tests using [Cypress](https://www.cypress.io/), including server startup and artifact uploads with screenshots and videos.
 
 ##### Inputs
 
-* `node-version`: Node.js version to use. (Required)
-* `working-directory`: Path to the frontend codebase. Defaults to `.`.
+* `node-version`: Node.js version to use. Required.
+* `working-directory`: Path to the frontend code base. Defaults to `.`.
 
 ##### Example usage
 
@@ -892,12 +903,12 @@ jobs:
 
 #### `frontend-code`
 
-Runs static analysis (linting) on a frontend codebase.
+The workflow `frontend-code` runs static analysis, or linting, on a frontend code base.
 
 ##### Inputs
 
-* `node-version`: Node.js version to use. (Required)
-* `working-directory`: Path to the frontend codebase. Defaults to `.`.
+* `node-version`: Node.js version to use. Required.
+* `working-directory`: Path to the frontend code base. Defaults to `.`.
 
 ##### Example usage
 
@@ -913,12 +924,12 @@ jobs:
 
 #### `frontend-i18n`
 
-Validates that frontend translation files are up-to-date.
+The workflow `frontend-i18n` validates that frontend translation files are up to date.
 
 ##### Inputs
 
-* `node-version`: Node.js version to use. (Required)
-* `working-directory`: Path to the frontend codebase. Defaults to `.`.
+* `node-version`: Node.js version to use. Required.
+* `working-directory`: Path to the frontend code base. Defaults to `.`.
 
 ##### Example usage
 
@@ -934,12 +945,12 @@ jobs:
 
 #### `frontend-storybook`
 
-Builds Storybook documentation and optionally deploys it to GitHub Pages.
+The workflow `frontend-storybook` builds Storybook documentation and optionally deploys it to GitHub Pages.
 
 ##### Inputs
 
-* `node-version`: Node.js version to use. (Required)
-* `working-directory`: Path to the frontend codebase. Defaults to `.`.
+* `node-version`: Node.js version to use. Required.
+* `working-directory`: Path to the frontend code base. Defaults to `.`.
 * `deploy`: Whether to deploy the Storybook build. Defaults to `false`.
 
 ##### Example usage
@@ -957,12 +968,12 @@ jobs:
 
 #### `frontend-unit`
 
-Runs unit tests on a frontend codebase.
+The workflow `frontend-unit` runs unit tests on a frontend code base.
 
 ##### Inputs
 
-* `node-version`: Node.js version to use. (Required)
-* `working-directory`: Path to the frontend codebase. Defaults to `.`.
+* `node-version`: Node.js version to use. Required.
+* `working-directory`: Path to the frontend code base. Defaults to `.`.
 
 ##### Example usage
 
@@ -976,28 +987,31 @@ jobs:
       working-directory: frontend
 ```
 
-### Container Workflows
+### Container workflows
+
+The following sections describe the workflows for Plone container images.
+
 
 #### `container-image-build-push`
 
-Builds and optionally pushes a container image for use in tests or deployments.
+The workflow `container-image-build-push` builds and optionally pushes a container image for use in tests or deployments.
 
 ##### Inputs
 
-* `base-tag`: Base tag for the image (e.g., `1.0.0`). (Required)
+* `base-tag`: Base tag for the image, for example, `1.0.0`. Required.
 * `working-directory`: Path to the project directory containing the Dockerfile. Defaults to `.`.
-* `image-name-prefix`: Image name prefix (e.g., organization or repository name). (Required)
-* `image-name-suffix`: Image name suffix (e.g., service identifier). (Required)
-* `platforms`: Platforms to build for. Defaults to `linux/amd64`.
+* `image-name-prefix`: Image name prefix, for example, the organization or repository name. Required.
+* `image-name-suffix`: Image name suffix, for example, the service identifier. Required.
+* `platforms`: Platforms for which to build the image. Defaults to `linux/amd64`.
 * `dockerfile`: Relative path to the Dockerfile. Defaults to `Dockerfile`.
 * `registry`: Container registry URL. Defaults to `ghcr.io`.
 * `build-args`: Additional build arguments. Defaults to `""`.
-* `push`: Whether to push the built image. (Required)
+* `push`: Whether to push the built image. Defaults to `true`.
 
 ##### Secrets
 
-* `username`: Registry username. (Required)
-* `password`: Registry password. (Required)
+* `username`: Registry username. Required.
+* `password`: Registry password. Required.
 
 ##### Example usage
 
@@ -1024,25 +1038,25 @@ jobs:
 
 #### `container-image-build`
 
-Builds a container image optimized for caching, typically used for internal tests (e.g., acceptance tests).
+The workflow `container-image-build` builds a container image optimized for caching, typically used for internal tests, for example, acceptance tests.
 
 ##### Inputs
 
-* `base-tag`: Base tag for the image. (Required)
+* `base-tag`: Base tag for the image. Required.
 * `working-directory`: Path to the project directory containing the Dockerfile. Defaults to `.`.
-* `image-name-prefix`: Image name prefix. (Required)
-* `image-name-suffix`: Image name suffix. (Required)
+* `image-name-prefix`: Image name prefix. Required.
+* `image-name-suffix`: Image name suffix. Required.
 * `image-cache-suffix`: Suffix for naming cache images. Defaults to `buildcache`.
-* `platforms`: Platforms to build for. Defaults to `linux/amd64`.
+* `platforms`: Platforms for which to build the image. Defaults to `linux/amd64`.
 * `dockerfile`: Relative path to the Dockerfile. Defaults to `Dockerfile`.
 * `registry`: Container registry URL. Defaults to `ghcr.io`.
 * `build-args`: Additional build arguments. Defaults to `""`.
-* `cache-key`: Cache identification key. Defaults to the branch name (`github.ref_name`).
+* `cache-key`: Cache identification key. Defaults to the branch name, for example, `github.ref_name`.
 
 ##### Secrets
 
-* `username`: Registry username. (Required)
-* `password`: Registry password. (Required)
+* `username`: Registry username. Required.
+* `password`: Registry password. Required.
 
 ##### Example usage
 
@@ -1070,25 +1084,25 @@ jobs:
 
 #### `container-image-push`
 
-Builds and pushes a container image to a registry, generating multiple tags based on branch, commit, and semantic versioning.
+The workflow `container-image-push` builds and pushes a container image to a registry, generating multiple tags based on branch, commit, and semantic versioning.
 
 ##### Inputs
 
-* `base-tag`: Base tag for the image. (Required)
+* `base-tag`: Base tag for the image. Required.
 * `working-directory`: Path to the project directory containing the Dockerfile. Defaults to `.`.
-* `image-name-prefix`: Image name prefix. (Required)
-* `image-name-suffix`: Image name suffix. (Required)
+* `image-name-prefix`: Image name prefix. Required.
+* `image-name-suffix`: Image name suffix. Required.
 * `image-cache-suffix`: Suffix for naming cache images. Defaults to `buildcache`.
-* `platforms`: Platforms to build for. Defaults to `linux/amd64`.
+* `platforms`: Platforms for which to build the image. Defaults to `linux/amd64`.
 * `dockerfile`: Relative path to the Dockerfile. Defaults to `Dockerfile`.
 * `registry`: Container registry URL. Defaults to `ghcr.io`.
 * `build-args`: Additional build arguments. Defaults to `""`.
-* `cache-key`: Cache identification key. Defaults to the branch name (`github.ref_name`).
+* `cache-key`: Cache identification key. Defaults to the branch name, for example, `github.ref_name`.
 
 ##### Secrets
 
-* `username`: Registry username. (Required)
-* `password`: Registry password. (Required)
+* `username`: Registry username. Required.
+* `password`: Registry password. Required.
 
 ##### Example usage
 
