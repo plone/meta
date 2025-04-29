@@ -668,7 +668,7 @@ where the simple approach described above is not enough.
 
 ## GitHub Actions shared automations
 
-To avoid [duplicating](https://docs.github.com/en/actions/sharing-automations/avoiding-duplication) workflow content across Plone projects, the [`plone/meta` repository](https://github.com/plone/meta) provides a set of reusable workflows and composite actions.
+To [avoid duplicating workflow content](https://docs.github.com/en/actions/sharing-automations/avoiding-duplication) across Plone projects, the [`plone/meta` repository](https://github.com/plone/meta) provides a set of reusable workflows and composite actions.
 
 These actions and workflows are used by code bases generated with [`Cookieplone`](https://github.com/plone/cookieplone) and [`cookieplone-templates`](https://github.com/plone/cookieplone-templates).
 
