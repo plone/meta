@@ -423,6 +423,24 @@ class PackageConfiguration:
             "single_constraints_file": single_constraints,
         }
 
+    def _normalized_python_version(self, python_version):
+        """Return a normalized python version string.
+
+        3.x -> py3.x
+        `pypy3.x`  -> `pypy3.x`, so be careful that we don't get `pypypy3.x`.
+        """
+        if python_version.startswith("py"):
+            return python_version
+        return f"py{python_version}"
+
+    def _no_dot_python_version(self, python_version):
+        """Return a normalized python version string without dots.
+
+        3.x -> py3x
+        `pypy3.x`  -> `pypy3x`, so be careful that we don't get `pypypy3x`.
+        """
+        return self._normalized_python_version(python_version).replace(".", "")
+
     def _handle_testing_matrix(self, test_matrix):
         """Generate the tox environments matrix of Python and Plone versions to test
 
@@ -441,8 +459,8 @@ class PackageConfiguration:
         for plone_version, python_versions in matrix.items():
             no_dot_plone = plone_version.replace(".", "")
             for python_version in python_versions:
-                no_dot_python = python_version.replace(".", "")
-                lines.append(f"py{no_dot_python}-plone{no_dot_plone}")
+                no_dot_python = self._no_dot_python_version(python_version)
+                lines.append(f"{no_dot_python}-plone{no_dot_plone}")
         return "\n    ".join(lines)
 
     def _detect_robotframework(self):
@@ -531,12 +549,19 @@ class PackageConfiguration:
         combinations = []
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
-            top_bottom_versions = {python_versions[0], python_versions[-1]}
-            sorted_versions = sorted(top_bottom_versions, reverse=True)
+            # Only test the lowest and highest Python version for a given Plone
+            # version.  But always include any PyPy versions in the list.
+            pypy_versions = [v for v in python_versions if v.startswith("pypy")]
+            standard_versions = [v for v in python_versions if not v.startswith("pypy")]
+            selected_versions = {standard_versions[0], standard_versions[-1]}
+            if pypy_versions:
+                selected_versions.update(pypy_versions)
+            sorted_versions = sorted(selected_versions, reverse=True)
             for py_version in sorted_versions:
-                no_dot_python = py_version.replace(".", "")
+                normalized_python = self._normalized_python_version(py_version)
+                no_dot_python = self._no_dot_python_version(normalized_python)
                 combinations.append(
-                    f'["{py_version}", "{plone_version} on py{py_version}", "py{no_dot_python}-plone{no_dot_plone}"]'
+                    f'["{py_version}", "{plone_version} on {normalized_python}", "{no_dot_python}-plone{no_dot_plone}"]'
                 )
         return "\n        - ".join(combinations)
 
@@ -568,7 +593,7 @@ class PackageConfiguration:
             top_bottom_versions = {python_versions[0], python_versions[-1]}
             sorted_versions = sorted(top_bottom_versions, reverse=True)
             for py_version in sorted_versions:
-                no_dot_python = py_version.replace(".", "")
+                no_dot_python = self._no_dot_python_version(py_version)
                 image = DOCKER_IMAGES.get(py_version)
                 if custom_images:
                     image = custom_images.get(py_version)
@@ -578,7 +603,7 @@ class PackageConfiguration:
                         "Either provide it in the `custom_images` option or report an issue to `plone.meta`."
                     )
 
-                combinations.append((image, f"py{no_dot_python}-plone{no_dot_plone}"))
+                combinations.append((image, f"{no_dot_python}-plone{no_dot_plone}"))
         return {
             "testing_matrix": combinations,
             "custom_image": image,
