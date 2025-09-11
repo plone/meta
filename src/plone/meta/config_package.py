@@ -138,6 +138,39 @@ def handle_command_line_arguments():
     return args
 
 
+def get_test_matrix(test_matrix):
+    """Get test matrix from options or use the default one.
+
+    If no test matrix is given, use the default one.
+    If a test matrix is given, we check if one of the Plone versions has '*'
+    as Python versions, which means "all supported versions".
+    We then replace the '*' with the default list of supported Python versions.
+
+    Example input:
+
+        {
+            "6.2": ["*"],
+            "6.1": ["3.11"],
+        }
+
+    Example output:
+
+        {
+            "6.2": ["3.13", "3.12", "3.11", "3.10"],
+            "6.1": ["3.11"],
+        }
+    """
+    if not test_matrix:
+        return TOX_TEST_MATRIX
+    result = {}
+    for plone_version, python_versions in test_matrix.items():
+        if python_versions == ["*"]:
+            result[plone_version] = TOX_TEST_MATRIX[plone_version]
+        else:
+            result[plone_version] = python_versions
+    return result
+
+
 class PackageConfiguration:
 
     def __init__(self, args):
@@ -397,7 +430,7 @@ class PackageConfiguration:
             constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
         else:
             constraints = options["constraints_files"]
-            test_matrix = options.get("test_matrix") or TOX_TEST_MATRIX
+            test_matrix = get_test_matrix(options.get("test_matrix"))
             plone_versions = list(test_matrix.keys())
 
             single_constraints = f"-c https://dist.plone.org/release/{plone_versions[0]}-dev/constraints.txt"
@@ -453,9 +486,7 @@ class PackageConfiguration:
         Or the default `TOX_TEST_MATRIX` is used.
         """
         lines = []
-        matrix = TOX_TEST_MATRIX
-        if test_matrix:
-            matrix = test_matrix
+        matrix = get_test_matrix(test_matrix)
         for plone_version, python_versions in matrix.items():
             no_dot_plone = plone_version.replace(".", "")
             for python_version in python_versions:
@@ -545,7 +576,7 @@ class PackageConfiguration:
 
     def handle_gh_actions(self):
         options = self._get_options_for("tox", ("test_matrix",))
-        test_matrix = options.get("test_matrix") or TOX_TEST_MATRIX
+        test_matrix = get_test_matrix(options.get("test_matrix"))
         combinations = []
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
@@ -585,7 +616,7 @@ class PackageConfiguration:
 
     def _gitlab_testing_matrix(self, custom_images):
         options = self._get_options_for("tox", ("test_matrix",))
-        test_matrix = options.get("test_matrix") or TOX_TEST_MATRIX
+        test_matrix = get_test_matrix(options.get("test_matrix"))
         combinations = []
         image = ""
         for plone_version, python_versions in test_matrix.items():

@@ -450,8 +450,10 @@ You can customize that by defining your testing matrix:
 
 ```toml
 [tox]
-test_matrix = { "6.1" = ["3.13", "3.10"], "6.0" = ["3.13", "3.9"] }
+test_matrix = { "6.1" = ["3.13", "3.10"], "6.0" = ["*"] }
 ```
+
+When the list of Python versions is `*`, `plone.meta` replaces it with the default Python version list for this Plone version.
 
 Extend the list of default `tox` environments in the `envlist_lines` key.
 Add extra top level configuration for `tox` in the `config_lines` key.
