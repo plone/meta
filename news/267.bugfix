@@ -1,4 +1,0 @@
-Restrict `setuptools` to less than 80 when building a package.
-Require `wheel` as well in the `build-system`.
-See also [pep 517](https://peps.python.org/pep-0517/) and [pep 518](https://peps.python.org/pep-0518/).
-[maurits]
