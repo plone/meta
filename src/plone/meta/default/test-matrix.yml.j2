@@ -34,6 +34,14 @@ jobs:
     - name: install OS packages
       run: sudo apt-get install -y %(os_dependencies)s
 {% endif %}
+%(extra_lines_after_os_dependencies)s
+##
+# Add extra configuration options in .meta.toml:
+#  [github]
+#  extra_lines_after_os_dependencies = """
+#  _your own configuration lines_
+#  """
+##
     - name: Pip cache
       uses: actions/cache@v4
       with:
@@ -53,3 +61,12 @@ jobs:
         if [ `tox list --no-desc -f init|wc -l` = 1 ]; then tox -e init;else true; fi
     - name: Test
       run: tox -e ${{ matrix.config[2] }}
+
+%(extra_lines)s
+##
+# Add extra configuration options in .meta.toml:
+#  [github]
+#  extra_lines = """
+#  _your own configuration lines_
+#  """
+##

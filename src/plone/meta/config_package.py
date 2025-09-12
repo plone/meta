@@ -546,6 +546,7 @@ class PackageConfiguration:
                 "jobs",
                 "os_dependencies",
                 "extra_lines",
+                "extra_lines_after_os_dependencies",
             ),
         )
         if not options.get("ref"):
