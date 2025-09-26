@@ -8,7 +8,6 @@ deps =
     towncrier
 {% endif %}
     %(single_constraints_file)s
-    %(test_deps_additional)s
 commands =
 {% if news_folder_exists %}
     # fake version to not have to install the package
@@ -41,7 +40,6 @@ deps =
     pipdeptree
     pipforester
     %(single_constraints_file)s
-    %(test_deps_additional)s
 commands =
     # Generate the full dependency tree
     sh -c 'pipdeptree -j > forest.json'
