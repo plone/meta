@@ -17,6 +17,7 @@ on:
 jobs:
 
   test:
+    name: "Test coverage with Pytest"
     runs-on: ubuntu-latest
     defaults:
       run:
