@@ -40,6 +40,7 @@ dependencies = [
   "tomlkit",
   "tox",
   "validate-pyproject[all]",
+  "zest.releaser",
 ]
 
 [project.urls]

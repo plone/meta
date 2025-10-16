@@ -82,7 +82,7 @@ def main():
 
     with change_dir(path) as cwd_str:
         cwd = pathlib.Path(cwd_str)
-        bin_dir = cwd / "bin"
+        bin_dir = cwd / "venv" / "bin"
         branch_name = args.branch_name or "pep-420-native-namespace"
         updating = git_branch(branch_name)
 
@@ -136,7 +136,7 @@ def main():
             call("git", "add", ".")
 
         if args.run_tests:
-            tox_path = shutil.which("tox") or (cwd / "bin" / "tox")
+            tox_path = shutil.which("tox") or (cwd / "venv" / "bin" / "tox")
             call(tox_path, "-p", "auto")
 
         if args.commit:
