@@ -43,6 +43,13 @@ def main():
         help='Don\'t "git commit" changes made by this script.',
     )
     parser.add_argument(
+        "--push",
+        dest="push",
+        action="store_true",
+        default=False,
+        help="Push changes directly.",
+    )
+    parser.add_argument(
         "--interactive",
         dest="interactive",
         action="store_true",
@@ -126,8 +133,11 @@ def main():
             call(tox_path, "-p", "auto")
 
         if args.commit:
-            print("Committing and pushing all changes ...")
+            print("Committing all changes ...")
             call("git", "commit", "-m", "Switch to PEP 420 native namespace.")
+            if not args.push:
+                print("All changes committed. Please check and push manually.")
+                return
             call("git", "push", "--set-upstream", "origin", branch_name)
             if updating:
                 print("Updated the previously created PR.")
