@@ -36,6 +36,13 @@ def main():
         " type",
     )
     parser.add_argument(
+        "--no-breaking",
+        dest="breaking",
+        action="store_false",
+        default=True,
+        help="Don't bump for breaking change. Use this if release is already alpha.",
+    )
+    parser.add_argument(
         "--no-commit",
         dest="commit",
         action="store_false",
@@ -85,7 +92,8 @@ def main():
         else:
             args.commit = False
 
-        call(bin_dir / "bumpversion", "--breaking", *non_interactive_params)
+        if args.breaking:
+            call(bin_dir / "bumpversion", "--breaking", *non_interactive_params)
         call(
             bin_dir / "addchangelogentry",
             "Replace ``pkg_resources`` namespace with PEP 420 native namespace.",
