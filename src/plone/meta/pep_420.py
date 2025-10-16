@@ -94,9 +94,8 @@ def main():
 
         if args.breaking:
             call(bin_dir / "bumpversion", "--breaking", *non_interactive_params)
-        call(
-            bin_dir / "addchangelogentry",
-            "Replace ``pkg_resources`` namespace with PEP 420 native namespace.",
+        (path / "news" / "3928.breaking").write_text(
+            "Replace ``pkg_resources`` namespace with PEP 420 native namespace.\n"
         )
 
         setup_py = []
