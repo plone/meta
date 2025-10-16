@@ -52,6 +52,7 @@ Documentation = "https://6.docs.plone.org/developer-guide/standardize-python-pro
 config-package = "plone.meta.config_package:main"
 multi-call = "plone.meta.multi_call:main"
 re-enable-actions = "plone.meta.re_enable_actions:main"
+switch-to-pep420 = "plone.meta.pep_420:main"
 
 [tool.towncrier]
 directory = "news/"
