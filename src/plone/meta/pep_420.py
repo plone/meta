@@ -96,6 +96,7 @@ def main():
             call(bin_dir / "bumpversion", "--breaking", *non_interactive_params)
         (path / "news" / "3928.breaking").write_text(
             "Replace ``pkg_resources`` namespace with PEP 420 native namespace.\n"
+            "Support only Plone 6.2 and Python 3.10+.\n"
         )
 
         setup_py = []
@@ -111,6 +112,22 @@ def main():
             elif "zope.testrunner" in line:
                 setup_py.append(
                     line.replace("zope.testrunner", "zope.testrunner >= 6.4")
+                )
+            elif "Framework :: Plone :: 6.0" in line:
+                continue
+            elif "Framework :: Plone :: 6.1" in line:
+                continue
+            elif "Programming Language :: Python :: 3.8" in line:
+                continue
+            elif "Programming Language :: Python :: 3.9" in line:
+                continue
+            elif 'python_requires=">=3.8"' in line:
+                setup_py.append(
+                    line.replace('python_requires=">=3.8"', 'python_requires=">=3.10"')
+                )
+            elif 'python_requires=">=3.9"' in line:
+                setup_py.append(
+                    line.replace('python_requires=">=3.9"', 'python_requires=">=3.10"')
                 )
             else:
                 setup_py.append(line)
