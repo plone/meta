@@ -11,13 +11,13 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import argparse
-import pathlib
-import shutil
-
 from .shared.call import call
 from .shared.git import git_branch
 from .shared.path import change_dir
+
+import argparse
+import pathlib
+import shutil
 
 
 def main():
@@ -51,19 +51,18 @@ def main():
         "--no-commit, changes will not be committed and pushed automatically.",
     )
     parser.add_argument(
-        '--no-tests',
-        dest='run_tests',
-        action='store_false',
+        "--no-tests",
+        dest="run_tests",
+        action="store_false",
         default=True,
-        help='Skip running unit tests.',
+        help="Skip running unit tests.",
     )
 
     args = parser.parse_args()
     path = args.path.absolute()
 
     if not (path / ".git").exists():
-        raise ValueError(
-            "`path` does not point to a git clone of a repository!")
+        raise ValueError("`path` does not point to a git clone of a repository!")
     if not (path / ".meta.toml").exists():
         raise ValueError("The repository `path` points to has no .meta.toml!")
 
@@ -82,8 +81,7 @@ def main():
         call(bin_dir / "bumpversion", "--breaking", *non_interactive_params)
         call(
             bin_dir / "addchangelogentry",
-            "Replace ``pkg_resources`` namespace with PEP 420"
-            " native namespace."
+            "Replace ``pkg_resources`` namespace with PEP 420 native namespace.",
         )
 
         setup_py = []
@@ -135,8 +133,8 @@ def main():
                 print("Updated the previously created PR.")
             else:
                 print(
-                    "Are you logged in via `gh auth login` to create a PR?"
-                    " (y/N)?", end=" ",
+                    "Are you logged in via `gh auth login` to create a PR? (y/N)?",
+                    end=" ",
                 )
                 if input().lower() == "y":
                     call(
