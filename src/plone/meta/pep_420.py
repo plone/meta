@@ -100,7 +100,9 @@ def main():
         )
 
         setup_py = []
-        for line in (path / "setup.py").read_text().splitlines():
+        setup_text = (path / "setup.py").read_text()
+        has_62_classifier = "Framework :: Plone :: 6.2" in setup_text
+        for line in setup_text.splitlines():
             if "from setuptools import find_packages" in line:
                 continue
             elif "namespace_packages" in line:
@@ -131,6 +133,15 @@ def main():
                 )
             else:
                 setup_py.append(line)
+                # One extra check after the line has been added.
+                if (
+                    not has_62_classifier
+                    and "Framework :: Plone" in line
+                    and "Framework :: Plone ::" not in line
+                ):
+                    setup_py.append(
+                        line.replace("Framework :: Plone", "Framework :: Plone :: 6.2")
+                    )
 
         (path / "setup.py").write_text("\n".join(setup_py) + "\n")
 
