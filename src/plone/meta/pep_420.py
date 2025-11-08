@@ -82,7 +82,6 @@ def main():
 
     with change_dir(path) as cwd_str:
         cwd = pathlib.Path(cwd_str)
-        bin_dir = cwd / "venv" / "bin"
         branch_name = args.branch_name or "pep-420-native-namespace"
         updating = git_branch(branch_name)
 
@@ -93,7 +92,7 @@ def main():
             args.commit = False
 
         if args.breaking:
-            call(bin_dir / "bumpversion", "--breaking", *non_interactive_params)
+            call("bumpversion", "--breaking", *non_interactive_params)
         (path / "news" / "3928.breaking").write_text(
             "Replace ``pkg_resources`` namespace with PEP 420 native namespace.\n"
             "Support only Plone 6.2 and Python 3.10+.\n"
