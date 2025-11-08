@@ -9,6 +9,20 @@
 
 <!-- towncrier release notes start -->
 
+## 2.2.0 (2025-11-08)
+
+
+### New features:
+
+- Add and adapt switch-to-pep420 script from zope meta. [#3982](https://github.com/plone/meta/issues/3982)
+- Setup uv in frontend shared workflows -- used by repoplone. @ericof 
+- Support github options `extra_lines` and `extra_lines_after_os_dependencies`. @mauritsvanrees 
+
+
+### Bug fixes:
+
+- Do not add `test_deps_additional` to `circular` and `release-check` tox envs. @mauritsvanrees [#293](https://github.com/plone/meta/issues/293)
+
 ## 2.1.0 (2025-09-12)
 
 
