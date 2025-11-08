@@ -1,1 +1,0 @@
-Fix switch to native namespace script to expect `bumpversion` to be globally available @gforcada

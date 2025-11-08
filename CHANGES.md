@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.2.1 (2025-11-08)
+
+
+### Bug fixes:
+
+- Fix switch to native namespace script to expect `bumpversion` to be globally available @gforcada 
+
 ## 2.2.0 (2025-11-08)
 
 
