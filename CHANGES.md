@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.2.2 (2025-11-11)
+
+
+### Bug fixes:
+
+- `switch-to-pep420` script: remove `setuptools` dependency.  @mauritsvanrees [#3982](https://github.com/plone/meta/issues/3982)
+
 ## 2.2.1 (2025-11-08)
 
 
