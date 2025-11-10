@@ -104,6 +104,8 @@ def main():
         for line in setup_text.splitlines():
             if "from setuptools import find_packages" in line:
                 continue
+            elif '"setuptools",' in line:
+                continue
             elif "namespace_packages" in line:
                 continue
             elif "packages=" in line:
