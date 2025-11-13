@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
-          key: binary-${{ inputs.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: Cypress-binary-${{ inputs.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install Cypress if not in cache
         if: steps.cache-cypress-binary.outputs.cache-hit != 'true'
@@ -76,6 +76,8 @@ jobs:
           log-output: stderr,stdout # same as true
 
           log-output-if: failure
+
+          working-directory: ${{ inputs.working-directory }}
 
       - name: Run acceptance tests
         shell: bash
