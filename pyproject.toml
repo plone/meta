@@ -11,19 +11,18 @@ version = "2.2.3.dev0"
 description = "Applies a standard set of configuration files for Plone repositories"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 authors = [
   { name = "Plone Foundation", email = "releaseteam@plone.org" },
   { name = "Gil Forcada Codinachs", email = "gil.gnome@gmail.com" },
 ]
 keywords = ["plone", "packaging"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -33,7 +32,6 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 dependencies = [
-  "setuptools",
   "Jinja2",
   "editorconfig",
   "pyyaml",
@@ -46,7 +44,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/plone/meta"
 "Issue Tracker" = "https://github.com/plone/meta/issues"
-Changelog = "https://github.com/plone/meta/blob/main/CHANGES.md"
+Changelog = "https://github.com/plone/meta/blob/2.x/CHANGES.md"
 Documentation = "https://6.docs.plone.org/developer-guide/standardize-python-project-configuration.html"
 
 [project.scripts]
