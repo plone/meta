@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Main checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup uv
         uses: plone/meta/.github/actions/setup_uv@2.x

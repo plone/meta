@@ -27,7 +27,7 @@ jobs:
       PLONE_VERSION: ${{ inputs.plone-version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup codebase
         uses: plone/meta/.github/actions/setup_backend_uv@2.x
