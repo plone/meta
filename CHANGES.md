@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 2.3.1 (2025-12-15)
+
+
+### Bug fixes:
+
+- Remove Python 3.9 from testing matrix as it went EOL @gforcada 
+- Update GHA version pins @gforcada 
+
 ## 2.3.0 (2025-12-06)
 
 
