@@ -93,10 +93,19 @@ def main():
 
         if args.breaking:
             call("bumpversion", "--breaking", *non_interactive_params)
-        (path / "news" / "3928.breaking").write_text(
-            "Replace ``pkg_resources`` namespace with PEP 420 native namespace.\n"
-            "Support only Plone 6.2 and Python 3.10+.\n"
-        )
+        if (path / "news").exists():
+            (path / "news" / "3928.breaking").write_text(
+                "Replace ``pkg_resources`` namespace with PEP 420 native namespace.\n"
+                "Support only Plone 6.2 and Python 3.10+.\n"
+            )
+        else:
+            print(
+                "Warning: No `news` directory found. Please remember to document the"
+                " breaking change manually!"
+                "\n\n"
+                "Replace ``pkg_resources`` namespace with PEP 420 native namespace.\n"
+                "Support only Plone 6.2 and Python 3.10+.\n"
+            )
 
         setup_py = []
         setup_text = (path / "setup.py").read_text()
