@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "plone.meta"
-version = "2.3.2"
+version = "2.3.3.dev0"
 description = "Applies a standard set of configuration files for Plone repositories"
 readme = "README.md"
 license = { file = "LICENSE" }
