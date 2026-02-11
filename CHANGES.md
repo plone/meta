@@ -9,6 +9,16 @@
 
 <!-- towncrier release notes start -->
 
+## 2.3.2 (2026-02-11)
+
+
+### Bug fixes:
+
+- Handle repositories without towncrier, when converting them to native namespace @gforcada [#312](https://github.com/plone/meta/issues/312)
+- pin setuptools to version < 82.0.0 in the tox-qa template [testenv:dependencies]
+  this fix `ModuleNotFoundError: No module named 'pkg_resources'` if run `tox -e dependencies` in a project
+  z3c.dependencychecker is not ready for PEP 420 native namespace @1letter [#320](https://github.com/plone/meta/issues/320)
+
 ## 2.3.1 (2025-12-15)
 
 
