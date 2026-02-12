@@ -405,7 +405,6 @@ class PackageConfiguration:
                 "test_matrix",
             ),
         )
-        use_mxdev = options.get("use_mxdev", False)
         options.update(self._test_cfg())
         options["package_name"] = options.get("package_name") or self.path.name
         options["news_folder_exists"] = (self.path / "news").exists()
@@ -413,7 +412,12 @@ class PackageConfiguration:
         options["prime_robotframework"] = self._detect_robotframework()
 
         if not options["constrain_package_deps"]:
-            options["constrain_package_deps"] = "false" if use_mxdev else "true"
+            # We used to set constrain_package_deps to false when using mxdex.
+            # But this seems wrong, leading to completely ignoring the constraints.
+            # See https://github.com/plone/meta/issues/316
+            # and before that:
+            # https://github.com/plone/meta/pull/220
+            options["constrain_package_deps"] = "true"
 
         if options["use_pytest_plone"] is not False:
             # Default is '', so turn it into True
