@@ -455,6 +455,13 @@ test_matrix = { "6.1" = ["3.13", "3.10"], "6.0" = ["*"] }
 
 When the list of Python versions is `*`, `plone.meta` replaces it with the default Python version list for this Plone version.
 
+If a test matrix will not work for your project, you can disable the test matrix entirely:
+
+```toml
+[tox]
+use_test_matrix = false
+```
+
 Extend the list of default `tox` environments in the `envlist_lines` key.
 Add extra top level configuration for `tox` in the `config_lines` key.
 
