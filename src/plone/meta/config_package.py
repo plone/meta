@@ -271,6 +271,12 @@ class PackageConfiguration:
         """Get all given named options from a given section"""
         options = {}
         for name in names:
+            # TODO We may want to define defaults somewhere, instead of
+            # passing an empty string as default here.  Especially for boolean
+            # options that should by default be True, like use_pytest_plone
+            # and use_test_matrix.  Currently we need to explicitly compare
+            # with False:
+            # if options["use_pytest_plone"] is not False:
             options[name] = self.cfg_option(section, name, "")
         return options
 
@@ -425,7 +431,9 @@ class PackageConfiguration:
             options["use_pytest_plone"] = True
 
         options.update(self._handle_constraints_files(options))
-        if options.get("use_test_matrix", True):
+        if options["use_test_matrix"] is not False:
+            # Default is '', so turn it into True
+            options["use_test_matrix"] = True
             options["plone_envlist_lines"] = self._handle_testing_matrix(
                 options["test_matrix"]
             )
@@ -436,7 +444,10 @@ class PackageConfiguration:
     def _handle_constraints_files(self, options):
         if options.get("use_mxdev", False):
             constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
-        elif not options.get("use_test_matrix", True):
+        elif options["use_test_matrix"] is False:
+            # Default value is '', which we interpret as True.
+            # TODO This is confusing, we may need to define the defaults
+            # somewhere.  See also '_get_options_for'.
             constraints = single_constraints = ""
         else:
             constraints = options["constraints_files"]
@@ -608,7 +619,7 @@ class PackageConfiguration:
         )
         combinations = []
         # By default we use the test matrix, but you can explicitly opt out.
-        if not options.get("use_test_matrix", True):
+        if options["use_test_matrix"] is False:
             return combinations
         test_matrix = get_test_matrix(options.get("test_matrix"))
         for plone_version, python_versions in test_matrix.items():
@@ -664,7 +675,7 @@ class PackageConfiguration:
         )
         combinations = []
         # By default we use the test matrix, but you can explicitly opt out.
-        if not options.get("use_test_matrix", True):
+        if options["use_test_matrix"] is False:
             return combinations
         test_matrix = get_test_matrix(options.get("test_matrix"))
         image = ""
