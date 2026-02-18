@@ -271,6 +271,12 @@ class PackageConfiguration:
         """Get all given named options from a given section"""
         options = {}
         for name in names:
+            # TODO We may want to define defaults somewhere, instead of
+            # passing an empty string as default here.  Especially for boolean
+            # options that should by default be True, like use_pytest_plone
+            # and use_test_matrix.  Currently we need to explicitly compare
+            # with False:
+            # if options["use_pytest_plone"] is not False:
             options[name] = self.cfg_option(section, name, "")
         return options
 
@@ -403,6 +409,7 @@ class PackageConfiguration:
                 "use_pytest_plone",
                 "package_name",
                 "test_matrix",
+                "use_test_matrix",
             ),
         )
         options.update(self._test_cfg())
@@ -424,14 +431,24 @@ class PackageConfiguration:
             options["use_pytest_plone"] = True
 
         options.update(self._handle_constraints_files(options))
-        options["plone_envlist_lines"] = self._handle_testing_matrix(
-            options["test_matrix"]
-        )
+        if options["use_test_matrix"] is not False:
+            # Default is '', so turn it into True
+            options["use_test_matrix"] = True
+            options["plone_envlist_lines"] = self._handle_testing_matrix(
+                options["test_matrix"]
+            )
+        else:
+            options["plone_envlist_lines"] = ""
         return self.copy_with_meta("tox.ini.j2", **options)
 
     def _handle_constraints_files(self, options):
         if options.get("use_mxdev", False):
             constraints = single_constraints = f"-c {MXDEV_CONSTRAINTS}"
+        elif options["use_test_matrix"] is False:
+            # Default value is '', which we interpret as True.
+            # TODO This is confusing, we may need to define the defaults
+            # somewhere.  See also '_get_options_for'.
+            constraints = single_constraints = ""
         else:
             constraints = options["constraints_files"]
             test_matrix = get_test_matrix(options.get("test_matrix"))
@@ -536,8 +553,9 @@ class PackageConfiguration:
         return destination.relative_to(self.path)
 
     def gha_workflows(self):
+        files = []
         if not self.is_github:
-            return []
+            return files
         github_folder = self.path / ".github"
         workflows_folder = github_folder / "workflows"
         workflows_folder.mkdir(parents=True, exist_ok=True)
@@ -560,9 +578,11 @@ class PackageConfiguration:
         meta_file = self.copy_with_meta(
             "meta.yml.j2", destination=destination, **options
         )
+        files.append(meta_file)
         dependabot = self.copy_with_meta(
             "dependabot.yml", destination=github_folder / "dependabot.yml"
         )
+        files.append(dependabot)
 
         if (self.path / "dependabot.yml").exists():
             self.print_warning(
@@ -570,19 +590,38 @@ class PackageConfiguration:
                 "A `dependabot.yml` file at the top-level was found, please remove it",
             )
 
-        options["gh_config_lines"] = self.handle_gh_actions()
-        testing_file = self.copy_with_meta(
-            "test-matrix.yml.j2",
-            destination=workflows_folder / "test-matrix.yml",
-            **options,
+        use_test_matrix = self._get_options_for("tox", ("use_test_matrix",)).get(
+            "use_test_matrix", True
         )
+        if use_test_matrix:
+            options["gh_config_lines"] = self.handle_gh_actions()
+            testing_file = self.copy_with_meta(
+                "test-matrix.yml.j2",
+                destination=workflows_folder / "test-matrix.yml",
+                **options,
+            )
+            files.append(testing_file)
+        elif (workflows_folder / "test-matrix.yml").exists():
+            self.print_warning(
+                "CI configuration",
+                "A `test-matrix.yml` file was found in the workflows folder, please remove it",
+            )
 
-        return [meta_file, dependabot, testing_file]
+        return files
 
     def handle_gh_actions(self):
-        options = self._get_options_for("tox", ("test_matrix",))
-        test_matrix = get_test_matrix(options.get("test_matrix"))
+        options = self._get_options_for(
+            "tox",
+            (
+                "test_matrix",
+                "use_test_matrix",
+            ),
+        )
         combinations = []
+        # By default we use the test matrix, but you can explicitly opt out.
+        if options["use_test_matrix"] is False:
+            return combinations
+        test_matrix = get_test_matrix(options.get("test_matrix"))
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
             # Only test the lowest and highest Python version for a given Plone
@@ -617,12 +656,28 @@ class PackageConfiguration:
         options["destination"] = self.path / ".gitlab-ci.yml"
         if not options.get("jobs"):
             options["jobs"] = GITLAB_DEFAULT_JOBS
+
+        use_test_matrix = self._get_options_for("tox", ("use_test_matrix",)).get(
+            "use_test_matrix", True
+        )
+        if not use_test_matrix and "testing" in options["jobs"]:
+            options["jobs"].remove("testing")
+
         return self.copy_with_meta("gitlab-ci.yml.j2", **options)
 
     def _gitlab_testing_matrix(self, custom_images):
-        options = self._get_options_for("tox", ("test_matrix",))
-        test_matrix = get_test_matrix(options.get("test_matrix"))
+        options = self._get_options_for(
+            "tox",
+            (
+                "test_matrix",
+                "use_test_matrix",
+            ),
+        )
         combinations = []
+        # By default we use the test matrix, but you can explicitly opt out.
+        if options["use_test_matrix"] is False:
+            return combinations
+        test_matrix = get_test_matrix(options.get("test_matrix"))
         image = ""
         for plone_version, python_versions in test_matrix.items():
             no_dot_plone = plone_version.replace(".", "")
@@ -674,7 +729,7 @@ class PackageConfiguration:
 
         # Get rid of spaces on lines with only spaces, like happens in the generated
         # tox.ini
-        content = re.sub(r"\n\ +\n", r"\n\n", content)
+        content = re.sub(r" +\n", r"\n", content)
 
         # Get rid of empty lines at the end.
         content = content.strip() + "\n"
