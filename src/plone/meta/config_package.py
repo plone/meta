@@ -590,10 +590,8 @@ class PackageConfiguration:
                 "A `dependabot.yml` file at the top-level was found, please remove it",
             )
 
-        use_test_matrix = self._get_options_for("tox", ("use_test_matrix",)).get(
-            "use_test_matrix", True
-        )
-        if use_test_matrix:
+        use_test_matrix_options = self._get_options_for("tox", ("use_test_matrix",))
+        if use_test_matrix_options["use_test_matrix"] is not False:
             options["gh_config_lines"] = self.handle_gh_actions()
             testing_file = self.copy_with_meta(
                 "test-matrix.yml.j2",
