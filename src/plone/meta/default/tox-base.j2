@@ -33,12 +33,15 @@ deps =
 #  constraints_file = "https://my-server.com/constraints.txt"
 ##
 extras =
+{% if not skip_test_extra %}
     test
+{% endif %}
 %(test_extras)s
 %(testenv_options)s
 ##
 # Add extra configuration options in .meta.toml:
 #  [tox]
+#  skip_test_extra = true
 #  test_extras = """
 #      tests
 #      widgets

@@ -404,6 +404,7 @@ class PackageConfiguration:
                 "config_lines",
                 "test_deps_additional",
                 "test_extras",
+                "skip_test_extra",
                 "test_environment_variables",
                 "extra_lines",
                 "use_pytest_plone",

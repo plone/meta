@@ -484,6 +484,15 @@ basepython = /usr/bin/python3.8
 """
 ```
 
+Almost all packages have a `test` extra, and we install it.
+A few don't, and this gives an error with `tox` 4.36.0+.
+So you can skip it:
+
+```toml
+[tox]
+skip_test_extra = true
+```
+
 Extend the list of `extras` that need to be installed for running the test suite and generate the coverage report by setting them on the `test_extras` key.
 
 ```toml
