@@ -33,7 +33,7 @@ DEFAULT = object()
 
 # List all python versions we want to test a given Plone version against
 TOX_TEST_MATRIX = {
-    "6.2": ["3.13", "3.12", "3.11", "3.10"],
+    "6.2": ["3.14", "3.13", "3.12", "3.11", "3.10"],
     "6.1": ["3.13", "3.12", "3.11", "3.10"],
     "6.0": ["3.13", "3.12", "3.11", "3.10"],
 }
