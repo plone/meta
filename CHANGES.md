@@ -9,6 +9,30 @@
 
 <!-- towncrier release notes start -->
 
+## 2.4.0 (2026-02-27)
+
+
+### New features:
+
+- Add Python 3.14 to the test matrix of Plone 6.2.  @mauritsvanrees 
+- Add option `use_test_matrix`, default true.
+  When false, don't use the test matrix. 
+- Switch to Debian Trixie, more updates to Python 3.14.
+
+  Use Debian Trixie for all Platforms, remove the 3.9 image reference and add
+  more updates Python 3.14 support.
+  [thet] 
+
+
+### Bug fixes:
+
+- Set `constrain_package_deps` to true when not explicitly set, even when using `mxdev`.
+  @mauritsvanrees [#316](https://github.com/plone/meta/issues/316)
+- Add tox option `skip_test_extra`.
+  Packages that don't have the standard `test` extra should set this option.
+  Otherwise tests fail latest `tox`.
+  @mauritsvanrees [#325](https://github.com/plone/meta/issues/325)
+
 ## 2.3.2 (2026-02-11)
 
 
