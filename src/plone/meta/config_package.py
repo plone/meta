@@ -41,11 +41,11 @@ TOX_TEST_MATRIX = {
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
 
 DOCKER_IMAGES = {
-    "3.13": "python:3.13-bookworm",
-    "3.12": "python:3.12-bookworm",
-    "3.11": "python:3.11-bookworm",
-    "3.10": "python:3.10-bookworm",
-    "3.9": "python:3.9-bookworm",
+    "3.14": "python:3.14-trixie",
+    "3.13": "python:3.13-trixie",
+    "3.12": "python:3.12-trixie",
+    "3.11": "python:3.11-trixie",
+    "3.10": "python:3.10-trixie",
 }
 
 # Rather than pointing configured repositories to `plone.meta`'s `main` branch
@@ -156,7 +156,7 @@ def get_test_matrix(test_matrix):
     Example output:
 
         {
-            "6.2": ["3.13", "3.12", "3.11", "3.10"],
+            "6.2": ["3.14", "3.13", "3.12", "3.11", "3.10"],
             "6.1": ["3.11"],
         }
     """

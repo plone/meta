@@ -249,7 +249,7 @@ The dictionary keys needs to be Python versions and the value a Docker image for
 
 ```toml
 [gitlab]
-custom_images = {"3.13" = "python:3.13-bookworm", "3.12" = "python:3.12-bookworm"}
+custom_images = {"3.14" = "python:3.14-trixie", "3.13" = "python:3.13-trixie"}
 ```
 
 > [!TIP]
