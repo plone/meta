@@ -41,6 +41,12 @@ dependencies = [
   "zest.releaser",
 ]
 
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+]
+
 [project.urls]
 Homepage = "https://github.com/plone/meta"
 "Issue Tracker" = "https://github.com/plone/meta/issues"
@@ -101,5 +107,8 @@ target-version = ["py313"]
 [tool.codespell]
 ignore-words-list = "discreet,thet,"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.check-manifest]
-ignore = [".editorconfig", ".flake8", ".pre-commit-config.yaml", "tox.ini"]
+ignore = [".editorconfig", ".flake8", ".pre-commit-config.yaml", "tests/**", "tox.ini"]
