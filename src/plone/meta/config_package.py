@@ -240,6 +240,14 @@ class PackageConfiguration:
         )
 
     @cached_property
+    def use_ruff(self):
+        """Whether to use ruff instead of isort+black+flake8+pyupgrade."""
+        value = self.cfg_option("meta", "use_ruff", False)
+        if value is False or value == "" or value == "false":
+            return False
+        return True
+
+    @cached_property
     def branch_name(self):
         return get_branch_name(self.args.branch_name, self.config_type)
 
@@ -296,13 +304,34 @@ class PackageConfiguration:
         options["test_runner"] = runner
         return options
 
+    def _warn_ruff_incompatible_options(self):
+        """Warn about options that are ignored when use_ruff is enabled."""
+        if not self.use_ruff:
+            return
+        obsolete = [
+            ("pyproject", "black_extra_lines", "ruff_extra_lines in [pyproject]"),
+            ("pyproject", "isort_extra_lines", "ruff_extra_lines in [pyproject]"),
+            ("pre_commit", "flake8_extra_lines", "ruff_extra_lines in [pyproject]"),
+            ("flake8", "extra_lines", "ruff_extra_lines in [pyproject]"),
+        ]
+        for section, name, replacement in obsolete:
+            value = self.cfg_option(section, name, "")
+            if value:
+                self.print_warning(
+                    "use_ruff",
+                    f"[{section}] {name} is ignored when use_ruff is enabled. "
+                    f"Use {replacement} instead.",
+                )
+
     def warn_on_setup_cfg(self):
         """Warn if setup.cfg has sections that we define in other files"""
         setup_file = pathlib.Path(self.path / "setup.cfg")
         if not setup_file.exists():
             return
         content = setup_file.read_text()
-        sections_outside = ("check-manifest", "flake8", "bdist_wheel")
+        sections_outside = ["check-manifest", "bdist_wheel"]
+        if not self.use_ruff:
+            sections_outside.append("flake8")
         prefix = "setup.cfg cleanup"
         print()
         for section_name in sections_outside:
@@ -333,6 +362,7 @@ class PackageConfiguration:
                 "i18ndude_extra_lines",
             ),
         )
+        options["use_ruff"] = self.use_ruff
 
         return self.copy_with_meta(
             "pre-commit-config.yaml.j2",
@@ -355,10 +385,12 @@ class PackageConfiguration:
                 "towncrier_extra_lines",
                 "isort_extra_lines",
                 "black_extra_lines",
+                "ruff_extra_lines",
                 "check_manifest_extra_lines",
                 "extra_lines",
             ),
         )
+        options["use_ruff"] = self.use_ruff
 
         options["changes_extension"] = "rst"
         if (self.path / "CHANGES.md").exists():
@@ -431,6 +463,7 @@ class PackageConfiguration:
             # Default is '', so turn it into True
             options["use_pytest_plone"] = True
 
+        options["use_ruff"] = self.use_ruff
         options.update(self._handle_constraints_files(options))
         if options["use_test_matrix"] is not False:
             # Default is '', so turn it into True
@@ -700,6 +733,11 @@ class PackageConfiguration:
         }
 
     def flake8(self):
+        if self.use_ruff:
+            flake8_path = self.path / ".flake8"
+            if flake8_path.exists():
+                flake8_path.unlink()
+            return None
         options = self._get_options_for("flake8", ("extra_lines",))
         destination = self.path / ".flake8"
         return self.copy_with_meta("flake8.j2", destination=destination, **options)
@@ -823,6 +861,8 @@ class PackageConfiguration:
     def configure(self):
         if self.args.track_package:
             self._add_project_to_config_type_list()
+
+        self._warn_ruff_incompatible_options()
 
         files_changed = [
             self.path / ".meta.toml",

@@ -4,9 +4,14 @@ skip_install = true
 deps =
     pre-commit
 commands =
+{% if use_ruff %}
+    pre-commit run -a ruff-format
+    pre-commit run -a ruff
+{% else %}
     pre-commit run -a pyupgrade
     pre-commit run -a isort
     pre-commit run -a black
+{% endif %}
     pre-commit run -a zpretty
 
 [testenv:lint]

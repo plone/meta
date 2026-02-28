@@ -59,6 +59,45 @@ showcontent = true
 #  """
 ##
 
+{% if use_ruff %}
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # pyupgrade
+    "UP",
+    # isort
+    "I",
+]
+ignore = [
+    # line too long (formatter handles this)
+    "E501",
+    # whitespace before ':' (formatter handles slicing)
+    "E203",
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+from-first = true
+lines-after-imports = 2
+lines-between-types = 1
+no-sections = true
+order-by-type = false
+%(ruff_extra_lines)s
+##
+# Add extra ruff configuration options in .meta.toml:
+#  [pyproject]
+#  ruff_extra_lines = """
+#  extra_configuration
+#  """
+##
+{% else %}
 [tool.isort]
 profile = "plone"
 %(isort_extra_lines)s
@@ -80,6 +119,7 @@ target-version = ["py38"]
 #  extra_configuration
 #  """
 ##
+{% endif %}
 
 [tool.codespell]
 ignore-words-list = "discreet,assertin,thet,%(codespell_ignores)s"
@@ -151,7 +191,9 @@ ignore-packages = %(dependencies_ignores)s
 [tool.check-manifest]
 ignore = [
     ".editorconfig",
+{% if not use_ruff %}
     ".flake8",
+{% endif %}
     ".meta.toml",
     ".pre-commit-config.yaml",
     "dependabot.yml",

@@ -3,6 +3,14 @@ ci:
     autoupdate_schedule: monthly
 
 repos:
+{% if use_ruff %}
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.12
+    hooks:
+    -   id: ruff-format
+    -   id: ruff
+        args: [--fix]
+{% else %}
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.21.2
     hooks:
@@ -16,6 +24,7 @@ repos:
     rev: 26.1.0
     hooks:
     -   id: black
+{% endif %}
 -   repo: https://github.com/collective/zpretty
     rev: 3.1.1
     hooks:
@@ -28,6 +37,7 @@ repos:
 #  _your own configuration lines_
 #  """
 ##
+{% if not use_ruff %}
 -   repo: https://github.com/PyCQA/flake8
     rev: 7.3.0
     hooks:
@@ -40,6 +50,7 @@ repos:
 #  _your own configuration lines_
 #  """
 ##
+{% endif %}
 -   repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
