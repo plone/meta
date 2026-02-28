@@ -1,0 +1,85 @@
+# plone.meta
+
+> Standardize configuration files across Plone-related Python repositories.
+
+plone.meta generates and manages a consistent set of configuration files for Plone
+Python packages: .editorconfig, .flake8, .gitignore, pyproject.toml, tox.ini,
+.pre-commit-config.yaml, and CI pipelines (GitHub Actions, GitLab CI).
+
+## Key Facts
+
+- Package: plone.meta
+- License: GPLv2
+- Python: 3.9+
+- Repository: https://github.com/plone/meta
+- PyPI: https://pypi.org/project/plone.meta/
+
+## Commands
+
+### config-package
+
+The main command. Generates configuration files for a target Python package
+repository from Jinja2 templates. Reads per-repository customizations from
+.meta.toml. Creates a git branch, commits changes, and optionally pushes.
+
+Usage: config-package [OPTIONS] PATH
+
+Options:
+  --branch BRANCH_NAME  Git branch name (use "current" for current branch)
+  --commit-msg MSG      Custom commit message
+  --no-commit           Don't commit changes
+  --push                Push changes
+  --tox                 Run tox after configuration
+  --track               Add package to packages.txt
+  -t, --type TYPE       Configuration type (default: "default")
+
+### multi-call
+
+Runs config-package across multiple repositories listed in a packages.txt file.
+
+Usage: multi-call SCRIPT PACKAGES_FILE CLONES_DIR [ARGS...]
+
+### re-enable-actions
+
+Re-enables GitHub Actions on repositories where they were auto-disabled.
+
+Usage: re-enable-actions
+
+## Generated Files
+
+- .meta.toml: plone.meta's configuration (the only file you should edit)
+- .editorconfig: Editor settings
+- .flake8: Flake8 linting rules
+- .gitignore: Git ignore patterns
+- .github/workflows/meta.yml: GitHub Actions CI (GitHub repos only)
+- .gitlab-ci.yml: GitLab CI (GitLab repos only)
+- .pre-commit-config.yaml: Pre-commit hooks
+- pyproject.toml: Python tooling configuration
+- tox.ini: Test environment definitions
+
+## .meta.toml Configuration
+
+All customization goes into .meta.toml. Never edit generated files directly.
+
+Sections: [meta], [editorconfig], [flake8], [gitignore], [github], [gitlab],
+[pre_commit], [pyproject], [tox]
+
+Most sections support extra_lines for appending custom configuration.
+
+## tox Environments
+
+- test: Run the test suite
+- coverage: Test coverage reporting
+- lint: Code quality checks via pre-commit
+- format: Auto-formatting (isort, black, zpretty)
+- release-check: Release readiness validation
+- dependencies: Dependency declaration check
+- circular: Circular dependency detection
+- dependencies-graph: Visual dependency graph
+
+## Documentation Sections
+
+- Tutorials: Getting started, bulk updates
+- How-To Guides: Install, customize .meta.toml, configure CI, re-enable actions
+- Reference: CLI options, .meta.toml options, generated files, tox environments, changelog
+- Explanation: Why standardize, architecture, configuration philosophy, scope
