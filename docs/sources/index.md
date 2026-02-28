@@ -12,9 +12,12 @@ so every Plone package provides the same developer experience.
 
 - Generate `.editorconfig`, `.flake8`, `.gitignore`, `pyproject.toml`, `tox.ini`, `.pre-commit-config.yaml` from Jinja2 templates
 - GitHub Actions and GitLab CI workflows, centrally managed
+- Test matrix: automatically test all combinations of Plone versions (6.0, 6.1, 6.2) and Python versions (3.10--3.14)
+- Shared reusable GitHub Actions workflows and composite actions for Cookieplone projects
 - Per-repository customization via `.meta.toml` without editing generated files
 - Bulk updates across 100+ Plone packages with a single command
 - Validation of generated TOML, YAML, INI, and editorconfig files
+- Install from PyPI: `pip install plone.meta`
 
 **Requirements:** Python 3.9+
 

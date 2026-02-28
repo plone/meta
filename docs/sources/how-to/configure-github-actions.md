@@ -7,13 +7,12 @@ reusable workflows from the plone/meta repository.
 
 ## Select CI jobs
 
-Choose which jobs to include:
+Choose which jobs to include in `meta.yml`:
 
 ```toml
 [github]
 jobs = [
     "qa",
-    "test",
     "coverage",
     "dependencies",
     "release_ready",
@@ -21,13 +20,20 @@ jobs = [
 ]
 ```
 
+:::{note}
+The `"test"` job is no longer included in the default jobs list. Testing
+is now handled by the separate `test-matrix.yml` workflow, which is
+generated automatically when `use_test_matrix` is enabled (the default).
+:::
+
 Available jobs:
 
 qa
 : Runs `tox -e lint` for code quality checks.
 
 test
-: Runs `tox -e test` with a configurable Python version matrix.
+: Runs `tox -e test` with a single Python version. Not included by default;
+  use the test matrix workflow instead (see below).
 
 coverage
 : Runs `tox -e coverage` and outputs a coverage report.
@@ -71,17 +77,41 @@ Specify Ubuntu package names:
 os_dependencies = "git libxml2 libxslt1-dev"
 ```
 
-## Override Python versions
+## Add lines after OS dependency installation
+
+Use `extra_lines_after_os_dependencies` to insert additional setup steps
+that run after the OS-level dependencies are installed but before tests:
 
 ```toml
 [github]
-py_versions = "[\"3.13\", \"3.12\", \"3.11\"]"
+extra_lines_after_os_dependencies = """
+  run: |
+    curl -sSL https://example.com/setup.sh | bash
+"""
 ```
 
-:::{note}
-The GitHub Action expects a JSON array string.
-Quotes must be escaped in TOML.
-:::
+## Test matrix workflow
+
+When `use_test_matrix` is enabled (the default), plone.meta generates a
+separate `test-matrix.yml` workflow that tests all combinations of Plone
+versions and Python versions. This replaces the old single-version `test`
+job.
+
+The matrix is configured in the `[tox]` section:
+
+```
+[tox]
+use_test_matrix = true
+test_matrix = {
+    "6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"],
+    "6.1" = ["3.13", "3.12", "3.11", "3.10"],
+    "6.0" = ["3.13", "3.12", "3.11", "3.10"],
+}
+```
+
+To disable the test matrix and fall back to a single test job, set
+`use_test_matrix = false` in the `[tox]` section and add `"test"` back to
+the `[github] jobs` list.
 
 ## Required repository variables
 

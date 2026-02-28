@@ -11,11 +11,31 @@ Runs the test suite using the configured test runner.
 - **zope.testrunner** (default): `zope-testrunner --all --test-path=<test_path>`
 - **pytest**: `pytest <test_path>`
 
-Installs the package with the `test` extra and any additional extras
-specified in `test_extras`.
+Installs the package with the `test` extra (unless `skip_test_extra` is
+set) and any additional extras specified in `test_extras`.
 
 Automatically detects and primes Playwright if
 `plone.app.robotframework` is a dependency.
+
+### Test matrix
+
+When `use_test_matrix` is enabled (the default), the `test` environment
+is expanded into a matrix of environments combining Plone versions with
+Python versions. Environment names follow the pattern
+`py<python_version>-plone<plone_version>`, for example:
+
+- `py314-plone62`
+- `py313-plone62`
+- `py313-plone61`
+- `py312-plone61`
+- `py312-plone60`
+- `py310-plone60`
+
+Each generated environment uses the appropriate constraints file for its
+Plone version (configured via `constraints_files` in the `[tox]` section).
+
+The matrix is configured via the `[tox] test_matrix` option in
+`.meta.toml`. See {doc}`/reference/meta-toml` for details.
 
 ## `coverage`
 

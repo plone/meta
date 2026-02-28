@@ -2,9 +2,21 @@
 
 <!-- diataxis: how-to -->
 
-## From source (recommended)
+## From PyPI (recommended)
 
-Clone the repository and install in a virtual environment:
+Install plone.meta from PyPI into a virtual environment:
+
+```shell
+python3 -m venv venv
+venv/bin/pip install plone.meta
+```
+
+The commands `config-package`, `multi-call`, `switch-to-pep420`, and
+`re-enable-actions` are now available under `venv/bin/`.
+
+## From source
+
+Clone the repository and install in editable mode:
 
 ```shell
 git clone https://github.com/plone/meta.git
@@ -13,14 +25,7 @@ python3 -m venv venv
 venv/bin/pip install -e .
 ```
 
-The commands `config-package`, `multi-call`, and `re-enable-actions` are now
-available under `venv/bin/`.
-
-## From PyPI
-
-```shell
-pip install plone.meta
-```
+This is useful for contributing to plone.meta or testing unreleased changes.
 
 ## Verify the installation
 

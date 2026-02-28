@@ -40,7 +40,28 @@ test output, editor files, Buildout directories, and mxdev artifacts.
 **Template:** `meta.yml.j2`
 **Purpose:** GitHub Actions workflow for repositories hosted on GitHub.
 Uses `workflow_call` to reference reusable workflows from the plone/meta
-repository (qa, test, coverage, dependencies, release_ready, circular).
+repository (qa, coverage, dependencies, release_ready, circular).
+
+:::{note}
+As of 2.x, the `meta.yml` workflow no longer includes a `test` job by
+default. Testing is handled by the separate `test-matrix.yml` workflow
+(see below). You can still add `"test"` to the `[github] jobs` list in
+`.meta.toml` if needed.
+:::
+
+Only generated for GitHub-hosted repositories.
+
+## .github/workflows/test-matrix.yml
+
+**Template:** `test-matrix.yml.j2`
+**Purpose:** GitHub Actions workflow that runs tests across a matrix of
+Plone versions and Python versions. Generated automatically when
+`use_test_matrix` is enabled (the default). The matrix is configured via
+the `[tox] test_matrix` option in `.meta.toml`.
+
+The default matrix tests combinations such as Plone 6.2 with Python
+3.10--3.14, Plone 6.1 with Python 3.10--3.13, and Plone 6.0 with Python
+3.10--3.13.
 
 Only generated for GitHub-hosted repositories.
 
@@ -77,6 +98,16 @@ plone.meta manages only the `[tool.*]` sections. The `[project]` and
 **Purpose:** Tox environment definitions for testing, linting, coverage,
 dependency checking, release readiness, and circular dependency detection.
 This is considered the most important generated file.
+
+The main template `tox.ini.j2` uses a modular architecture with
+`{% include %}` directives to compose the output from sub-templates:
+
+- `tox-init.j2` -- tox initialization and configuration header
+- `tox-base.j2` -- base test environment definition
+- `tox-test-runner-specifics.j2` -- test runner specific settings (pytest or zope.testrunner)
+- `tox-test-coverage.j2` -- coverage environment configuration
+- `tox-qa.j2` -- linting and formatting environments
+- `tox-plone-depending-qa.j2` -- Plone-specific QA environments (dependencies, release-check, circular)
 
 ## .github/dependabot.yml
 

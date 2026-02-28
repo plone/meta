@@ -19,14 +19,18 @@ jobs = [
 ]
 ```
 
-## Use a custom Docker image
+## Use custom Docker images
+
+Specify Docker images per Python version using the `custom_images`
+dictionary:
 
 ```toml
 [gitlab]
-custom_image = "python:3.11-bullseye"
+custom_images = {"3.14" = "python:3.14-trixie", "3.13" = "python:3.13-trixie"}
 ```
 
-The default image is `python:3.11-bullseye`.
+This allows different Python versions in the CI matrix to use appropriate
+base images (for example, Debian Trixie for Python 3.14 support).
 
 ## Install OS-level dependencies
 
@@ -36,6 +40,16 @@ os_dependencies = """
     - apt-get install libxslt libxml2
 """
 ```
+
+## Test matrix support
+
+GitLab CI also benefits from the test matrix feature. When
+`use_test_matrix` is enabled (the default), the generated `.gitlab-ci.yml`
+will include test jobs for each combination of Plone version and Python
+version defined in `[tox] test_matrix`.
+
+See {doc}`/how-to/customize-meta-toml` for details on configuring the
+test matrix.
 
 ## Add extra configuration
 

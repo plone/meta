@@ -33,8 +33,17 @@ Managed by plone.meta itself. Do not edit manually.
 ## `[github]`
 
 `jobs`
-: List of CI jobs to enable. Available: `"qa"`, `"test"`, `"coverage"`,
-  `"dependencies"`, `"release_ready"`, `"circular"`.
+: List of CI jobs to enable in `meta.yml`. Available: `"qa"`, `"test"`,
+  `"coverage"`, `"dependencies"`, `"release_ready"`, `"circular"`.
+  Default: `["qa", "coverage", "dependencies", "release_ready", "circular"]`.
+
+  :::{note}
+  `"test"` is no longer included in the default jobs list. Testing is now
+  handled by the separate `test-matrix.yml` workflow, which is generated
+  automatically when `use_test_matrix` is enabled (the default).
+  You can still add `"test"` to the jobs list if you need the legacy
+  single-version test job.
+  :::
 
 `ref`
 : Branch or tag of plone/meta to reference for workflow files.
@@ -46,8 +55,10 @@ Managed by plone.meta itself. Do not edit manually.
 `os_dependencies`
 : Space-separated Ubuntu package names to install before tests.
 
-`py_versions`
-: JSON array string of Python versions for the test matrix.
+`extra_lines_after_os_dependencies`
+: Additional YAML lines inserted after the OS dependency installation step
+  in the workflow. Useful for custom setup steps that need to run before
+  tests (e.g., installing additional tools or configuring the environment).
 
 `extra_lines`
 : Additional YAML appended to the workflow file.
@@ -58,8 +69,16 @@ Managed by plone.meta itself. Do not edit manually.
 : List of CI jobs. Available: `"lint"`, `"release-ready"`,
   `"dependencies"`, `"circular-dependencies"`, `"testing"`, `"coverage"`.
 
-`custom_image`
-: Docker image for CI jobs. Default: `"python:3.11-bullseye"`.
+`custom_images`
+: Dictionary of Docker images keyed by Python version. Allows specifying
+  different images for different Python versions in the CI matrix.
+
+  Example:
+
+  ```toml
+  [gitlab]
+  custom_images = {"3.14" = "python:3.14-trixie", "3.13" = "python:3.13-trixie"}
+  ```
 
 `os_dependencies`
 : YAML-formatted apt-get install commands.
@@ -138,8 +157,46 @@ Managed by plone.meta itself. Do not edit manually.
 `test_environment_variables`
 : Environment variables for test and coverage environments.
 
-`constraints_file`
-: URL or path to a custom pip constraints file.
+`constraints_files`
+: Dictionary of pip constraints file URLs keyed by Plone version.
+  This allows specifying different constraints for each Plone version
+  in the test matrix.
+
+  Example:
+
+  ```
+  [tox]
+  constraints_files = {
+      "6.1" = "https://dist.plone.org/release/6.1-latest/constraints.txt",
+      "6.0" = "https://dist.plone.org/release/6.0-latest/constraints.txt",
+  }
+  ```
+
+`use_test_matrix`
+: Boolean. When `true` (the default), generates test environments for
+  all combinations of Plone versions and Python versions defined in
+  `test_matrix`. Set to `false` to disable the test matrix and use a
+  single test environment instead.
+
+`test_matrix`
+: Dictionary defining which Python versions to test against each Plone
+  version. Only used when `use_test_matrix` is `true`.
+
+  Default:
+
+  ```
+  [tox]
+  test_matrix = {
+      "6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"],
+      "6.1" = ["3.13", "3.12", "3.11", "3.10"],
+      "6.0" = ["3.13", "3.12", "3.11", "3.10"],
+  }
+  ```
+
+`skip_test_extra`
+: Boolean. Set to `true` for packages that do not define a `test` extra
+  in their packaging metadata. When enabled, the test environments will
+  not attempt to install `[test]` extras.
 
 `use_mxdev`
 : Set to `true` to enable mxdev source checkout support.

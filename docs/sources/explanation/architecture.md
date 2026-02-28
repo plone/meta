@@ -21,6 +21,21 @@ syntax within the Jinja2 context) for inserting configuration values. The
 template engine has `trim_blocks` and `lstrip_blocks` enabled for clean
 output, and `keep_trailing_newline` preserves proper file endings.
 
+#### Modular tox templates
+
+The `tox.ini.j2` template uses a modular architecture with Jinja2
+`{% include %}` directives. Rather than a single monolithic template,
+the tox configuration is composed from focused sub-templates:
+
+- `tox-init.j2` -- tox initialization and configuration header
+- `tox-base.j2` -- base test environment definition
+- `tox-test-runner-specifics.j2` -- test runner specific settings
+- `tox-test-coverage.j2` -- coverage environment configuration
+- `tox-qa.j2` -- linting and formatting environments
+- `tox-plone-depending-qa.j2` -- Plone-specific QA environments
+
+This modular structure makes the templates easier to maintain and extend.
+
 ### PackageConfiguration class
 
 The `config_package.py` module contains the `PackageConfiguration` class,
@@ -70,6 +85,25 @@ workflows stored in the plone/meta repository itself. This means:
 - Repositories only need a small dispatch file
 - Updates to CI logic do not require re-running `config-package`
   (as long as the `ref` points to a branch like `2.x`)
+
+## Test matrix
+
+A key architectural feature of plone.meta 2.x is the test matrix. Rather
+than testing against a single Python version, plone.meta generates test
+environments for all combinations of Plone versions and Python versions.
+The default matrix covers Plone 6.0, 6.1, and 6.2 across Python 3.10
+through 3.14.
+
+The test matrix is reflected in multiple generated outputs:
+
+- **tox.ini**: Environments named `py<version>-plone<version>` (e.g.,
+  `py314-plone62`, `py312-plone61`)
+- **GitHub Actions**: A dedicated `test-matrix.yml` workflow runs all
+  matrix combinations in CI
+- **GitLab CI**: Matrix jobs are generated in `.gitlab-ci.yml`
+
+Each combination uses its own constraints file, allowing different Plone
+versions to pin different dependency versions.
 
 ## Data flow
 

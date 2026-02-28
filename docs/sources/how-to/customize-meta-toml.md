@@ -198,11 +198,36 @@ test_extras = """
 """
 ```
 
-Custom constraints file:
+Custom constraints files (per Plone version):
+
+```
+[tox]
+constraints_files = {
+    "6.1" = "https://dist.plone.org/release/6.1-latest/constraints.txt",
+    "6.0" = "https://dist.plone.org/release/6.0-latest/constraints.txt",
+}
+```
+
+Test matrix configuration:
+
+```
+[tox]
+use_test_matrix = true
+test_matrix = {
+    "6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"],
+    "6.1" = ["3.13", "3.12", "3.11", "3.10"],
+    "6.0" = ["3.13", "3.12", "3.11", "3.10"],
+}
+```
+
+Set `use_test_matrix = false` to disable the matrix and use a single
+test environment.
+
+Skip the test extra (for packages that do not define a `test` extra):
 
 ```toml
 [tox]
-constraints_file = "https://my-server.com/constraints.txt"
+skip_test_extra = true
 ```
 
 Test environment variables:
