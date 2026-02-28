@@ -11,7 +11,6 @@ recursive-include src *.txt
 recursive-include src *.yml
 
 recursive-include docs *.gitignore
-recursive-include docs *.html
 recursive-include docs *.ini
 recursive-include docs *.md
 recursive-include docs *.py

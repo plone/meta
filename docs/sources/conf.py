@@ -21,33 +21,34 @@ myst_enable_extensions = [
     "fieldlist",
 ]
 
-templates_path = ["_templates"]
 exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = "shibuya"
+html_theme = "plone_sphinx_theme"
 
 html_theme_options = {
-    "logo_target": "/plone.meta/",
-    "accent_color": "blue",
-    "color_mode": "dark",
-    "dark_code": True,
-    "nav_links": [
+    "icon_links": [
         {
-            "title": "GitHub",
+            "name": "GitHub",
             "url": "https://github.com/plone/meta",
+            "icon": "fa-brands fa-github",
         },
         {
-            "title": "PyPI",
+            "name": "PyPI",
             "url": "https://pypi.org/project/plone.meta/",
-        },
-        {
-            "title": "Plone Docs",
-            "url": "https://6.docs.plone.org/",
+            "icon": "fa-brands fa-python",
         },
     ],
+    "use_edit_page_button": True,
+    "navigation_with_keys": True,
+}
+
+html_context = {
+    "github_user": "plone",
+    "github_repo": "meta",
+    "github_version": "2.x",
+    "doc_path": "docs/sources",
 }
 
 html_extra_path = ["llms.txt"]
-html_static_path = ["_static"]
