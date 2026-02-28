@@ -4,9 +4,14 @@ skip_install = true
 deps =
     prek
 commands =
+{% if use_ruff %}
+    prek run -a ruff-format
+    prek run -a ruff
+{% else %}
     prek run -a pyupgrade
     prek run -a isort
     prek run -a black
+{% endif %}
     prek run -a zpretty
 
 [testenv:lint]
