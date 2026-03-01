@@ -2,12 +2,12 @@
 
 <!-- diataxis: reference -->
 
-plone/meta provides reusable GitHub Actions workflows and composite actions
+plone.meta provides reusable GitHub Actions workflows and composite actions
 for use by Cookieplone-based projects. These are **not** used by the
 `config-package` tool; they are designed to be called directly from
 downstream project workflows.
 
-All workflows and actions are located in the plone/meta repository and
+All workflows and actions are located in the plone.meta repository and
 referenced via `uses:` in your project's workflow files.
 
 ## Composite Actions

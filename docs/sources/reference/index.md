@@ -15,7 +15,7 @@ plone.meta.
 Complete reference for all command-line options of `config-package`.
 :::
 
-:::{grid-item-card} multi-call CLI
+:::{grid-item-card} multi-call CLI *(experimental)*
 :link: cli-multi-call
 :link-type: doc
 
@@ -53,6 +53,13 @@ Reusable GitHub Actions workflows and composite actions provided by
 plone/meta for Cookieplone projects.
 :::
 
+:::{grid-item-card} Upgrade Guide
+:link: upgrade-guide
+:link-type: doc
+
+Breaking changes between major versions and how to migrate.
+:::
+
 :::{grid-item-card} Changelog
 :link: changelog
 :link-type: doc
@@ -72,5 +79,6 @@ meta-toml
 generated-files
 tox-environments
 shared-workflows
+upgrade-guide
 changelog
 ```

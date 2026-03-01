@@ -1,6 +1,12 @@
-# multi-call CLI
+# multi-call CLI *(experimental)*
 
 <!-- diataxis: reference -->
+
+:::{warning}
+This tool originates from `zope.meta` and has not been extensively tested
+in the `plone.meta` context. The default branch is `master` instead of
+`main`. Use with caution.
+:::
 
 ## Synopsis
 

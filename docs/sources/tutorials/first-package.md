@@ -2,46 +2,42 @@
 
 <!-- diataxis: tutorial -->
 
-In this tutorial you will install `plone.meta`, run `config-package` on a
-Plone repository, and inspect the generated configuration files.
+In this tutorial you will run `config-package` on a Plone repository and
+inspect the generated configuration files.
 
 By the end, you will understand the basic workflow: run the command, review
 the generated files, and customize via `.meta.toml`.
 
+This is especially useful for repositories in the
+[Plone collective](https://github.com/collective) that want to adopt
+the standard Plone tooling configuration.
+
 ## Prerequisites
 
-- Python 3.9 or later
+- Python 3.9 or later (with [uv](https://docs.astral.sh/uv/) recommended)
 - Git
 - A Plone Python package repository to configure (or you can use any
   single-package Python repository)
 
-## Clone and install plone.meta
-
-```shell
-git clone https://github.com/plone/meta.git
-cd meta
-python3 -m venv venv
-venv/bin/pip install -e .
-```
-
-You now have the `config-package` command available at `venv/bin/config-package`.
-
 ## Run config-package
 
-Pick a target repository. For this tutorial, we use `plone.api` as an example.
-Clone it next to the `meta` directory:
+Pick a target repository. For this tutorial, we use `plone.api` as an example:
 
 ```shell
-cd ..
 git clone https://github.com/plone/plone.api.git
 ```
 
-Now run `config-package`:
+Now run `config-package` using `uvx`:
 
 ```shell
-cd meta
-venv/bin/config-package ../plone.api
+uvx --from=plone.meta config-package plone.api
 ```
+
+:::{note}
+If you prefer a local installation instead of `uvx`, see
+{doc}`/how-to/install` for the virtual environment approach, then run
+`.venv/bin/config-package plone.api`.
+:::
 
 You should see output showing:
 1. A new git branch being created (named like `config-with-default-template-<hash>`)
@@ -50,10 +46,10 @@ You should see output showing:
 
 ## Inspect the results
 
-Switch to the target repository and look at the generated files:
+Look at the generated files:
 
 ```shell
-cd ../plone.api
+cd plone.api
 git log --oneline -1
 git diff HEAD~1 --stat
 ```
@@ -107,8 +103,7 @@ per-file-ignores =
 Now re-run `config-package` using the current branch:
 
 ```shell
-cd ../meta
-venv/bin/config-package --branch current ../plone.api
+uvx --from=plone.meta config-package --branch current .
 ```
 
 Check the `.flake8` file -- your custom lines appear below the standard configuration.
@@ -118,8 +113,6 @@ Check the `.flake8` file -- your custom lines appear below the standard configur
 The generated `tox.ini` provides several environments. Try them:
 
 ```shell
-cd ../plone.api
-
 # Run the test suite
 tox -e test
 
@@ -134,10 +127,8 @@ tox -e release-check
 
 You have learned:
 
-- How to install `plone.meta` and run `config-package`
+- How to run `config-package` on a repository
 - What files it generates and why you should not edit them directly
 - How `.meta.toml` controls customization
 - How to re-run `config-package` after changing `.meta.toml`
 - What tox environments are available
-
-Next, learn how to {doc}`update multiple repositories at once <bulk-updates>`.

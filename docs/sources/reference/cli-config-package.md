@@ -15,7 +15,12 @@ config-package [OPTIONS] PATH
 `--branch BRANCH_NAME`
 : Git branch name to create for the changes.
   Default: auto-generated as `config-with-<type>-template-<commit-hash>`.
-  Use `current` to update the current branch instead of creating a new one.
+
+  :::{important}
+  Use `--branch current` to update the current branch instead of creating
+  a new one. This is essential when re-running `config-package` after
+  changing `.meta.toml`.
+  :::
 
 `--commit-msg MSG`
 : Custom commit message.

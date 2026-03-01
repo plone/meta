@@ -99,32 +99,23 @@ job.
 
 The matrix is configured in the `[tox]` section:
 
-```
+```toml
 [tox]
 use_test_matrix = true
-test_matrix = {
-    "6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"],
-    "6.1" = ["3.13", "3.12", "3.11", "3.10"],
-    "6.0" = ["3.13", "3.12", "3.11", "3.10"],
-}
+test_matrix = {"6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"], "6.1" = ["3.13", "3.12", "3.11", "3.10"]}
+```
+
+Using `"*"` as shorthand includes all currently supported Python versions
+for a given Plone version:
+
+```toml
+[tox]
+test_matrix = {"6.2" = ["*"]}
 ```
 
 To disable the test matrix and fall back to a single test job, set
 `use_test_matrix = false` in the `[tox]` section and add `"test"` back to
 the `[github] jobs` list.
-
-## Required repository variables
-
-The GitHub Actions workflow expects these variables to exist at the
-organization or repository level:
-
-`TEST_OS_VERSIONS`
-: List of OS names, e.g. `["ubuntu-latest"]`
-
-`TEST_PYTHON_VERSIONS`
-: List of Python versions, e.g. `["3.13", "3.12", "3.11"]`
-
-See the [GitHub documentation on variables](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables).
 
 ## Add extra workflow jobs
 

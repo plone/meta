@@ -5,6 +5,12 @@
 All customizations for generated files go into `.meta.toml` in the target
 repository. This guide shows how to customize each generated file.
 
+:::{tip}
+All available configuration options are also documented as comments in
+each Jinja2 template file under `src/plone/meta/default/`. Browsing the
+templates is a good way to discover options.
+:::
+
 ## General pattern
 
 Most configuration files support an `extra_lines` key that appends your custom

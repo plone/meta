@@ -31,9 +31,10 @@ of the repository.
 
 ### Multi-version support
 
-Projects that support multiple versions of Plone in the same branch
-(e.g., using different dependency sets for Plone 5 and Plone 6) are not
-supported. plone.meta assumes one Plone version per branch.
+plone.meta allows testing against multiple Plone versions via the
+`test_matrix` configuration. However, it does not support maintaining
+entirely separate dependency sets or build configurations for different
+major Plone versions within a single branch.
 
 ### Package scaffolding
 

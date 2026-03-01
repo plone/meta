@@ -5,6 +5,12 @@
 `.meta.toml` is the per-repository configuration file for plone.meta. It
 controls how each generated file is customized.
 
+:::{tip}
+The Jinja2 template files in `src/plone/meta/default/` contain comments
+documenting each available option. Check the templates for the most
+up-to-date list.
+:::
+
 ## `[meta]`
 
 Managed by plone.meta itself. Do not edit manually.

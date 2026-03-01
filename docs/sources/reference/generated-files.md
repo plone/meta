@@ -43,13 +43,14 @@ Uses `workflow_call` to reference reusable workflows from the plone/meta
 repository (qa, coverage, dependencies, release_ready, circular).
 
 :::{note}
-As of 2.x, the `meta.yml` workflow no longer includes a `test` job by
-default. Testing is handled by the separate `test-matrix.yml` workflow
-(see below). You can still add `"test"` to the `[github] jobs` list in
-`.meta.toml` if needed.
+On the old `main` branch there used to be a `test` job. Since 2.x, this is
+handled in `test-matrix.yml` (see below). You can still add `"test"` to the
+`[github] jobs` list in `.meta.toml` if needed.
 :::
 
+:::{note}
 Only generated for GitHub-hosted repositories.
+:::
 
 ## .github/workflows/test-matrix.yml
 
@@ -59,11 +60,23 @@ Plone versions and Python versions. Generated automatically when
 `use_test_matrix` is enabled (the default). The matrix is configured via
 the `[tox] test_matrix` option in `.meta.toml`.
 
-The default matrix tests combinations such as Plone 6.2 with Python
-3.10--3.14, Plone 6.1 with Python 3.10--3.13, and Plone 6.0 with Python
-3.10--3.13.
+The default matrix tests the combinations of Plone versions and Python
+versions as defined by the Plone community. See the `[tox] test_matrix`
+option in {doc}`/reference/meta-toml` for how to customize it.
 
+:::{note}
 Only generated for GitHub-hosted repositories.
+:::
+
+## .github/dependabot.yml
+
+**Template:** `dependabot.yml` (static)
+**Purpose:** Dependabot configuration for automatic GitHub Actions updates
+on a weekly schedule.
+
+:::{note}
+Only generated for GitHub-hosted repositories.
+:::
 
 ## .gitlab-ci.yml
 
@@ -71,7 +84,9 @@ Only generated for GitHub-hosted repositories.
 **Purpose:** GitLab CI pipeline configuration. Defines jobs for linting,
 testing, coverage, dependency checking, and release readiness.
 
+:::{note}
 Only generated for GitLab-hosted repositories.
+:::
 
 ## .pre-commit-config.yaml
 
@@ -88,8 +103,8 @@ check-manifest, and z3c.dependencychecker. Also includes towncrier
 configuration if a `news/` folder exists.
 
 :::{note}
-plone.meta manages only the `[tool.*]` sections. The `[project]` and
-`[build-system]` sections are left untouched if they already exist.
+plone.meta overwrites `pyproject.toml` completely, like all other
+generated files. All customization must go through `.meta.toml`.
 :::
 
 ## tox.ini
@@ -108,12 +123,6 @@ The main template `tox.ini.j2` uses a modular architecture with
 - `tox-test-coverage.j2` -- coverage environment configuration
 - `tox-qa.j2` -- linting and formatting environments
 - `tox-plone-depending-qa.j2` -- Plone-specific QA environments (dependencies, release-check, circular)
-
-## .github/dependabot.yml
-
-**Template:** `dependabot.yml` (static)
-**Purpose:** Dependabot configuration for automatic GitHub Actions updates
-on a weekly schedule.
 
 ## news/.changelog_template.jinja
 

@@ -4,8 +4,8 @@
 
 project = "plone.meta"
 copyright = "2023-2026, Plone Foundation"  # noqa: A001
-author = "Gil Forcada Codinachs, Jens Klein, and contributors"
-release = "2.0"
+author = "Plone Foundation"
+release = "2.4"
 
 # -- General configuration ---------------------------------------------------
 
