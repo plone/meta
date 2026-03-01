@@ -33,7 +33,7 @@ Full documentation is available at **https://plone.github.io/meta/**
 
 ## GitHub Actions Shared Automations
 
-`plone/meta` also provides reusable workflows and composite actions for GitHub Actions.
+`plone.meta` also provides reusable workflows and composite actions for GitHub Actions.
 See the [full documentation](https://plone.github.io/meta/reference/shared-workflows/) for details.
 
 
