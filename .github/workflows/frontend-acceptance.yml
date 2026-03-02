@@ -85,14 +85,14 @@ jobs:
           make ci-acceptance-test
 
       # Upload Cypress screenshots
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: cypress-screenshots-acceptance
           path: acceptance/cypress/screenshots
 
       # Upload Cypress videos
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: cypress-videos-acceptance
