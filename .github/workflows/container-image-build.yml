@@ -92,6 +92,7 @@ jobs:
           file: ${{ inputs.working-directory }}/${{ inputs.dockerfile }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ inputs.platforms }}
           push: true
           cache-from: type=registry,ref=${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}:${{ inputs.image-cache-suffix }}-${{ inputs.cache-key }}
           cache-to: type=registry,ref=${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}:${{ inputs.image-cache-suffix }}-${{ inputs.base-tag }},mode=max

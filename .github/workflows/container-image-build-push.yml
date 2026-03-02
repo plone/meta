@@ -93,5 +93,6 @@ jobs:
           file: ${{ inputs.working-directory }}/${{ inputs.dockerfile }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ inputs.platforms }}
           push: ${{ inputs.push }}
           build-args: ${{ inputs.build-args }}
