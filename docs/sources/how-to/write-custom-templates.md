@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Write custom Jinja2 templates for plone.meta"
+    "property=og:description": "Write custom Jinja2 templates for plone.meta"
+    "property=og:title": "Write Custom Templates"
+    "keywords": "plone.meta, custom templates, Jinja2"
+---
+
 # Write Custom Templates
 
 <!-- diataxis: how-to -->

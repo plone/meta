@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "CLI reference for multi-call bulk update command"
+    "property=og:description": "CLI reference for multi-call bulk update command"
+    "property=og:title": "multi-call CLI *(experimental)*"
+    "keywords": "plone.meta, multi-call, CLI, bulk update"
+---
+
 # multi-call CLI *(experimental)*
 
 <!-- diataxis: reference -->

@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Background knowledge, design decisions, and philosophy of plone.meta"
+    "property=og:description": "Background knowledge, design decisions, and philosophy of plone.meta"
+    "property=og:title": "Explanation"
+    "keywords": "plone.meta, explanation, design decisions"
+---
+
 # Explanation
 
 <!-- diataxis: explanation -->

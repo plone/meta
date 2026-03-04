@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Tutorial: configure your first package with plone.meta"
+    "property=og:description": "Tutorial: configure your first package with plone.meta"
+    "property=og:title": "Configure Your First Package"
+    "keywords": "plone.meta, tutorial, first package, config-package"
+---
+
 # Configure Your First Package
 
 <!-- diataxis: tutorial -->

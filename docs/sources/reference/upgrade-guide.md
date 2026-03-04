@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Upgrade guide for breaking changes between plone.meta versions"
+    "property=og:description": "Upgrade guide for breaking changes between plone.meta versions"
+    "property=og:title": "Upgrade Guide"
+    "keywords": "plone.meta, upgrade, migration, breaking changes"
+---
+
 # Upgrade Guide
 
 <!-- diataxis: reference -->

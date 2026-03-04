@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Scope and limitations of plone.meta"
+    "property=og:description": "Scope and limitations of plone.meta"
+    "property=og:title": "Scope and Limitations"
+    "keywords": "plone.meta, scope, limitations, Python packages"
+---
+
 # Scope and Limitations
 
 <!-- diataxis: explanation -->

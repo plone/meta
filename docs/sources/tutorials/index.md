@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Step-by-step tutorials for plone.meta"
+    "property=og:description": "Step-by-step tutorials for plone.meta"
+    "property=og:title": "Tutorials"
+    "keywords": "plone.meta, tutorials, getting started"
+---
+
 # Tutorials
 
 <!-- diataxis: tutorials -->

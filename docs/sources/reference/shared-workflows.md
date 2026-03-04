@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Reusable GitHub Actions workflows and composite actions from plone.meta"
+    "property=og:description": "Reusable GitHub Actions workflows and composite actions from plone.meta"
+    "property=og:title": "Shared Workflows & Actions"
+    "keywords": "plone.meta, GitHub Actions, workflows, composite actions"
+---
+
 # Shared Workflows & Actions
 
 <!-- diataxis: reference -->

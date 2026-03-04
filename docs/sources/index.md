@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "plone.meta - standardize configuration across Plone Python packages"
+    "property=og:description": "plone.meta - standardize configuration across Plone Python packages"
+    "property=og:title": "plone.meta"
+    "keywords": "plone.meta, Plone, configuration, CI/CD, tox, GitHub Actions"
+---
+
 # plone.meta
 
 <!-- diataxis: landing -->

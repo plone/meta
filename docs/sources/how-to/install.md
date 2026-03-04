@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Install plone.meta from PyPI or source"
+    "property=og:description": "Install plone.meta from PyPI or source"
+    "property=og:title": "Install plone.meta"
+    "keywords": "plone.meta, installation, uvx, pip"
+---
+
 # Install plone.meta
 
 <!-- diataxis: how-to -->

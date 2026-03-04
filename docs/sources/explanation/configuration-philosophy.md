@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Configuration philosophy: sane defaults with simple extensibility"
+    "property=og:description": "Configuration philosophy: sane defaults with simple extensibility"
+    "property=og:title": "Configuration Philosophy"
+    "keywords": "plone.meta, configuration, philosophy, defaults"
+---
+
 # Configuration Philosophy
 
 <!-- diataxis: explanation -->

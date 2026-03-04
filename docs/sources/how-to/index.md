@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "How-to guides for common plone.meta tasks"
+    "property=og:description": "How-to guides for common plone.meta tasks"
+    "property=og:title": "How-To Guides"
+    "keywords": "plone.meta, how-to, guides"
+---
+
 # How-To Guides
 
 <!-- diataxis: how-to -->

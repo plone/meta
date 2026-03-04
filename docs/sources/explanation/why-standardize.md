@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Why standardize configuration across Plone packages"
+    "property=og:description": "Why standardize configuration across Plone packages"
+    "property=og:title": "Why Standardize?"
+    "keywords": "plone.meta, standardization, consistency, developer experience"
+---
+
 # Why Standardize?
 
 <!-- diataxis: explanation -->

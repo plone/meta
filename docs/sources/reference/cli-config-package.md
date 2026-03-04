@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "CLI reference for config-package command"
+    "property=og:description": "CLI reference for config-package command"
+    "property=og:title": "config-package CLI"
+    "keywords": "plone.meta, config-package, CLI, reference"
+---
+
 # config-package CLI
 
 <!-- diataxis: reference -->

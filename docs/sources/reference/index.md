@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Technical reference for plone.meta CLI, configuration, and generated files"
+    "property=og:description": "Technical reference for plone.meta CLI, configuration, and generated files"
+    "property=og:title": "Reference"
+    "keywords": "plone.meta, reference, CLI, configuration"
+---
+
 # Reference
 
 <!-- diataxis: reference -->

@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Re-enable GitHub Actions disabled by inactivity"
+    "property=og:description": "Re-enable GitHub Actions disabled by inactivity"
+    "property=og:title": "Re-enable GitHub Actions"
+    "keywords": "plone.meta, GitHub Actions, re-enable"
+---
+
 # Re-enable GitHub Actions
 
 <!-- diataxis: how-to -->

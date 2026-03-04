@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Customize generated files via .meta.toml"
+    "property=og:description": "Customize generated files via .meta.toml"
+    "property=og:title": "Customize via .meta.toml"
+    "keywords": "plone.meta, .meta.toml, customization, configuration"
+---
+
 # Customize via .meta.toml
 
 <!-- diataxis: how-to -->

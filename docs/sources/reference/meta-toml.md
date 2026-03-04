@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Complete reference of .meta.toml configuration options"
+    "property=og:description": "Complete reference of .meta.toml configuration options"
+    "property=og:title": ".meta.toml Options"
+    "keywords": "plone.meta, .meta.toml, options, reference"
+---
+
 # .meta.toml Options
 
 <!-- diataxis: reference -->

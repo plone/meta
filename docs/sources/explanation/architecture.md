@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Architecture of plone.meta: templates, rendering pipeline, and validation"
+    "property=og:description": "Architecture of plone.meta: templates, rendering pipeline, and validation"
+    "property=og:title": "Architecture"
+    "keywords": "plone.meta, architecture, Jinja2, templates"
+---
+
 # Architecture
 
 <!-- diataxis: explanation -->

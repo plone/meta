@@ -1,3 +1,12 @@
+---
+myst:
+  html_meta:
+    "description": "Use a custom branch name with config-package"
+    "property=og:description": "Use a custom branch name with config-package"
+    "property=og:title": "Use a Custom Branch Name"
+    "keywords": "plone.meta, config-package, git branch"
+---
+
 # Use a Custom Branch Name
 
 <!-- diataxis: how-to -->
