@@ -12,9 +12,9 @@ myst:
 <!-- diataxis: reference -->
 
 plone.meta provides reusable GitHub Actions workflows and composite actions
-for use by Cookieplone-based projects. These are **not** used by the
-`config-package` tool; they are designed to be called directly from
-downstream project workflows.
+for use by Cookieplone-based projects.
+These are **not** used by the `config-package` tool; they are designed to be
+called directly from downstream project workflows.
 
 All workflows and actions are located in the plone.meta repository and
 referenced via `uses:` in your project's workflow files.
@@ -198,8 +198,8 @@ jobs:
 
 ### container-image-build-push
 
-Builds and pushes a container image in a single workflow. Combines the
-build and push steps for convenience.
+Builds and pushes a container image in a single workflow.
+Combines the build and push steps for convenience.
 
 **Secrets:**
 
@@ -221,8 +221,8 @@ jobs:
 
 ### container-image-build
 
-Builds a container image without pushing. Useful for validation in pull
-requests.
+Builds a container image without pushing.
+Useful for validation in pull requests.
 
 **Example usage:**
 

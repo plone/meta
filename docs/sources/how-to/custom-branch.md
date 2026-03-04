@@ -12,7 +12,8 @@ myst:
 <!-- diataxis: how-to -->
 
 By default, `config-package` creates a branch named
-`config-with-default-template-<commit-hash>`. You can override this.
+`config-with-default-template-<commit-hash>`.
+You can override this.
 
 ## Use a specific branch name
 

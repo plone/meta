@@ -21,9 +21,9 @@ Do not edit these files directly. All customization goes into {file}`.meta.toml`
 ## .meta.toml
 
 **Template:** Created programmatically
-**Purpose:** plone.meta's own configuration file. Stores the template type,
-commit ID, and all per-repository customizations. This is the *only* file
-you should edit.
+**Purpose:** plone.meta's own configuration file.
+Stores the template type, commit ID, and all per-repository customizations.
+This is the *only* file you should edit.
 
 ## .editorconfig
 
@@ -35,7 +35,8 @@ Unix line endings.
 ## .flake8
 
 **Template:** {file}`flake8.j2`
-**Purpose:** Flake8 configuration. Ignores rules that conflict with Black
+**Purpose:** Flake8 configuration.
+Ignores rules that conflict with Black
 (E501, W503, E203, E231) and enables doctests.
 
 ## .gitignore
@@ -65,13 +66,15 @@ Only generated for GitHub-hosted repositories.
 
 **Template:** {file}`test-matrix.yml.j2`
 **Purpose:** GitHub Actions workflow that runs tests across a matrix of
-Plone versions and Python versions. Generated automatically when
-`use_test_matrix` is enabled (the default). The matrix is configured via
-the `[tox] test_matrix` option in {file}`.meta.toml`.
+Plone versions and Python versions.
+Generated automatically when `use_test_matrix` is enabled (the default).
+The matrix is configured via the `[tox] test_matrix` option in
+{file}`.meta.toml`.
 
 The default matrix tests the combinations of Plone versions and Python
-versions as defined by the Plone community. See the `[tox] test_matrix`
-option in {doc}`/reference/meta-toml` for how to customize it.
+versions as defined by the Plone community.
+See the `[tox] test_matrix` option in {doc}`/reference/meta-toml` for how to
+customize it.
 
 :::{note}
 Only generated for GitHub-hosted repositories.
@@ -90,8 +93,9 @@ Only generated for GitHub-hosted repositories.
 ## .gitlab-ci.yml
 
 **Template:** {file}`gitlab-ci.yml.j2`
-**Purpose:** GitLab CI pipeline configuration. Defines jobs for linting,
-testing, coverage, dependency checking, and release readiness.
+**Purpose:** GitLab CI pipeline configuration.
+Defines jobs for linting, testing, coverage, dependency checking, and
+release readiness.
 
 :::{note}
 Only generated for GitLab-hosted repositories.
@@ -100,7 +104,8 @@ Only generated for GitLab-hosted repositories.
 ## .pre-commit-config.yaml
 
 **Template:** {file}`pre-commit-config.yaml.j2`
-**Purpose:** Pre-commit hook configuration. Includes pyupgrade, isort,
+**Purpose:** Pre-commit hook configuration.
+Includes pyupgrade, isort,
 black, zpretty, flake8, codespell, check-manifest, pyroma,
 check-python-versions, and i18ndude.
 
@@ -108,8 +113,8 @@ check-python-versions, and i18ndude.
 
 **Template:** {file}`pyproject.toml.j2`
 **Purpose:** Python tooling configuration for isort, black, codespell,
-check-manifest, and z3c.dependencychecker. Also includes towncrier
-configuration if a {file}`news/` folder exists.
+check-manifest, and z3c.dependencychecker.
+Also includes towncrier configuration if a {file}`news/` folder exists.
 
 :::{note}
 plone.meta overwrites {file}`pyproject.toml` completely, like all other

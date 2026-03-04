@@ -28,8 +28,9 @@ plone.meta uses a Jinja2 `FileSystemLoader` with two search paths, in order:
 2. {file}`src/plone/meta/default/` -- the fallback
 
 When a template is requested (e.g. {file}`tox.ini.j2`), Jinja2 looks in the
-config type directory first. If it finds the file there, it uses that
-version. Otherwise, it falls back to `default/`.
+config type directory first.
+If it finds the file there, it uses that version.
+Otherwise, it falls back to `default/`.
 
 This means you can override *individual* templates while inheriting the
 rest from `default/`.
@@ -103,8 +104,8 @@ runs do not need the `--type` flag.
 ## Template variables
 
 All templates receive their variables from {file}`.meta.toml` via the
-`_get_options_for()` method. The variable names correspond to the keys
-in each {file}`.meta.toml` section.
+`_get_options_for()` method.
+The variable names correspond to the keys in each {file}`.meta.toml` section.
 
 Additionally, some variables are computed:
 

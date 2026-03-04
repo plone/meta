@@ -11,8 +11,8 @@ myst:
 
 <!-- diataxis: explanation -->
 
-Background knowledge, design decisions, and project philosophy. These pages
-help you understand *why* plone.meta works the way it does.
+Background knowledge, design decisions, and project philosophy.
+These pages help you understand *why* plone.meta works the way it does.
 
 ::::{grid} 2
 :gutter: 3

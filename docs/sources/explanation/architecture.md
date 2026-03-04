@@ -13,7 +13,8 @@ myst:
 
 ## Overview
 
-plone.meta is a code generation tool. It reads per-repository configuration
+plone.meta is a code generation tool.
+It reads per-repository configuration
 from {file}`.meta.toml`, renders Jinja2 templates, validates the output, and
 manages git operations.
 
@@ -22,19 +23,20 @@ manages git operations.
 ### Template engine
 
 The core of plone.meta is a set of Jinja2 templates stored in
-{file}`src/plone/meta/default/`. Each template corresponds to a configuration
-file in the target repository.
+{file}`src/plone/meta/default/`.
+Each template corresponds to a configuration file in the target repository.
 
 Templates use `%(variable)s` style placeholders (Python string formatting
-syntax within the Jinja2 context) for inserting configuration values. The
-template engine has `trim_blocks` and `lstrip_blocks` enabled for clean
+syntax within the Jinja2 context) for inserting configuration values.
+The template engine has `trim_blocks` and `lstrip_blocks` enabled for clean
 output, and `keep_trailing_newline` preserves proper file endings.
 
 #### Modular tox templates
 
 The {file}`tox.ini.j2` template uses a modular architecture with Jinja2
-`{% include %}` directives. Rather than a single monolithic template,
-the tox configuration is composed from focused sub-templates:
+`{% include %}` directives.
+Rather than a single monolithic template, the tox configuration is composed
+from focused sub-templates:
 
 - {file}`tox-init.j2` -- tox initialization and configuration header
 - {file}`tox-base.j2` -- base test environment definition
@@ -88,7 +90,8 @@ which version of the templates was used.
 
 Rather than generating complete CI workflows inline, plone.meta generates
 a thin {file}`meta.yml` that uses GitHub's `workflow_call` to reference reusable
-workflows stored in the plone/meta repository itself. This means:
+workflows stored in the plone/meta repository itself.
+This means:
 
 - Workflow logic is maintained in one place
 - Repositories only need a small dispatch file
@@ -97,9 +100,9 @@ workflows stored in the plone/meta repository itself. This means:
 
 ## Test matrix
 
-A key architectural feature of plone.meta 2.x is the test matrix. Rather
-than testing against a single Python version, plone.meta generates test
-environments for all combinations of Plone versions and Python versions.
+A key architectural feature of plone.meta 2.x is the test matrix.
+Rather than testing against a single Python version, plone.meta generates
+test environments for all combinations of Plone versions and Python versions.
 The default matrix covers Plone 6.0, 6.1, and 6.2 across Python 3.10
 through 3.14.
 

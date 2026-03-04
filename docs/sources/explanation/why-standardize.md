@@ -14,8 +14,8 @@ myst:
 ## The problem
 
 The Plone ecosystem consists of over 100 Python packages, each maintained by
-different people at different times. Without coordination, each repository
-develops its own approach to:
+different people at different times.
+Without coordination, each repository develops its own approach to:
 
 - Test configuration and runners
 - Code formatting and linting rules
@@ -24,10 +24,11 @@ develops its own approach to:
 - Editor settings
 - Release processes
 
-This leads to fragmentation. A developer picking up a new package has to
-figure out from scratch how to run tests, what formatting rules apply, and
-whether the CI pipeline is current. Contributions become harder because
-the answer to "how do I run the tests?" differs for every package.
+This leads to fragmentation.
+A developer picking up a new package has to figure out from scratch how to
+run tests, what formatting rules apply, and whether the CI pipeline is current.
+Contributions become harder because the answer to "how do I run the tests?"
+differs for every package.
 
 ## What plone.meta solves
 
@@ -46,8 +47,11 @@ The developer experience is identical everywhere.
 
 ## Centralized updates
 
-Tooling evolves. Linting rules change. New Python versions are released.
-CI providers update their APIs. Without centralization, updating 100+
+Tooling evolves.
+Linting rules change.
+New Python versions are released.
+CI providers update their APIs.
+Without centralization, updating 100+
 repositories is impractical -- each one needs manual changes, review, and
 testing.
 
@@ -62,7 +66,7 @@ This makes it practical to:
 ## Adoption
 
 plone.meta is mandatory for repositories under the
-[GitHub Plone organization](https://github.com/plone). It is encouraged for
-repositories under the
+[GitHub Plone organization](https://github.com/plone).
+It is encouraged for repositories under the
 [collective Plone organization](https://github.com/collective) and for
 private packages.

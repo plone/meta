@@ -103,8 +103,8 @@ extra_lines_after_os_dependencies = """
 
 When `use_test_matrix` is enabled (the default), plone.meta generates a
 separate {file}`test-matrix.yml` workflow that tests all combinations of Plone
-versions and Python versions. This replaces the old single-version `test`
-job.
+versions and Python versions.
+This replaces the old single-version `test` job.
 
 The matrix is configured in the `[tox]` section:
 

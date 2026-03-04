@@ -12,8 +12,8 @@ myst:
 <!-- diataxis: how-to -->
 
 GitHub automatically disables Actions on repositories that have not received
-commits for a certain period. `plone.meta` provides a command to re-enable
-them across all tracked packages.
+commits for a certain period.
+`plone.meta` provides a command to re-enable them across all tracked packages.
 
 ## Prerequisites
 
@@ -33,5 +33,5 @@ venv/bin/re-enable-actions
 ```
 
 This command iterates over all packages listed in {file}`packages.txt`, checks if
-a "Meta" workflow exists, and enables it if it was disabled. It does no harm
-if Actions are already enabled.
+a "Meta" workflow exists, and enables it if it was disabled.
+It does no harm if Actions are already enabled.

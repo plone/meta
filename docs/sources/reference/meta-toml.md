@@ -11,8 +11,8 @@ myst:
 
 <!-- diataxis: reference -->
 
-{file}`.meta.toml` is the per-repository configuration file for plone.meta. It
-controls how each generated file is customized.
+{file}`.meta.toml` is the per-repository configuration file for plone.meta.
+It controls how each generated file is customized.
 
 :::{tip}
 The Jinja2 template files in {file}`src/plone/meta/default/` contain comments

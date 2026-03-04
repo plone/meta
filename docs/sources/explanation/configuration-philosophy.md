@@ -34,8 +34,9 @@ This approach has several advantages:
   isort, etc.) do not require changes to plone.meta itself.
 
 The tradeoff is that `extra_lines` content is not validated against the
-template -- it is simply appended. But this is intentional: it keeps the
-tool simple and avoids becoming a configuration management framework.
+template -- it is simply appended.
+But this is intentional: it keeps the tool simple and avoids becoming a
+configuration management framework.
 
 ## When extra_lines is not enough
 
@@ -48,16 +49,17 @@ provides specific configuration keys. Examples:
 - `custom_image` to change the GitLab CI Docker image
 - `jobs` to select which CI jobs are enabled
 
-These options are added conservatively. If you need a customization that
+These options are added conservatively.
+If you need a customization that
 plone.meta does not support, you can
 [request it](https://github.com/plone/meta/issues/new).
 
 ## Don't edit generated files
 
 This is the cardinal rule of plone.meta: **never directly edit the files
-that plone.meta manages.** Any changes will be overwritten the next time
-`config-package` runs.
+that plone.meta manages.**
+Any changes will be overwritten the next time `config-package` runs.
 
-All customization goes through {file}`.meta.toml`. This single file captures the
-complete delta between the defaults and your repository's needs, making it
-easy to review, maintain, and update.
+All customization goes through {file}`.meta.toml`.
+This single file captures the complete delta between the defaults and your
+repository's needs, making it easy to review, maintain, and update.

@@ -52,8 +52,8 @@ os_dependencies = """
 
 ## Test matrix support
 
-GitLab CI also benefits from the test matrix feature. When
-`use_test_matrix` is enabled (the default), the generated {file}`.gitlab-ci.yml`
+GitLab CI also benefits from the test matrix feature.
+When `use_test_matrix` is enabled (the default), the generated {file}`.gitlab-ci.yml`
 will include test jobs for each combination of Plone version and Python
 version defined in `[tox] test_matrix`.
 
