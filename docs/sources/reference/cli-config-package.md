@@ -75,4 +75,4 @@ config-package [OPTIONS] PATH
 
 Non-zero
 : An error occurred during configuration. The error message is printed to
-  stderr. The user is prompted to proceed or abort.
+  stderr. You are prompted to proceed or abort.

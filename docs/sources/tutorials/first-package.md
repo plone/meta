@@ -11,15 +11,8 @@ myst:
 
 <!-- diataxis: tutorial -->
 
-In this tutorial you will run `config-package` on a Plone repository and
-inspect the generated configuration files.
-
-By the end, you will understand the basic workflow: run the command, review
-the generated files, and customize via {file}`.meta.toml`.
-
-This is especially useful for repositories in the
-[Plone collective](https://github.com/collective) that want to adopt
-the standard Plone tooling configuration.
+Run `config-package` on a Plone repository, inspect the generated files, and customize via {file}`.meta.toml`.
+This workflow is especially useful for [collective](https://github.com/collective) repositories adopting standard Plone tooling.
 
 ## Prerequisites
 
@@ -30,13 +23,14 @@ the standard Plone tooling configuration.
 
 ## Run config-package
 
-Pick a target repository. For this tutorial, we use `plone.api` as an example:
+Pick a target repository.
+For this example, use `plone.api`:
 
 ```shell
 git clone https://github.com/plone/plone.api.git
 ```
 
-Now run `config-package` using `uvx`:
+Run `config-package` using `uvx`:
 
 ```shell
 uvx --from=plone.meta config-package plone.api
@@ -48,10 +42,10 @@ If you prefer a local installation instead of `uvx`, see
 `.venv/bin/config-package plone.api`.
 :::
 
-You should see output showing:
-1. A new git branch being created (named like `config-with-default-template-<hash>`)
-2. Configuration files being written
-3. A commit being created
+The output shows:
+1. A new git branch (named `config-with-default-template-<hash>`)
+2. Configuration files written
+3. A commit created
 
 ## Inspect the results
 
@@ -63,7 +57,7 @@ git log --oneline -1
 git diff HEAD~1 --stat
 ```
 
-You will see that `config-package` created or updated these files:
+`config-package` created or updated these files:
 
 - {file}`.meta.toml` -- plone.meta's own configuration
 - {file}`.editorconfig` -- editor settings
@@ -76,7 +70,7 @@ You will see that `config-package` created or updated these files:
 
 ## Understand .meta.toml
 
-Open {file}`.meta.toml`. This is the central configuration file. It looks like:
+Open {file}`.meta.toml`, the central configuration file:
 
 ```toml
 [meta]
@@ -87,13 +81,12 @@ commit-id = "a1b2c3d4"
 test_runner = "zope.testrunner"
 ```
 
-Every customization you make goes into {file}`.meta.toml`. When you re-run
-`config-package`, it reads this file and regenerates all other files
-accordingly.
+All your customizations go into {file}`.meta.toml`.
+Re-running `config-package` reads this file and regenerates everything else.
 
 :::{important}
-Never directly edit the generated configuration files.
-Your changes will be overwritten the next time someone runs `config-package`.
+Do not edit generated files directly.
+They are overwritten each time `config-package` runs.
 All customization goes into {file}`.meta.toml`.
 :::
 
@@ -109,17 +102,17 @@ per-file-ignores =
 """
 ```
 
-Now re-run `config-package` using the current branch:
+Re-run `config-package` on the current branch:
 
 ```shell
 uvx --from=plone.meta config-package --branch current .
 ```
 
-Check the {file}`.flake8` file -- your custom lines appear below the standard configuration.
+Check {file}`.flake8` -- your custom lines appear below the standard configuration.
 
 ## Run the generated tox environments
 
-The generated {file}`tox.ini` provides several environments. Try them:
+The generated {file}`tox.ini` provides several environments:
 
 ```shell
 # Run the test suite
@@ -134,10 +127,10 @@ tox -e release-check
 
 ## Summary
 
-You have learned:
+You now know how to:
 
-- How to run `config-package` on a repository
-- What files it generates and why you should not edit them directly
-- How {file}`.meta.toml` controls customization
-- How to re-run `config-package` after changing {file}`.meta.toml`
-- What tox environments are available
+- Run `config-package` on a repository
+- Inspect the generated files
+- Customize behaviour through {file}`.meta.toml`
+- Re-run `config-package` after configuration changes
+- Use the generated tox environments

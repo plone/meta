@@ -11,8 +11,7 @@ myst:
 
 <!-- diataxis: how-to -->
 
-All customizations for generated files go into {file}`.meta.toml` in the target
-repository. This guide shows how to customize each generated file.
+All customizations for generated files go into {file}`.meta.toml` in the target repository.
 
 :::{tip}
 All available configuration options are also documented as comments in

@@ -70,7 +70,7 @@ Every generated file is validated before being written:
 - **INI files** are parsed with `configparser`
 - **editorconfig files** are parsed with the `editorconfig` library
 
-If validation fails, the user is prompted to proceed or abort.
+If validation fails, you are prompted to proceed or abort.
 
 ### Git workflow
 
