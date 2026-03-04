@@ -21,24 +21,21 @@ These pages help you understand *why* plone.meta works the way it does.
 :link: why-standardize
 :link-type: doc
 
-The motivation behind plone.meta: what problems it solves, what it replaces,
-and why centralized configuration management matters for the Plone ecosystem.
+The motivation behind plone.meta: what problems it solves, what it replaces, and why centralized configuration management matters for the Plone ecosystem.
 :::
 
 :::{grid-item-card} Architecture
 :link: architecture
 :link-type: doc
 
-How plone.meta works internally: template rendering, file generation,
-validation, and the git workflow.
+How plone.meta works internally: template rendering, file generation, validation, and the git workflow.
 :::
 
 :::{grid-item-card} Configuration Philosophy
 :link: configuration-philosophy
 :link-type: doc
 
-The design principles behind the `extra_lines` approach: sane defaults
-with simple extensibility.
+The design principles behind the `extra_lines` approach: sane defaults with simple extensibility.
 :::
 
 :::{grid-item-card} Scope and Limitations

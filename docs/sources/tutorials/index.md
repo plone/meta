@@ -20,8 +20,7 @@ Step-by-step lessons that guide you through using `plone.meta`.
 :link: first-package
 :link-type: doc
 
-Run `config-package` on a repository, and understand the files it
-generates. Learn how {file}`.meta.toml` controls the output.
+Run `config-package` on a repository, and understand the files it generates. Learn how {file}`.meta.toml` controls the output.
 :::
 
 ::::

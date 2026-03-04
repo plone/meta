@@ -13,9 +13,7 @@ myst:
 
 ## With uvx (recommended)
 
-The simplest way to use plone.meta is via
-[uvx](https://docs.astral.sh/uv/), which runs it without a permanent
-installation:
+The simplest way to use plone.meta is via [uvx](https://docs.astral.sh/uv/), which runs it without a permanent installation:
 
 ```shell
 uvx --from=plone.meta config-package /path/to/your-package
@@ -30,8 +28,7 @@ python3 -m venv .venv
 .venv/bin/pip install plone.meta
 ```
 
-The commands `config-package`, `multi-call`, `switch-to-pep420`, and
-`re-enable-actions` are now available under `.venv/bin/`.
+The commands `config-package`, `multi-call`, `switch-to-pep420`, and `re-enable-actions` are now available under `.venv/bin/`.
 
 ## From source
 

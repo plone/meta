@@ -14,9 +14,7 @@ myst:
 ## Overview
 
 plone.meta is a code generation tool.
-It reads per-repository configuration
-from {file}`.meta.toml`, renders Jinja2 templates, validates the output, and
-manages git operations.
+It reads per-repository configuration from {file}`.meta.toml`, renders Jinja2 templates, validates the output, and manages git operations.
 
 ## Components
 
@@ -26,17 +24,13 @@ The core of plone.meta is a set of Jinja2 templates stored in
 {file}`src/plone/meta/default/`.
 Each template corresponds to a configuration file in the target repository.
 
-Templates use `%(variable)s` style placeholders (Python string formatting
-syntax within the Jinja2 context) for inserting configuration values.
-The template engine has `trim_blocks` and `lstrip_blocks` enabled for clean
-output, and `keep_trailing_newline` preserves proper file endings.
+Templates use `%(variable)s` style placeholders (Python string formatting syntax within the Jinja2 context) for inserting configuration values.
+The template engine has `trim_blocks` and `lstrip_blocks` enabled for clean output, and `keep_trailing_newline` preserves proper file endings.
 
 #### Modular tox templates
 
-The {file}`tox.ini.j2` template uses a modular architecture with Jinja2
-`{% include %}` directives.
-Rather than a single monolithic template, the tox configuration is composed
-from focused sub-templates:
+The {file}`tox.ini.j2` template uses a modular architecture with Jinja2 `{% include %}` directives.
+Rather than a single monolithic template, the tox configuration is composed from focused sub-templates:
 
 - {file}`tox-init.j2` -- tox initialization and configuration header
 - {file}`tox-base.j2` -- base test environment definition
@@ -49,8 +43,7 @@ This modular structure makes the templates easier to maintain and extend.
 
 ### PackageConfiguration class
 
-The {file}`config_package.py` module contains the `PackageConfiguration` class,
-which orchestrates the entire process:
+The {file}`config_package.py` module contains the `PackageConfiguration` class, which orchestrates the entire process:
 
 1. **Read** {file}`.meta.toml` from the target repository
 2. **Detect** whether the repository is GitHub or GitLab hosted
@@ -82,15 +75,11 @@ If validation fails, you are prompted to proceed or abort.
 2. Commits all changes with a descriptive message
 3. Optionally pushes to the remote
 
-Branch names follow the pattern `config-with-<type>-template-<commit-hash>`,
-where the commit hash refers to the plone.meta repository, making it clear
-which version of the templates was used.
+Branch names follow the pattern `config-with-<type>-template-<commit-hash>`, where the commit hash refers to the plone.meta repository, making it clear which version of the templates was used.
 
 ## GitHub Actions workflow architecture
 
-Rather than generating complete CI workflows inline, plone.meta generates
-a thin {file}`meta.yml` that uses GitHub's `workflow_call` to reference reusable
-workflows stored in the plone/meta repository itself.
+Rather than generating complete CI workflows inline, plone.meta generates a thin {file}`meta.yml` that uses GitHub's `workflow_call` to reference reusable workflows stored in the plone/meta repository itself.
 This means:
 
 - Workflow logic is maintained in one place
@@ -101,10 +90,8 @@ This means:
 ## Test matrix
 
 A key architectural feature of plone.meta 2.x is the test matrix.
-Rather than testing against a single Python version, plone.meta generates
-test environments for all combinations of Plone versions and Python versions.
-The default matrix covers Plone 6.0, 6.1, and 6.2 across Python 3.10
-through 3.14.
+Rather than testing against a single Python version, plone.meta generates test environments for all combinations of Plone versions and Python versions.
+The default matrix covers Plone 6.0, 6.1, and 6.2 across Python 3.10 through 3.14.
 
 The test matrix is reflected in multiple generated outputs:
 
@@ -114,8 +101,7 @@ The test matrix is reflected in multiple generated outputs:
   matrix combinations in CI
 - **GitLab CI**: Matrix jobs are generated in {file}`.gitlab-ci.yml`
 
-Each combination uses its own constraints file, allowing different Plone
-versions to pin different dependency versions.
+Each combination uses its own constraints file, allowing different Plone versions to pin different dependency versions.
 
 ## Data flow
 

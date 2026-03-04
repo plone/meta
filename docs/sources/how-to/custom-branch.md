@@ -11,8 +11,7 @@ myst:
 
 <!-- diataxis: how-to -->
 
-By default, `config-package` creates a branch named
-`config-with-default-template-<commit-hash>`.
+By default, `config-package` creates a branch named `config-with-default-template-<commit-hash>`.
 You can override this.
 
 ## Use a specific branch name
@@ -32,5 +31,4 @@ To apply changes without creating a new branch:
 venv/bin/config-package --branch current /path/to/package
 ```
 
-This is useful when you have already created a branch manually and want to
-update it with the latest configuration.
+This is useful when you have already created a branch manually and want to update it with the latest configuration.

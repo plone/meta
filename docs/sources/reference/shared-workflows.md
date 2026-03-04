@@ -11,20 +11,16 @@ myst:
 
 <!-- diataxis: reference -->
 
-plone.meta provides reusable GitHub Actions workflows and composite actions
-for use by Cookieplone-based projects.
-These are **not** used by the `config-package` tool; they are designed to be
-called directly from downstream project workflows.
+plone.meta provides reusable GitHub Actions workflows and composite actions for use by Cookieplone-based projects.
+These are **not** used by the `config-package` tool; they are designed to be called directly from downstream project workflows.
 
-All workflows and actions are located in the plone.meta repository and
-referenced via `uses:` in your project's workflow files.
+All workflows and actions are located in the plone.meta repository and referenced via `uses:` in your project's workflow files.
 
 ## Composite Actions
 
 ### setup_backend_uv
 
-Sets up a Python backend environment using [uv](https://docs.astral.sh/uv/)
-as the package installer.
+Sets up a Python backend environment using [uv](https://docs.astral.sh/uv/) as the package installer.
 
 **Inputs:**
 

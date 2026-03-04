@@ -12,9 +12,7 @@ myst:
 <!-- diataxis: reference -->
 
 :::{warning}
-This tool originates from `zope.meta` and has not been extensively tested
-in the `plone.meta` context. The default branch is `master` instead of
-`main`. Use with caution.
+This tool originates from `zope.meta` and has not been extensively tested in the `plone.meta` context. The default branch is `master` instead of `main`. Use with caution.
 :::
 
 ## Synopsis
@@ -35,8 +33,7 @@ multi-call SCRIPT PACKAGES_FILE CLONES_DIR [SCRIPT_ARGS...]
 
 `CLONES_DIR`
 : Directory where repositories are cloned. If a repository does not
-  exist here, it is cloned from GitHub. If it already exists, it is
-  cleaned, switched to `master`, and pulled.
+  exist here, it is cloned from GitHub. If it already exists, it is cleaned, switched to `master`, and pulled.
 
 `SCRIPT_ARGS`
 : Additional arguments passed to `SCRIPT` for each package.

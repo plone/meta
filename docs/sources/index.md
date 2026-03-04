@@ -13,9 +13,7 @@ myst:
 
 Standardize configuration files across Plone-related Python repositories.
 
-`plone.meta` generates and manages a consistent set of configuration files --
-from CI pipelines and linting to tox environments and editor settings --
-so every Plone package provides the same developer experience.
+`plone.meta` generates and manages a consistent set of configuration files -- from CI pipelines and linting to tox environments and editor settings -- so every Plone package provides the same developer experience.
 
 **Key capabilities:**
 

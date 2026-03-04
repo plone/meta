@@ -15,9 +15,7 @@ myst:
 It controls how each generated file is customized.
 
 :::{tip}
-The Jinja2 template files in {file}`src/plone/meta/default/` contain comments
-documenting each available option. Check the templates for the most
-up-to-date list.
+The Jinja2 template files in {file}`src/plone/meta/default/` contain comments documenting each available option. Check the templates for the most up-to-date list.
 :::
 
 ## `[meta]`
@@ -53,11 +51,9 @@ Managed by plone.meta itself. Do not edit manually.
   Default: `["qa", "coverage", "dependencies", "release_ready", "circular"]`.
 
   :::{note}
-  `"test"` is no longer included in the default jobs list. Testing is now
-  handled by the separate {file}`test-matrix.yml` workflow, which is generated
-  automatically when `use_test_matrix` is enabled (the default).
-  You can still add `"test"` to the jobs list if you need the legacy
-  single-version test job.
+  `"test"` is no longer included in the default jobs list.
+  Testing is now handled by the separate {file}`test-matrix.yml` workflow, which is generated automatically when `use_test_matrix` is enabled (the default).
+  You can still add `"test"` to the jobs list if you need the legacy single-version test job.
   :::
 
 `ref`
@@ -72,8 +68,7 @@ Managed by plone.meta itself. Do not edit manually.
 
 `extra_lines_after_os_dependencies`
 : Additional YAML lines inserted after the OS dependency installation step
-  in the workflow. Useful for custom setup steps that need to run before
-  tests (e.g., installing additional tools or configuring the environment).
+  in the workflow. Useful for custom setup steps that need to run before tests (e.g., installing additional tools or configuring the environment).
 
 `extra_lines`
 : Additional YAML appended to the workflow file.
@@ -90,10 +85,7 @@ Managed by plone.meta itself. Do not edit manually.
 
   Example:
 
-  ```toml
-  [gitlab]
-  custom_images = {"3.14" = "python:3.14-trixie", "3.13" = "python:3.13-trixie"}
-  ```
+  ```toml [gitlab] custom_images = {"3.14" = "python:3.14-trixie", "3.13" = "python:3.13-trixie"} ```
 
 `os_dependencies`
 : YAML-formatted apt-get install commands.
@@ -174,24 +166,16 @@ Managed by plone.meta itself. Do not edit manually.
 
 `constraints_files`
 : Dictionary of pip constraints file URLs keyed by Plone version.
-  This allows specifying different constraints for each Plone version
-  in the test matrix.
+  This allows specifying different constraints for each Plone version in the test matrix.
 
   Example:
 
   ```
-  [tox]
-  constraints_files = {
-      "6.1" = "https://dist.plone.org/release/6.1-latest/constraints.txt",
-      "6.0" = "https://dist.plone.org/release/6.0-latest/constraints.txt",
-  }
-  ```
+  [tox] constraints_files = { "6.1" = "https://dist.plone.org/release/6.1-latest/constraints.txt", "6.0" = "https://dist.plone.org/release/6.0-latest/constraints.txt", } ```
 
 `use_test_matrix`
 : Boolean. When `true` (the default), generates test environments for
-  all combinations of Plone versions and Python versions defined in
-  `test_matrix`. Set to `false` to disable the test matrix and use a
-  single test environment instead.
+  all combinations of Plone versions and Python versions defined in `test_matrix`. Set to `false` to disable the test matrix and use a single test environment instead.
 
 `test_matrix`
 : Dictionary defining which Python versions to test against each Plone
@@ -200,18 +184,11 @@ Managed by plone.meta itself. Do not edit manually.
   Default:
 
   ```
-  [tox]
-  test_matrix = {
-      "6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"],
-      "6.1" = ["3.13", "3.12", "3.11", "3.10"],
-      "6.0" = ["3.13", "3.12", "3.11", "3.10"],
-  }
-  ```
+  [tox] test_matrix = { "6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"], "6.1" = ["3.13", "3.12", "3.11", "3.10"], "6.0" = ["3.13", "3.12", "3.11", "3.10"], } ```
 
 `skip_test_extra`
 : Boolean. Set to `true` for packages that do not define a `test` extra
-  in their packaging metadata. When enabled, the test environments will
-  not attempt to install `[test]` extras.
+  in their packaging metadata. When enabled, the test environments will not attempt to install `[test]` extras.
 
 `use_mxdev`
 : Set to `true` to enable mxdev source checkout support.

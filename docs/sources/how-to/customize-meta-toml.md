@@ -14,15 +14,12 @@ myst:
 All customizations for generated files go into {file}`.meta.toml` in the target repository.
 
 :::{tip}
-All available configuration options are also documented as comments in
-each Jinja2 template file under {file}`src/plone/meta/default/`. Browsing the
-templates is a good way to discover options.
+All available configuration options are also documented as comments in each Jinja2 template file under {file}`src/plone/meta/default/`. Browsing the templates is a good way to discover options.
 :::
 
 ## General pattern
 
-Most configuration files support an `extra_lines` key that appends your custom
-configuration to the generated output:
+Most configuration files support an `extra_lines` key that appends your custom configuration to the generated output:
 
 ```toml
 [section_name]
@@ -32,8 +29,7 @@ your custom configuration here
 ```
 
 :::{important}
-Never directly edit the generated files. Your changes will be overwritten
-the next time `config-package` runs.
+Never directly edit the generated files. Your changes will be overwritten the next time `config-package` runs.
 :::
 
 ## .editorconfig
@@ -154,8 +150,7 @@ known_third_party = ["plone"]
 
 ### Towncrier configuration
 
-If your project has a {file}`news/` folder, towncrier configuration is generated
-automatically.
+If your project has a {file}`news/` folder, towncrier configuration is generated automatically.
 
 Custom issue format:
 
@@ -234,8 +229,7 @@ test_matrix = {
 }
 ```
 
-Set `use_test_matrix = false` to disable the matrix and use a single
-test environment.
+Set `use_test_matrix = false` to disable the matrix and use a single test environment.
 
 Skip the test extra (for packages that do not define a `test` extra):
 

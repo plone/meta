@@ -26,9 +26,8 @@ config-package [OPTIONS] PATH
   Default: auto-generated as `config-with-<type>-template-<commit-hash>`.
 
   :::{important}
-  Use `--branch current` to update the current branch instead of creating
-  a new one. This is essential when re-running `config-package` after
-  changing {file}`.meta.toml`.
+  Use `--branch current` to update the current branch instead of creating a new one.
+  This is essential when re-running `config-package` after changing {file}`.meta.toml`.
   :::
 
 `--commit-msg MSG`

@@ -28,24 +28,21 @@ Clone the repository and install plone.meta into a virtual environment.
 :link: customize-meta-toml
 :link-type: doc
 
-Add custom configuration for flake8, tox, pyproject.toml, pre-commit, and more
-without editing generated files.
+Add custom configuration for flake8, tox, pyproject.toml, pre-commit, and more without editing generated files.
 :::
 
 :::{grid-item-card} Configure GitHub Actions
 :link: configure-github-actions
 :link-type: doc
 
-Set up CI jobs, Python version matrices, OS dependencies, and environment variables
-for GitHub-hosted repositories.
+Set up CI jobs, Python version matrices, OS dependencies, and environment variables for GitHub-hosted repositories.
 :::
 
 :::{grid-item-card} Configure GitLab CI
 :link: configure-gitlab-ci
 :link-type: doc
 
-Set up CI pipelines for GitLab-hosted repositories, including custom Docker images
-and OS dependencies.
+Set up CI pipelines for GitLab-hosted repositories, including custom Docker images and OS dependencies.
 :::
 
 :::{grid-item-card} Re-enable GitHub Actions
@@ -66,8 +63,7 @@ Control the git branch name created by config-package, or update the current bra
 :link: write-custom-templates
 :link-type: doc
 
-Create a custom configuration type with your own Jinja2 templates when
-`extra_lines` is not enough.
+Create a custom configuration type with your own Jinja2 templates when `extra_lines` is not enough.
 :::
 
 ::::

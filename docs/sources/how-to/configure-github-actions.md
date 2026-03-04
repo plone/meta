@@ -11,8 +11,7 @@ myst:
 
 <!-- diataxis: how-to -->
 
-`plone.meta` generates a {file}`.github/workflows/meta.yml` file that references
-reusable workflows from the plone/meta repository.
+`plone.meta` generates a {file}`.github/workflows/meta.yml` file that references reusable workflows from the plone/meta repository.
 
 ## Select CI jobs
 
@@ -30,9 +29,7 @@ jobs = [
 ```
 
 :::{note}
-The `"test"` job is no longer included in the default jobs list. Testing
-is now handled by the separate {file}`test-matrix.yml` workflow, which is
-generated automatically when `use_test_matrix` is enabled (the default).
+The `"test"` job is no longer included in the default jobs list. Testing is now handled by the separate {file}`test-matrix.yml` workflow, which is generated automatically when `use_test_matrix` is enabled (the default).
 :::
 
 Available jobs:
@@ -88,8 +85,7 @@ os_dependencies = "git libxml2 libxslt1-dev"
 
 ## Add lines after OS dependency installation
 
-Use `extra_lines_after_os_dependencies` to insert additional setup steps
-that run after the OS-level dependencies are installed but before tests:
+Use `extra_lines_after_os_dependencies` to insert additional setup steps that run after the OS-level dependencies are installed but before tests:
 
 ```toml
 [github]
@@ -101,9 +97,7 @@ extra_lines_after_os_dependencies = """
 
 ## Test matrix workflow
 
-When `use_test_matrix` is enabled (the default), plone.meta generates a
-separate {file}`test-matrix.yml` workflow that tests all combinations of Plone
-versions and Python versions.
+When `use_test_matrix` is enabled (the default), plone.meta generates a separate {file}`test-matrix.yml` workflow that tests all combinations of Plone versions and Python versions.
 This replaces the old single-version `test` job.
 
 The matrix is configured in the `[tox]` section:
@@ -114,17 +108,14 @@ use_test_matrix = true
 test_matrix = {"6.2" = ["3.14", "3.13", "3.12", "3.11", "3.10"], "6.1" = ["3.13", "3.12", "3.11", "3.10"]}
 ```
 
-Using `"*"` as shorthand includes all currently supported Python versions
-for a given Plone version:
+Using `"*"` as shorthand includes all currently supported Python versions for a given Plone version:
 
 ```toml
 [tox]
 test_matrix = {"6.2" = ["*"]}
 ```
 
-To disable the test matrix and fall back to a single test job, set
-`use_test_matrix = false` in the `[tox]` section and add `"test"` back to
-the `[github] jobs` list.
+To disable the test matrix and fall back to a single test job, set `use_test_matrix = false` in the `[tox]` section and add `"test"` back to the `[github] jobs` list.
 
 ## Add extra workflow jobs
 

@@ -11,13 +11,10 @@ myst:
 
 <!-- diataxis: how-to -->
 
-If the `default` configuration type does not meet your needs and
-`extra_lines` is not sufficient, you can create a custom template set.
+If the `default` configuration type does not meet your needs and `extra_lines` is not sufficient, you can create a custom template set.
 
 :::{note}
-Custom templates require modifying the plone.meta source. This is an
-advanced topic. For most use cases, {doc}`customizing via .meta.toml
-<customize-meta-toml>` is the recommended approach.
+Custom templates require modifying the plone.meta source. This is an advanced topic. For most use cases, {doc}`customizing via .meta.toml <customize-meta-toml>` is the recommended approach.
 :::
 
 ## How the template system works
@@ -27,13 +24,11 @@ plone.meta uses a Jinja2 `FileSystemLoader` with two search paths, in order:
 1. `src/plone/meta/<config_type>/` -- the active configuration type
 2. {file}`src/plone/meta/default/` -- the fallback
 
-When a template is requested (e.g. {file}`tox.ini.j2`), Jinja2 looks in the
-config type directory first.
+When a template is requested (e.g. {file}`tox.ini.j2`), Jinja2 looks in the config type directory first.
 If it finds the file there, it uses that version.
 Otherwise, it falls back to `default/`.
 
-This means you can override *individual* templates while inheriting the
-rest from `default/`.
+This means you can override *individual* templates while inheriting the rest from `default/`.
 
 ## Create a custom configuration type
 
@@ -50,9 +45,8 @@ rest from `default/`.
    cp src/plone/meta/default/tox.ini.j2 src/plone/meta/mytype/
    ```
 
-3. Edit the copied template. Templates use a custom Jinja2 syntax with
-   `%(variable)s` for variable substitution instead of the standard
-   `{{ variable }}`:
+3. Edit the copied template.
+   Templates use a custom Jinja2 syntax with `%(variable)s` for variable substitution instead of the standard `{{ variable }}`:
 
    ```
    %(extra_lines)s
@@ -60,11 +54,9 @@ rest from `default/`.
    %(constraints_file)s
    ```
 
-   See {doc}`../reference/generated-files` for the full list of templates
-   and their variables.
+   See {doc}`../reference/generated-files` for the full list of templates and their variables.
 
-4. Register the new type by adding it to the `choices` list in
-   {file}`config_package.py`:
+4. Register the new type by adding it to the `choices` list in {file}`config_package.py`:
 
    ```python
    parser.add_argument(
@@ -98,13 +90,11 @@ Apply the custom configuration to a repository:
 venv/bin/config-package --type mytype /path/to/package
 ```
 
-The type is stored in {file}`.meta.toml` under `[meta] template`, so subsequent
-runs do not need the `--type` flag.
+The type is stored in {file}`.meta.toml` under `[meta] template`, so subsequent runs do not need the `--type` flag.
 
 ## Template variables
 
-All templates receive their variables from {file}`.meta.toml` via the
-`_get_options_for()` method.
+All templates receive their variables from {file}`.meta.toml` via the `_get_options_for()` method.
 The variable names correspond to the keys in each {file}`.meta.toml` section.
 
 Additionally, some variables are computed:
@@ -131,5 +121,4 @@ Additionally, some variables are computed:
 - When upstream templates change, you will need to merge those changes
   into your overridden files.
 - If your customization is generally useful, consider
-  [requesting it upstream](https://github.com/plone/meta/issues/new)
-  as a new `extra_lines` option instead.
+  [requesting it upstream](https://github.com/plone/meta/issues/new) as a new `extra_lines` option instead.
