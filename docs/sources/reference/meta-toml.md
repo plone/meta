@@ -11,11 +11,11 @@ myst:
 
 <!-- diataxis: reference -->
 
-`.meta.toml` is the per-repository configuration file for plone.meta. It
+{file}`.meta.toml` is the per-repository configuration file for plone.meta. It
 controls how each generated file is customized.
 
 :::{tip}
-The Jinja2 template files in `src/plone/meta/default/` contain comments
+The Jinja2 template files in {file}`src/plone/meta/default/` contain comments
 documenting each available option. Check the templates for the most
 up-to-date list.
 :::
@@ -48,13 +48,13 @@ Managed by plone.meta itself. Do not edit manually.
 ## `[github]`
 
 `jobs`
-: List of CI jobs to enable in `meta.yml`. Available: `"qa"`, `"test"`,
+: List of CI jobs to enable in {file}`meta.yml`. Available: `"qa"`, `"test"`,
   `"coverage"`, `"dependencies"`, `"release_ready"`, `"circular"`.
   Default: `["qa", "coverage", "dependencies", "release_ready", "circular"]`.
 
   :::{note}
   `"test"` is no longer included in the default jobs list. Testing is now
-  handled by the separate `test-matrix.yml` workflow, which is generated
+  handled by the separate {file}`test-matrix.yml` workflow, which is generated
   automatically when `use_test_matrix` is enabled (the default).
   You can still add `"test"` to the jobs list if you need the legacy
   single-version test job.

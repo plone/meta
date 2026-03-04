@@ -28,7 +28,7 @@ config-package [OPTIONS] PATH
   :::{important}
   Use `--branch current` to update the current branch instead of creating
   a new one. This is essential when re-running `config-package` after
-  changing `.meta.toml`.
+  changing {file}`.meta.toml`.
   :::
 
 `--commit-msg MSG`
@@ -48,12 +48,12 @@ config-package [OPTIONS] PATH
   Default: tox is *not* run.
 
 `--track`
-: Add the package to `packages.txt` in the plone.meta repository.
+: Add the package to {file}`packages.txt` in the plone.meta repository.
   Default: packages are *not* tracked.
 
 `-t, --type TYPE`
 : Configuration type. Currently only `default` is available.
-  Only needed the first time; the value is stored in `.meta.toml`.
+  Only needed the first time; the value is stored in {file}`.meta.toml`.
 
 `-h, --help`
 : Display help and exit.
@@ -61,7 +61,7 @@ config-package [OPTIONS] PATH
 ## Behavior
 
 1. Creates a new git branch from the current branch (unless `--branch current`).
-2. Reads `.meta.toml` if present, or creates it with defaults.
+2. Reads {file}`.meta.toml` if present, or creates it with defaults.
 3. Renders Jinja2 templates into configuration files.
 4. Validates generated files (TOML, YAML, INI, editorconfig).
 5. Creates a towncrier news entry.

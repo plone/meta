@@ -35,7 +35,7 @@ Command-line reference for `multi-call`, the bulk update tool.
 :link: meta-toml
 :link-type: doc
 
-All configuration options available in `.meta.toml`, organized by section.
+All configuration options available in {file}`.meta.toml`, organized by section.
 :::
 
 :::{grid-item-card} Generated Files

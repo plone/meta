@@ -21,7 +21,7 @@ You can now define the combinations of Plone versions and Python versions
 to be tested.
 
 `plone.meta` provides a default combination (the same as used by Plone
-itself), but it can be overridden in `.meta.toml`:
+itself), but it can be overridden in {file}`.meta.toml`:
 
 ```toml
 [tox]
@@ -38,7 +38,7 @@ On GitHub, only the first and last Python versions are added for testing.
 
 ### Constraints
 
-The `constraints_file` option in `.meta.toml`'s `[tox]` table was renamed
+The `constraints_file` option in {file}`.meta.toml`'s `[tox]` table was renamed
 to `constraints_files`, and the type of its value was changed from a string
 to a dictionary.
 
@@ -57,7 +57,7 @@ constraints_files = {"6.2" = "https://example.org/constraints.6.2.txt", "6.1" = 
 
 ### GitHub Actions
 
-The `py_versions` option in `.meta.toml`'s `[github]` table is deprecated.
+The `py_versions` option in {file}`.meta.toml`'s `[github]` table is deprecated.
 Use the new `test_matrix` option from the `[tox]` table instead, as
 plone.meta can now run multiple Python versions from within `tox` itself.
 
@@ -68,7 +68,7 @@ deprecated and no longer used.
 
 ### GitLab images
 
-The `custom_image` option in `.meta.toml`'s `[gitlab]` table was renamed to
+The `custom_image` option in {file}`.meta.toml`'s `[gitlab]` table was renamed to
 `custom_images`, and the type of its value was changed from a string to a
 dictionary.
 

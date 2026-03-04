@@ -11,12 +11,12 @@ myst:
 
 <!-- diataxis: how-to -->
 
-`plone.meta` generates a `.github/workflows/meta.yml` file that references
+`plone.meta` generates a {file}`.github/workflows/meta.yml` file that references
 reusable workflows from the plone/meta repository.
 
 ## Select CI jobs
 
-Choose which jobs to include in `meta.yml`:
+Choose which jobs to include in {file}`meta.yml`:
 
 ```toml
 [github]
@@ -31,7 +31,7 @@ jobs = [
 
 :::{note}
 The `"test"` job is no longer included in the default jobs list. Testing
-is now handled by the separate `test-matrix.yml` workflow, which is
+is now handled by the separate {file}`test-matrix.yml` workflow, which is
 generated automatically when `use_test_matrix` is enabled (the default).
 :::
 
@@ -102,7 +102,7 @@ extra_lines_after_os_dependencies = """
 ## Test matrix workflow
 
 When `use_test_matrix` is enabled (the default), plone.meta generates a
-separate `test-matrix.yml` workflow that tests all combinations of Plone
+separate {file}`test-matrix.yml` workflow that tests all combinations of Plone
 versions and Python versions. This replaces the old single-version `test`
 job.
 

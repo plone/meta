@@ -11,12 +11,12 @@ myst:
 
 <!-- diataxis: how-to -->
 
-All customizations for generated files go into `.meta.toml` in the target
+All customizations for generated files go into {file}`.meta.toml` in the target
 repository. This guide shows how to customize each generated file.
 
 :::{tip}
 All available configuration options are also documented as comments in
-each Jinja2 template file under `src/plone/meta/default/`. Browsing the
+each Jinja2 template file under {file}`src/plone/meta/default/`. Browsing the
 templates is a good way to discover options.
 :::
 
@@ -155,7 +155,7 @@ known_third_party = ["plone"]
 
 ### Towncrier configuration
 
-If your project has a `news/` folder, towncrier configuration is generated
+If your project has a {file}`news/` folder, towncrier configuration is generated
 automatically.
 
 Custom issue format:

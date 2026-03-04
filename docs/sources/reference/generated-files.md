@@ -12,10 +12,10 @@ myst:
 <!-- diataxis: reference -->
 
 `plone.meta` generates the following files in the target repository.
-Each file is rendered from a Jinja2 template in `src/plone/meta/default/`.
+Each file is rendered from a Jinja2 template in {file}`src/plone/meta/default/`.
 
 :::{important}
-Do not edit these files directly. All customization goes into `.meta.toml`.
+Do not edit these files directly. All customization goes into {file}`.meta.toml`.
 :::
 
 ## .meta.toml
@@ -27,34 +27,34 @@ you should edit.
 
 ## .editorconfig
 
-**Template:** `editorconfig.j2`
+**Template:** {file}`editorconfig.j2`
 **Purpose:** Editor configuration for consistent formatting across IDEs.
 Sets 4-space indentation for Python, 2-space for XML/YAML/ZCML, and
 Unix line endings.
 
 ## .flake8
 
-**Template:** `flake8.j2`
+**Template:** {file}`flake8.j2`
 **Purpose:** Flake8 configuration. Ignores rules that conflict with Black
 (E501, W503, E203, E231) and enables doctests.
 
 ## .gitignore
 
-**Template:** `gitignore.j2`
+**Template:** {file}`gitignore.j2`
 **Purpose:** Git ignore patterns for Python projects, build artifacts,
 test output, editor files, Buildout directories, and mxdev artifacts.
 
 ## .github/workflows/meta.yml
 
-**Template:** `meta.yml.j2`
+**Template:** {file}`meta.yml.j2`
 **Purpose:** GitHub Actions workflow for repositories hosted on GitHub.
 Uses `workflow_call` to reference reusable workflows from the plone/meta
 repository (qa, coverage, dependencies, release_ready, circular).
 
 :::{note}
 On the old `main` branch there used to be a `test` job. Since 2.x, this is
-handled in `test-matrix.yml` (see below). You can still add `"test"` to the
-`[github] jobs` list in `.meta.toml` if needed.
+handled in {file}`test-matrix.yml` (see below). You can still add `"test"` to the
+`[github] jobs` list in {file}`.meta.toml` if needed.
 :::
 
 :::{note}
@@ -63,11 +63,11 @@ Only generated for GitHub-hosted repositories.
 
 ## .github/workflows/test-matrix.yml
 
-**Template:** `test-matrix.yml.j2`
+**Template:** {file}`test-matrix.yml.j2`
 **Purpose:** GitHub Actions workflow that runs tests across a matrix of
 Plone versions and Python versions. Generated automatically when
 `use_test_matrix` is enabled (the default). The matrix is configured via
-the `[tox] test_matrix` option in `.meta.toml`.
+the `[tox] test_matrix` option in {file}`.meta.toml`.
 
 The default matrix tests the combinations of Plone versions and Python
 versions as defined by the Plone community. See the `[tox] test_matrix`
@@ -79,7 +79,7 @@ Only generated for GitHub-hosted repositories.
 
 ## .github/dependabot.yml
 
-**Template:** `dependabot.yml` (static)
+**Template:** {file}`dependabot.yml` (static)
 **Purpose:** Dependabot configuration for automatic GitHub Actions updates
 on a weekly schedule.
 
@@ -89,7 +89,7 @@ Only generated for GitHub-hosted repositories.
 
 ## .gitlab-ci.yml
 
-**Template:** `gitlab-ci.yml.j2`
+**Template:** {file}`gitlab-ci.yml.j2`
 **Purpose:** GitLab CI pipeline configuration. Defines jobs for linting,
 testing, coverage, dependency checking, and release readiness.
 
@@ -99,42 +99,42 @@ Only generated for GitLab-hosted repositories.
 
 ## .pre-commit-config.yaml
 
-**Template:** `pre-commit-config.yaml.j2`
+**Template:** {file}`pre-commit-config.yaml.j2`
 **Purpose:** Pre-commit hook configuration. Includes pyupgrade, isort,
 black, zpretty, flake8, codespell, check-manifest, pyroma,
 check-python-versions, and i18ndude.
 
 ## pyproject.toml
 
-**Template:** `pyproject.toml.j2`
+**Template:** {file}`pyproject.toml.j2`
 **Purpose:** Python tooling configuration for isort, black, codespell,
 check-manifest, and z3c.dependencychecker. Also includes towncrier
-configuration if a `news/` folder exists.
+configuration if a {file}`news/` folder exists.
 
 :::{note}
-plone.meta overwrites `pyproject.toml` completely, like all other
-generated files. All customization must go through `.meta.toml`.
+plone.meta overwrites {file}`pyproject.toml` completely, like all other
+generated files. All customization must go through {file}`.meta.toml`.
 :::
 
 ## tox.ini
 
-**Template:** `tox.ini.j2`
+**Template:** {file}`tox.ini.j2`
 **Purpose:** Tox environment definitions for testing, linting, coverage,
 dependency checking, release readiness, and circular dependency detection.
 This is considered the most important generated file.
 
-The main template `tox.ini.j2` uses a modular architecture with
+The main template {file}`tox.ini.j2` uses a modular architecture with
 `{% include %}` directives to compose the output from sub-templates:
 
-- `tox-init.j2` -- tox initialization and configuration header
-- `tox-base.j2` -- base test environment definition
-- `tox-test-runner-specifics.j2` -- test runner specific settings (pytest or zope.testrunner)
-- `tox-test-coverage.j2` -- coverage environment configuration
-- `tox-qa.j2` -- linting and formatting environments
-- `tox-plone-depending-qa.j2` -- Plone-specific QA environments (dependencies, release-check, circular)
+- {file}`tox-init.j2` -- tox initialization and configuration header
+- {file}`tox-base.j2` -- base test environment definition
+- {file}`tox-test-runner-specifics.j2` -- test runner specific settings (pytest or zope.testrunner)
+- {file}`tox-test-coverage.j2` -- coverage environment configuration
+- {file}`tox-qa.j2` -- linting and formatting environments
+- {file}`tox-plone-depending-qa.j2` -- Plone-specific QA environments (dependencies, release-check, circular)
 
 ## news/.changelog_template.jinja
 
-**Template:** `changelog_template.jinja` (static)
+**Template:** {file}`changelog_template.jinja` (static)
 **Purpose:** Towncrier template for Markdown-formatted changelogs.
-Only generated if a `news/` folder exists and `CHANGES.md` is used.
+Only generated if a {file}`news/` folder exists and {file}`CHANGES.md` is used.

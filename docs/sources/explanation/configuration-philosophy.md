@@ -21,7 +21,7 @@ plone.meta is designed around two principles:
 ## The extra_lines approach
 
 Rather than adding a configuration option for every possible customization,
-almost all generated files support an `extra_lines` key in `.meta.toml`.
+almost all generated files support an `extra_lines` key in {file}`.meta.toml`.
 This key accepts raw configuration text that is appended to the generated
 file.
 
@@ -58,6 +58,6 @@ This is the cardinal rule of plone.meta: **never directly edit the files
 that plone.meta manages.** Any changes will be overwritten the next time
 `config-package` runs.
 
-All customization goes through `.meta.toml`. This single file captures the
+All customization goes through {file}`.meta.toml`. This single file captures the
 complete delta between the defaults and your repository's needs, making it
 easy to review, maintain, and update.

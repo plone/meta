@@ -32,6 +32,6 @@ From the plone.meta directory:
 venv/bin/re-enable-actions
 ```
 
-This command iterates over all packages listed in `packages.txt`, checks if
+This command iterates over all packages listed in {file}`packages.txt`, checks if
 a "Meta" workflow exists, and enables it if it was disabled. It does no harm
 if Actions are already enabled.

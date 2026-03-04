@@ -15,7 +15,7 @@ In this tutorial you will run `config-package` on a Plone repository and
 inspect the generated configuration files.
 
 By the end, you will understand the basic workflow: run the command, review
-the generated files, and customize via `.meta.toml`.
+the generated files, and customize via {file}`.meta.toml`.
 
 This is especially useful for repositories in the
 [Plone collective](https://github.com/collective) that want to adopt
@@ -65,18 +65,18 @@ git diff HEAD~1 --stat
 
 You will see that `config-package` created or updated these files:
 
-- `.meta.toml` -- plone.meta's own configuration
-- `.editorconfig` -- editor settings
-- `.flake8` -- flake8 linting rules
-- `.gitignore` -- git ignore patterns
-- `.github/workflows/meta.yml` -- GitHub Actions CI (for GitHub-hosted repos)
-- `.pre-commit-config.yaml` -- pre-commit hooks
-- `pyproject.toml` -- Python tooling configuration
-- `tox.ini` -- tox test environments
+- {file}`.meta.toml` -- plone.meta's own configuration
+- {file}`.editorconfig` -- editor settings
+- {file}`.flake8` -- flake8 linting rules
+- {file}`.gitignore` -- git ignore patterns
+- {file}`.github/workflows/meta.yml` -- GitHub Actions CI (for GitHub-hosted repos)
+- {file}`.pre-commit-config.yaml` -- pre-commit hooks
+- {file}`pyproject.toml` -- Python tooling configuration
+- {file}`tox.ini` -- tox test environments
 
 ## Understand .meta.toml
 
-Open `.meta.toml`. This is the central configuration file. It looks like:
+Open {file}`.meta.toml`. This is the central configuration file. It looks like:
 
 ```toml
 [meta]
@@ -87,19 +87,19 @@ commit-id = "a1b2c3d4"
 test_runner = "zope.testrunner"
 ```
 
-Every customization you make goes into `.meta.toml`. When you re-run
+Every customization you make goes into {file}`.meta.toml`. When you re-run
 `config-package`, it reads this file and regenerates all other files
 accordingly.
 
 :::{important}
 Never directly edit the generated configuration files.
 Your changes will be overwritten the next time someone runs `config-package`.
-All customization goes into `.meta.toml`.
+All customization goes into {file}`.meta.toml`.
 :::
 
 ## Try a customization
 
-Add extra lines to the `.flake8` configuration by editing `.meta.toml`:
+Add extra lines to the {file}`.flake8` configuration by editing {file}`.meta.toml`:
 
 ```toml
 [flake8]
@@ -115,11 +115,11 @@ Now re-run `config-package` using the current branch:
 uvx --from=plone.meta config-package --branch current .
 ```
 
-Check the `.flake8` file -- your custom lines appear below the standard configuration.
+Check the {file}`.flake8` file -- your custom lines appear below the standard configuration.
 
 ## Run the generated tox environments
 
-The generated `tox.ini` provides several environments. Try them:
+The generated {file}`tox.ini` provides several environments. Try them:
 
 ```shell
 # Run the test suite
@@ -138,6 +138,6 @@ You have learned:
 
 - How to run `config-package` on a repository
 - What files it generates and why you should not edit them directly
-- How `.meta.toml` controls customization
-- How to re-run `config-package` after changing `.meta.toml`
+- How {file}`.meta.toml` controls customization
+- How to re-run `config-package` after changing {file}`.meta.toml`
 - What tox environments are available

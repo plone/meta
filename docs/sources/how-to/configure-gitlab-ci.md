@@ -11,7 +11,7 @@ myst:
 
 <!-- diataxis: how-to -->
 
-For repositories hosted on GitLab, `plone.meta` generates a `.gitlab-ci.yml`
+For repositories hosted on GitLab, `plone.meta` generates a {file}`.gitlab-ci.yml`
 file instead of GitHub Actions workflows.
 
 ## Select CI jobs
@@ -53,7 +53,7 @@ os_dependencies = """
 ## Test matrix support
 
 GitLab CI also benefits from the test matrix feature. When
-`use_test_matrix` is enabled (the default), the generated `.gitlab-ci.yml`
+`use_test_matrix` is enabled (the default), the generated {file}`.gitlab-ci.yml`
 will include test jobs for each combination of Plone version and Python
 version defined in `[tox] test_matrix`.
 

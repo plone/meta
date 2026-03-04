@@ -14,7 +14,7 @@ myst:
 ## Overview
 
 plone.meta is a code generation tool. It reads per-repository configuration
-from `.meta.toml`, renders Jinja2 templates, validates the output, and
+from {file}`.meta.toml`, renders Jinja2 templates, validates the output, and
 manages git operations.
 
 ## Components
@@ -22,7 +22,7 @@ manages git operations.
 ### Template engine
 
 The core of plone.meta is a set of Jinja2 templates stored in
-`src/plone/meta/default/`. Each template corresponds to a configuration
+{file}`src/plone/meta/default/`. Each template corresponds to a configuration
 file in the target repository.
 
 Templates use `%(variable)s` style placeholders (Python string formatting
@@ -32,25 +32,25 @@ output, and `keep_trailing_newline` preserves proper file endings.
 
 #### Modular tox templates
 
-The `tox.ini.j2` template uses a modular architecture with Jinja2
+The {file}`tox.ini.j2` template uses a modular architecture with Jinja2
 `{% include %}` directives. Rather than a single monolithic template,
 the tox configuration is composed from focused sub-templates:
 
-- `tox-init.j2` -- tox initialization and configuration header
-- `tox-base.j2` -- base test environment definition
-- `tox-test-runner-specifics.j2` -- test runner specific settings
-- `tox-test-coverage.j2` -- coverage environment configuration
-- `tox-qa.j2` -- linting and formatting environments
-- `tox-plone-depending-qa.j2` -- Plone-specific QA environments
+- {file}`tox-init.j2` -- tox initialization and configuration header
+- {file}`tox-base.j2` -- base test environment definition
+- {file}`tox-test-runner-specifics.j2` -- test runner specific settings
+- {file}`tox-test-coverage.j2` -- coverage environment configuration
+- {file}`tox-qa.j2` -- linting and formatting environments
+- {file}`tox-plone-depending-qa.j2` -- Plone-specific QA environments
 
 This modular structure makes the templates easier to maintain and extend.
 
 ### PackageConfiguration class
 
-The `config_package.py` module contains the `PackageConfiguration` class,
+The {file}`config_package.py` module contains the `PackageConfiguration` class,
 which orchestrates the entire process:
 
-1. **Read** `.meta.toml` from the target repository
+1. **Read** {file}`.meta.toml` from the target repository
 2. **Detect** whether the repository is GitHub or GitLab hosted
    (based on the git remote URL)
 3. **Render** each template with the configuration values
@@ -65,7 +65,7 @@ which orchestrates the entire process:
 Every generated file is validated before being written:
 
 - **TOML files** are parsed with `tomlkit` and additionally validated
-  with `validate-pyproject` for `pyproject.toml`
+  with `validate-pyproject` for {file}`pyproject.toml`
 - **YAML files** are parsed with `pyyaml`
 - **INI files** are parsed with `configparser`
 - **editorconfig files** are parsed with the `editorconfig` library
@@ -87,7 +87,7 @@ which version of the templates was used.
 ## GitHub Actions workflow architecture
 
 Rather than generating complete CI workflows inline, plone.meta generates
-a thin `meta.yml` that uses GitHub's `workflow_call` to reference reusable
+a thin {file}`meta.yml` that uses GitHub's `workflow_call` to reference reusable
 workflows stored in the plone/meta repository itself. This means:
 
 - Workflow logic is maintained in one place
@@ -107,9 +107,9 @@ The test matrix is reflected in multiple generated outputs:
 
 - **tox.ini**: Environments named `py<version>-plone<version>` (e.g.,
   `py314-plone62`, `py312-plone61`)
-- **GitHub Actions**: A dedicated `test-matrix.yml` workflow runs all
+- **GitHub Actions**: A dedicated {file}`test-matrix.yml` workflow runs all
   matrix combinations in CI
-- **GitLab CI**: Matrix jobs are generated in `.gitlab-ci.yml`
+- **GitLab CI**: Matrix jobs are generated in {file}`.gitlab-ci.yml`
 
 Each combination uses its own constraints file, allowing different Plone
 versions to pin different dependency versions.

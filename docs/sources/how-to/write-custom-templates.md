@@ -25,9 +25,9 @@ advanced topic. For most use cases, {doc}`customizing via .meta.toml
 plone.meta uses a Jinja2 `FileSystemLoader` with two search paths, in order:
 
 1. `src/plone/meta/<config_type>/` -- the active configuration type
-2. `src/plone/meta/default/` -- the fallback
+2. {file}`src/plone/meta/default/` -- the fallback
 
-When a template is requested (e.g. `tox.ini.j2`), Jinja2 looks in the
+When a template is requested (e.g. {file}`tox.ini.j2`), Jinja2 looks in the
 config type directory first. If it finds the file there, it uses that
 version. Otherwise, it falls back to `default/`.
 
@@ -63,7 +63,7 @@ rest from `default/`.
    and their variables.
 
 4. Register the new type by adding it to the `choices` list in
-   `config_package.py`:
+   {file}`config_package.py`:
 
    ```python
    parser.add_argument(
@@ -77,7 +77,7 @@ rest from `default/`.
    )
    ```
 
-5. Create a `packages.txt` file in your new directory (can be empty):
+5. Create a {file}`packages.txt` file in your new directory (can be empty):
 
    ```shell
    touch src/plone/meta/mytype/packages.txt
@@ -97,14 +97,14 @@ Apply the custom configuration to a repository:
 venv/bin/config-package --type mytype /path/to/package
 ```
 
-The type is stored in `.meta.toml` under `[meta] template`, so subsequent
+The type is stored in {file}`.meta.toml` under `[meta] template`, so subsequent
 runs do not need the `--type` flag.
 
 ## Template variables
 
-All templates receive their variables from `.meta.toml` via the
+All templates receive their variables from {file}`.meta.toml` via the
 `_get_options_for()` method. The variable names correspond to the keys
-in each `.meta.toml` section.
+in each {file}`.meta.toml` section.
 
 Additionally, some variables are computed:
 
@@ -112,16 +112,16 @@ Additionally, some variables are computed:
 : The active configuration type name (e.g. `"default"`, `"mytype"`).
 
 `news_folder_exists`
-: `True` if a `news/` directory exists in the target repository.
+: `True` if a {file}`news/` directory exists in the target repository.
 
 `changes_extension`
-: `"md"` or `"rst"` depending on whether `CHANGES.md` exists.
+: `"md"` or `"rst"` depending on whether {file}`CHANGES.md` exists.
 
 `prime_robotframework`
 : `True` if `plone.app.robotframework` is detected as a dependency.
 
 `package_name`
-: The repository directory name (or overridden via `.meta.toml`).
+: The repository directory name (or overridden via {file}`.meta.toml`).
 
 ## Considerations
 

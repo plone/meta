@@ -11,12 +11,12 @@ myst:
 
 <!-- diataxis: reference -->
 
-The generated `tox.ini` provides the following environments.
+The generated {file}`tox.ini` provides the following environments.
 
 ## `test`
 
 Runs the test suite using the configured test runner. plone.meta chooses
-the runner based on the `test_runner` option in `.meta.toml`: either
+the runner based on the `test_runner` option in {file}`.meta.toml`: either
 `pytest` or `zope.testrunner` (the default). The exact commands are
 managed by tox and may change between releases.
 
@@ -40,7 +40,7 @@ Each generated environment uses the appropriate constraints file for its
 Plone version (configured via `constraints_files` in the `[tox]` section).
 
 The matrix is configured via the `[tox] test_matrix` option in
-`.meta.toml`. See {doc}`/reference/meta-toml` for details.
+{file}`.meta.toml`. See {doc}`/reference/meta-toml` for details.
 
 ## `coverage`
 
