@@ -656,10 +656,10 @@ class PackageConfiguration:
         if not options.get("jobs"):
             options["jobs"] = GITLAB_DEFAULT_JOBS
 
-        use_test_matrix = self._get_options_for("tox", ("use_test_matrix",)).get(
-            "use_test_matrix", True
-        )
-        if not use_test_matrix and "testing" in options["jobs"]:
+        # on _gitlab_testing_matrix we already check if the user
+        # wants to use the testing matrix
+        # we can rely on that cue to drop the testing job
+        if "testing_matrix" not in options:
             options["jobs"].remove("testing")
 
         return self.copy_with_meta("gitlab-ci.yml.j2", **options)
