@@ -338,6 +338,23 @@ class PackageConfiguration:
                     min_version = py_version
         return min_version
 
+    def _setuptools_upper_bound(self):
+        """Determine upper bound for setuptools in build-system.
+
+        This will be set in pyproject.toml:
+
+          requires = ["setuptools>=68.2,<upper_bound", "wheel"]
+
+        setuptools 82 has removed the pkg_resources module.
+        So if the package uses pkg_resources.declare_namespace, we return
+        "82" as upper bound.  Otherwise "83".  We could leave the upper bound
+        away in that case, but we have experience with things breaking with
+        a new setuptools release, so let's be careful.
+        """
+        if self._detect_pkg_resources_namespace():
+            return "82"
+        return "83"
+
     def pre_commit_config(self):
         options = self._get_options_for(
             "pre_commit",
@@ -381,6 +398,7 @@ class PackageConfiguration:
 
         python_version = self._minimal_python_version()
         options["minimal_python_version"] = self._no_dot_python_version(python_version)
+        options["setuptools_upper_bound"] = self._setuptools_upper_bound()
 
         options["changes_extension"] = "rst"
         if (self.path / "CHANGES.md").exists():
@@ -553,6 +571,13 @@ class PackageConfiguration:
                 text = file_obj.read_text()
                 if "plone.app.robotframework" in text:
                     return True
+        return False
+
+    def _detect_pkg_resources_namespace(self):
+        """Dynamically find out if package uses pkg_resources namespaces."""
+        for file_obj in self.path.glob("src/*/__init__.py"):
+            if "declare_namespace(__name__)" in file_obj.read_text():
+                return True
         return False
 
     def news_entry(self):
