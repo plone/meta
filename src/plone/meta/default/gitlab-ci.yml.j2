@@ -87,10 +87,10 @@ testing:
         TOX_ENV: %(tox_env)s
 {% endfor %}
   artifacts:
-      when: always
-      reports:
-        junit:
-          - reports/testreports/*.xml
+    when: always
+    reports:
+      junit:
+        - reports/testreports/*.xml
 
 ##
 # Add extra test/coverage commands in .meta.toml:
