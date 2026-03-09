@@ -22,32 +22,32 @@ issue_format = "%(towncrier_issue_format)s"
 
 [[tool.towncrier.type]]
 directory = "breaking"
-name = "Breaking changes:"
+name = "Breaking changes{% if changes_extension == 'rst'%}:{% endif %}"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "feature"
-name = "New features:"
+name = "New features{% if changes_extension == 'rst'%}:{% endif %}"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "bugfix"
-name = "Bug fixes:"
+name = "Bug fixes{% if changes_extension == 'rst'%}:{% endif %}"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "internal"
-name = "Internal:"
+name = "Internal{% if changes_extension == 'rst'%}:{% endif %}"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "documentation"
-name = "Documentation:"
+name = "Documentation{% if changes_extension == 'rst'%}:{% endif %}"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "tests"
-name = "Tests:"
+name = "Tests{% if changes_extension == 'rst'%}:{% endif %}"
 showcontent = true
 %(towncrier_extra_lines)s
 {% endif %}
