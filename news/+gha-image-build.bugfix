@@ -1,1 +1,0 @@
-GHA: Fix platforms input not being passed to docker/build-push-action. @ericof

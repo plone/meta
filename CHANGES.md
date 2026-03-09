@@ -9,6 +9,24 @@
 
 <!-- towncrier release notes start -->
 
+## 2.5.0 (2026-03-09)
+
+
+### New features:
+
+- Update `black` and `pyupgrade` to use the lowest python version supported from the test matrix @gforcada [#285](https://github.com/plone/meta/issues/285)
+- Detect upper bound for setuptools in build-system.
+  For `pkg_resources` namespaces, use `setuptools<82`, otherwise `setuptools<83`.
+  @mauritsvanrees 
+
+
+### Bug fixes:
+
+- Add missing newline on news entry files @gforcada 
+- Adjust indentation on gitlab-ci.yml @gforcada 
+- Do not add trailing colons on changes subheadings @gforcada 
+- GHA: Fix platforms input not being passed to docker/build-push-action. @ericof 
+
 ## 2.4.0 (2026-02-27)
 
 
