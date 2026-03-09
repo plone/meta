@@ -546,7 +546,7 @@ class PackageConfiguration:
         destination = self.path / "news" / "+meta.internal"
         with open(destination, "w") as f_:
             if (self.path / "CHANGES.md").exists():
-                f_.write("Update configuration files @plone")
+                f_.write("Update configuration files @plone\n")
             else:
                 f_.write("Update configuration files.\n")
                 f_.write("[plone devs]\n")
