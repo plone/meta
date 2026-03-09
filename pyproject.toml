@@ -1,7 +1,7 @@
 # This is the pyproject.toml of plone.meta itself, *not* of generated projects.
 
 [build-system]
-requires = ["setuptools>=68.2,<80", "wheel"]
+requires = ["setuptools>=68.2,<83", "wheel"]
 # We must set a build-backend, because the default build-backend needs a setup.py.
 build-backend = "setuptools.build_meta"
 

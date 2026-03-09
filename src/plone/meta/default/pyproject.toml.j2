@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68.2,<80", "wheel"]
+requires = ["setuptools>=68.2,<%(setuptools_upper_bound)s", "wheel"]
 
 {% if news_folder_exists %}
 [tool.towncrier]
