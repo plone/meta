@@ -7,7 +7,7 @@ repos:
     rev: v3.21.2
     hooks:
     -   id: pyupgrade
-        args: [--py38-plus]
+        args: [--%(minimal_python_version)s-plus]
 -   repo: https://github.com/pycqa/isort
     rev: 8.0.0
     hooks:
