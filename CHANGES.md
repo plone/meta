@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.5.1 (2026-03-09)
+
+
+### Bug fixes:
+
+- Bump isort version @gforcada 
+
 ## 2.5.0 (2026-03-09)
 
 
