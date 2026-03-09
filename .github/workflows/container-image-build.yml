@@ -86,7 +86,7 @@ jobs:
             type=raw,value=${{ inputs.base-tag }}
 
       - name: Build Image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context:  ${{ inputs.working-directory }}
           file: ${{ inputs.working-directory }}/${{ inputs.dockerfile }}
