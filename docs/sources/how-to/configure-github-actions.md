@@ -115,8 +115,6 @@ Using `"*"` as shorthand includes all currently supported Python versions for a 
 test_matrix = {"6.2" = ["*"]}
 ```
 
-To disable the test matrix and fall back to a single test job, set `use_test_matrix = false` in the `[tox]` section and add `"test"` back to the `[github] jobs` list.
-
 ## Add extra workflow jobs
 
 ```toml
