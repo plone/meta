@@ -5,7 +5,7 @@
 project = "plone.meta"
 copyright = "2023-2026, Plone Foundation"  # noqa: A001
 author = "Plone Foundation"
-release = "2.4"
+release = "2.5.1"
 
 # -- General configuration ---------------------------------------------------
 
