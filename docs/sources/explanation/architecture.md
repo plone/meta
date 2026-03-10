@@ -97,8 +97,8 @@ The test matrix is reflected in multiple generated outputs:
 
 - **tox.ini**: Environments named `py<version>-plone<version>` (e.g.,
   `py314-plone62`, `py312-plone61`)
-- **GitHub Actions**: A dedicated {file}`test-matrix.yml` workflow runs all
-  matrix combinations in CI
+- **GitHub Actions**: A dedicated {file}`test-matrix.yml` workflow runs
+  the upper and lower python version for each Plone version in CI
 - **GitLab CI**: Matrix jobs are generated in {file}`.gitlab-ci.yml`
 
 Each combination uses its own constraints file, allowing different Plone versions to pin different dependency versions.
