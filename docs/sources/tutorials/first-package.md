@@ -16,7 +16,7 @@ This workflow is especially useful for [collective](https://github.com/collectiv
 
 ## Prerequisites
 
-- Python 3.9 or later (with [uv](https://docs.astral.sh/uv/) recommended)
+- Python 3.10 or later (with [uv](https://docs.astral.sh/uv/) recommended)
 - Git
 - A Plone Python package repository to configure (or you can use any
   single-package Python repository)

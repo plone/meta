@@ -26,7 +26,7 @@ Standardize configuration files across Plone-related Python repositories.
 - Validation of generated TOML, YAML, INI, and editorconfig files
 - Install from PyPI: `pip install plone.meta`
 
-**Requirements:** Python 3.9+
+**Requirements:** Python 3.10+
 
 ## Documentation
 
