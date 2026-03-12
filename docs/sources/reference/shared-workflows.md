@@ -32,7 +32,7 @@ Sets up a Python backend environment using [uv](https://docs.astral.sh/uv/) as t
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
   - uses: plone/meta/.github/actions/setup_backend_uv@2.x
     with:
       python-version: "3.13"
@@ -52,7 +52,7 @@ Sets up a Node.js frontend environment with dependency installation.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
   - uses: plone/meta/.github/actions/setup_frontend@2.x
     with:
       node-version: "22.x"
@@ -72,7 +72,7 @@ Sets up the [uv](https://docs.astral.sh/uv/) package installer.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
   - uses: plone/meta/.github/actions/setup_uv@2.x
 ```
 
