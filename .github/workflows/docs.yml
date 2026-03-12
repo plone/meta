@@ -34,8 +34,7 @@ jobs:
         working-directory: docs
         run: |
           uv venv .venv
-          uv pip install "sphinx<9" sphinx-autobuild \
-            myst_parser shibuya sphinx-design sphinx-copybutton
+          uv pip install myst_parser plone-sphinx-theme sphinx-design sphinx-copybutton "sphinx<9"
 
       - name: Build documentation
         working-directory: docs
