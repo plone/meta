@@ -18,7 +18,6 @@ import tomlkit
 import validate_pyproject
 import yaml
 
-
 META_HINT = """\
 # Generated from:
 # https://github.com/plone/meta/tree/main/src/plone/meta/{config_type}

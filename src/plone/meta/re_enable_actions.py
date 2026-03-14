@@ -6,7 +6,6 @@ import itertools
 import pathlib
 import sys
 
-
 org = "plone"
 base_url = f"https://github.com/{org}"
 base_path = pathlib.Path(__file__).parent
