@@ -45,7 +45,7 @@ def main():
         else:
             with change_dir(args.clones):
                 print("Cloning repository …")
-                call("git", "clone", f"https://github.com/zopefoundation/{package}")
+                call("git", "clone", f"https://github.com/plone/{package}")
 
         call_args = [sys.executable, args.script, args.clones / package]
         call_args.extend(sub_args)
