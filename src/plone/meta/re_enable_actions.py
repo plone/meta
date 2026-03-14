@@ -18,7 +18,7 @@ config_package_command = sys.argv[0].replace(
 
 def run_workflow(base_url, org, repo):
     """Manually start the tests.yml workflow of a repository."""
-    result = call("gh", "workflow", "run", "tests.yml", "-R", f"{org}/{repo}")
+    result = call("gh", "workflow", "run", "test-matrix.yml", "-R", f"{org}/{repo}")
     if result.returncode != 0:
         print(
             "To enable starting workflows manually, clone the repository"
