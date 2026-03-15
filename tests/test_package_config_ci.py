@@ -43,6 +43,90 @@ class TestGitlabCi:
         package_config.is_gitlab = False
         assert package_config.gitlab_ci() == []
 
+    def test_creates_files(self, package_config):
+        package_config.is_gitlab = True
+        result = package_config.gitlab_ci()
+        assert result
+        assert (package_config.path / ".gitlab-ci.yml").exists()
+
+
+class TestMinimalConfigFiles:
+    def test_editorconfig(self, package_config):
+        result = package_config.editorconfig()
+        assert result
+        assert (package_config.path / ".editorconfig").exists()
+
+    def test_gitignore(self, package_config):
+        result = package_config.gitignore()
+        assert result
+        assert (package_config.path / ".gitignore").exists()
+
+    def test_precommit(self, package_config):
+        result = package_config.pre_commit_config()
+        assert result
+        assert (package_config.path / ".pre-commit-config.yaml").exists()
+
+    def test_tox(self, package_config):
+        result = package_config.tox()
+        assert result
+        assert (package_config.path / "tox.ini").exists()
+
+    def test_flake8(self, package_config):
+        result = package_config.flake8()
+        assert result
+        assert (package_config.path / ".flake8").exists()
+
+
+class TestPyproject:
+    def test_minimal_files(self, package_config):
+        result = package_config.pyproject_toml()
+        assert len(result) == 1
+        assert (package_config.path / "pyproject.toml").exists()
+
+    def test_if_news_folder_exists(self, package_config):
+        (package_config.path / "news").mkdir(parents=True, exist_ok=True)
+        result = package_config.pyproject_toml()
+        assert len(result) == 1
+        assert (package_config.path / "news" / ".gitkeep").exists()
+
+    def test_if_changes_md_exists(self, package_config):
+        (package_config.path / "news").mkdir(parents=True, exist_ok=True)
+        (package_config.path / "CHANGES.md").touch()
+        result = package_config.pyproject_toml()
+        assert len(result) == 2
+        assert (package_config.path / "news" / ".changelog_template.jinja").exists()
+
+
+class TestSetuptoolsUpperBound:
+    @pytest.mark.parametrize(["is_native", "expected"], [[True, "82"], [False, "83"]])
+    def test_native_namespace(self, package_config, is_native, expected):
+        if is_native:
+            folder = package_config.path / "src" / "plone"
+            folder.mkdir(parents=True, exist_ok=True)
+            (folder / "__init__.py").write_text("\ndeclare_namespace(__name__)\n")
+        result = package_config._setuptools_upper_bound()
+        assert result == expected
+
+
+class TestMinimalPythonVersion:
+    @pytest.mark.parametrize(
+        ["matrix", "output"],
+        [
+            [None, "3.10"],
+            [{"6.1": ["*"]}, "3.10"],
+            [{"6.2": ["*"]}, "3.10"],
+            [{"6.2": ["3.13"]}, "3.13"],
+            [{"6.2": ["3.13"], "6.1": ["3.9"]}, "3.13"],
+            [{"6.2": ["pypy3.10", "3.11"]}, "3.11"],
+        ],
+    )
+    def test_python_version(self, package_config, matrix, output):
+        if matrix:
+            package_config.meta_cfg["tox"]["test_matrix"] = matrix
+
+        result = package_config._minimal_python_version()
+        assert result == output
+
 
 class TestHandleGhActions:
     def test_returns_empty_when_disabled(self, package_config):
