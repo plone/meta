@@ -73,7 +73,7 @@ GITLAB_DEFAULT_JOBS = [
 ]
 
 
-def handle_command_line_arguments():
+def handle_command_line_arguments():  # pragma: nocover
     """Parse command line options"""
     parser = argparse.ArgumentParser(description="Use configuration for a package.")
     parser.add_argument(
@@ -242,7 +242,7 @@ class PackageConfiguration:
     def branch_name(self):
         return get_branch_name(self.args.branch_name, self.config_type)
 
-    def _add_project_to_config_type_list(self):
+    def _add_project_to_config_type_list(self):  # pragma: nocover
         """Add the current project to packages.txt if it is not there"""
         with open(self.config_type_path / "packages.txt") as f:
             known_packages = f.read().splitlines()
@@ -295,7 +295,7 @@ class PackageConfiguration:
         options["test_runner"] = runner
         return options
 
-    def warn_on_setup_cfg(self):
+    def warn_on_setup_cfg(self):  # pragma: nocover
         """Warn if setup.cfg has sections that we define in other files"""
         setup_file = pathlib.Path(self.path / "setup.cfg")
         if not setup_file.exists():

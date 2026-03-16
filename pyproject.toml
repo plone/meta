@@ -11,7 +11,7 @@ version = "2.5.2.dev0"
 description = "Applies a standard set of configuration files for Plone repositories"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">= 3.10"
+requires-python = ">= 3.11"
 authors = [
   { name = "Plone Foundation", email = "releaseteam@plone.org" },
   { name = "Gil Forcada Codinachs", email = "gil.gnome@gmail.com" },
@@ -23,7 +23,6 @@ classifiers = [
   "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -39,6 +38,12 @@ dependencies = [
   "tox",
   "validate-pyproject[all]",
   "zest.releaser",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
 ]
 
 [project.urls]
@@ -101,5 +106,16 @@ target-version = ["py313"]
 [tool.codespell]
 ignore-words-list = "discreet,thet,"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.check-manifest]
-ignore = [".editorconfig", ".flake8", ".pre-commit-config.yaml", "tox.ini"]
+ignore = [".editorconfig", ".flake8", ".pre-commit-config.yaml", "tests/**", "tox.ini"]
+
+
+[tool.coverage.run]
+omit = [
+    "src/plone/meta/re_enable_actions.py",
+    "src/plone/meta/pep_420.py",
+    "src/plone/meta/multi_call.py",
+    ]
