@@ -120,4 +120,5 @@ omit = [
     "src/plone/meta/re_enable_actions.py",
     "src/plone/meta/pep_420.py",
     "src/plone/meta/multi_call.py",
+    "src/plone/meta/setup_to_pyproject.py",
     ]
