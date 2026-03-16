@@ -9,6 +9,29 @@
 
 <!-- towncrier release notes start -->
 
+## 2.6.0 (2026-03-16)
+
+
+### Bug fixes:
+
+- Allow maintenance branches to run GHA workflows from `meta.yml` @gforcada [#337](https://github.com/plone/meta/issues/337)
+- Add workflow_dispatch trigger for generated test-matrix workflows.  @mauritsvanrees 
+
+
+### Internal:
+
+- Remove outdated GitHub workflow @gforcada 
+
+
+### Documentation:
+
+- Add documentation following Diataxis framework @jensens 
+
+
+### Tests:
+
+- Add test suite and code coverage @jensens @gforcada 
+
 ## 2.5.1 (2026-03-09)
 
 
