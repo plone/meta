@@ -44,11 +44,23 @@ def mock_args(mock_git_repo):
 
 
 @pytest.fixture
-def package_config(meta_toml_factory, mock_args):
+def pyproject_toml(mock_git_repo):
+    """Create an empty pyproject.toml"""
+
+    def _create():
+        toml_path = mock_git_repo / "pyproject.toml"
+        toml_path.touch()
+
+    return _create
+
+
+@pytest.fixture
+def package_config(pyproject_toml, meta_toml_factory, mock_args):
     """Create a PackageConfiguration with mocked subprocess calls."""
     from plone.meta.config_package import PackageConfiguration
 
     meta_toml_factory()  # creates default .meta.toml
+    pyproject_toml()  # creates an empty pyproject.toml
     with (
         patch(
             "plone.meta.config_package.git_server_url",

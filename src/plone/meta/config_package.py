@@ -6,6 +6,7 @@ from .shared.path import change_dir
 from functools import cached_property
 from importlib.metadata import version
 from packaging.version import Version
+from pathlib import Path
 
 import argparse
 import collections
@@ -425,12 +426,28 @@ class PackageConfiguration:
                 "If you want to use Towncrier, you have to create a 'news/' folder manually.",
             )
 
+        options["project_metadata"] = self._get_manual_metadata()
+
         filename = self.copy_with_meta(
             "pyproject.toml.j2",
             **options,
         )
         files.append(filename)
         return files
+
+    def _get_manual_metadata(self):
+        metadata = ""
+        suffix = "MARKER-MANUAL-CONFIG"
+        pyproject_path = (Path(self.path) / "pyproject.toml")
+        if not pyproject_path.exists():
+            return ""
+        actual_pyproject = pyproject_path.read_text()
+        start_marker = actual_pyproject.find(f"# START-{suffix}")
+        end_marker = actual_pyproject.find(f"# END-{suffix}")
+        if start_marker > -1 and end_marker > -1:
+            end_marker = end_marker + len(f"# END-{suffix}")
+            metadata = actual_pyproject[start_marker:end_marker]
+        return metadata
 
     def tox(self):
         options = self._get_options_for(
