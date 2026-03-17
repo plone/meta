@@ -5,6 +5,7 @@ from .shared.git import git_server_url
 from .shared.path import change_dir
 from functools import cached_property
 from importlib.metadata import version
+from packaging.version import Version
 
 import argparse
 import collections
@@ -333,7 +334,7 @@ class PackageConfiguration:
             for py_version in python_versions:
                 if py_version.startswith("pypy"):
                     continue
-                if min_version is None or py_version < min_version:
+                if min_version is None or Version(py_version) < Version(min_version):
                     min_version = py_version
         return min_version
 
