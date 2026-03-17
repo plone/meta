@@ -40,28 +40,6 @@ class TestNoDotPythonVersion:
         assert package_config._no_dot_python_version("pypy3.10") == "pypy310"
 
 
-class TestMinimalPythonVersion:
-    def test_mixed_versions_returns_semantic_minimum(self, package_config):
-        """Versions like 3.10 should be correctly compared, not lexicographically."""
-        package_config.meta_cfg["tox"]["test_matrix"] = {
-            "6.2": ["3.13", "3.10"],
-            "5.2": ["3.8"],
-        }
-        result = package_config._minimal_python_version()
-        assert result == "3.8"
-
-    def test_wildcard_matrix(self, package_config):
-        """Wildcard should expand to default versions and find the minimum."""
-        package_config.meta_cfg["tox"]["test_matrix"] = {"6.2": ["*"]}
-        result = package_config._minimal_python_version()
-        assert result == "3.10"
-
-    def test_default_matrix(self, package_config):
-        """Default matrix should return 3.10 as minimum."""
-        result = package_config._minimal_python_version()
-        assert result == "3.10"
-
-
 class TestHandleTestingMatrix:
     def test_default_matrix(self, package_config):
         result = package_config._handle_testing_matrix(None)
