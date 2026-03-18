@@ -14,6 +14,7 @@
 
 from .config_package import META_HINT
 from .shared.call import call
+from .shared.git import get_branch_name
 from .shared.git import git_branch
 from .shared.path import change_dir
 from importlib.util import module_from_spec
@@ -444,12 +445,36 @@ def rewrite_pyproject_toml(path, toml_dict):
         p_toml["project"]["requires-python"] = ">=3.10"
 
     # Create a fresh TOMLDocument instance so I can control section sorting
-    with open(path.absolute().parent / ".meta.toml", "rb") as fp:
-        meta_cfg = tomlkit.load(fp)
-    config_type = meta_cfg["meta"].get("template")
-    new_doc = tomlkit.loads(META_HINT.format(config_type=config_type))
+    new_doc = tomlkit.loads(META_HINT.format(config_type="default"))
+
+    changes_file = "CHANGES.rst"
+    if (path / "CHANGES.md").exists():
+        changes_file = "CHANGES.md"
+    project_name = path.resolve().parts[-1]
+    existing_branch = get_branch_name(override="current", config_type="default")
+    issues_url = "https://github.com/plone/Products.CMFPlone/issues"
+    project_url = f"https://github.com/plone/{project_name}"
+    changelog = f"{project_url}/blob/{existing_branch}/{changes_file}"
+
+    comment_header = (
+        "START-MARKER-MANUAL-CONFIG",
+        "Anything from here until END-MARKER-MANUAL-CONFIG",
+        "will be kept by plone.meta",
+    )
+
     for key in sorted(p_toml.keys()):
+        if key == "project":
+            for text in comment_header:
+                new_doc.add(tomlkit.comment(text))
         new_doc[key] = p_toml.get(key)
+        if key == "project":
+            if "urls" not in new_doc[key]:
+                urls_table = tomlkit.table()
+                urls_table.append("Source", project_url)
+                new_doc[key].append("urls", urls_table)
+            new_doc[key]["urls"].append("Issues", issues_url)
+            new_doc[key]["urls"].append("Changelog", changelog)
+            new_doc.add(tomlkit.comment("END-MARKER-MANUAL-CONFIG"))
 
     return tomlkit.dumps(new_doc)
 
