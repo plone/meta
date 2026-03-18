@@ -403,7 +403,8 @@ def parse_setup_py(path):
     return leftover_setup_kwargs, toml_dict
 
 
-def rewrite_pyproject_toml(path, toml_dict):
+def rewrite_pyproject_toml(args, toml_dict):
+    path = args.path
     toml_file = path / "pyproject.toml"
     p_toml = get_pyproject_toml(toml_file)
 
@@ -451,9 +452,19 @@ def rewrite_pyproject_toml(path, toml_dict):
     if (path / "CHANGES.md").exists():
         changes_file = "CHANGES.md"
     project_name = path.resolve().parts[-1]
-    existing_branch = get_branch_name(override="current", config_type="default")
     issues_url = "https://github.com/plone/Products.CMFPlone/issues"
     project_url = f"https://github.com/plone/{project_name}"
+    if args.issues_url == "own":
+        issues_url = f"{project_url}/issues"
+    elif args.issues_url:
+        issues_url = args.issues_url
+
+    existing_branch = get_branch_name(override="current", config_type="default")
+    if existing_branch not in ("master", "main"):
+        print(
+            "WARNING: check the projects.url.Changelog for accuracy, no proper default branch could be found"
+        )
+        existing_branch = "master"
     changelog = f"{project_url}/blob/{existing_branch}/{changes_file}"
 
     comment_header = (
@@ -568,6 +579,14 @@ def main():
         "If not given it is constructed automatically and includes "
         'the configuration type. Use "current" to update the current branch.',
     )
+    parser.add_argument(
+        "--issues",
+        dest="issues_url",
+        default=None,
+        help="Define the URL where to report issues about this project. "
+        "If not given it defaults to Products.CMFPlone issue tracker. "
+        'Use "own" to use the repository own issue tracker (assuming GitHub).',
+    )
     args = parser.parse_args()
 
     print(f"Converting package {args.path.name}")
@@ -583,7 +602,7 @@ def main():
         print("Package has been converted already, exiting.")
         sys.exit()
 
-    toml_content = rewrite_pyproject_toml(args.path, toml_dict)
+    toml_content = rewrite_pyproject_toml(args, toml_dict)
     setup_content = rewrite_setup_py(args.path / "setup.py", leftover_setup_kwargs)
 
     (args.path / "pyproject.toml").write_text(toml_content)
