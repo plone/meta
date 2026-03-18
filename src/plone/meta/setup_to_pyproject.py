@@ -48,6 +48,24 @@ UNCONVERTIBLE_KEYS = (
     "cffi_modules",
 )
 
+LICENSE_CLASSIFIER_TO_SPDX = {
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)": "GPL-2.0-only",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)": "GPL-2.0-or-later",
+    "License :: OSI Approved :: Zope Public License": "ZPL-2.1",
+    "License :: OSI Approved :: BSD License": "BSD-3-Clause",
+}
+
+LICENSE_TO_SPDX = {
+    "bsd": "BSD-3-Clause",
+    "gpl": "GPL-2.0-only",
+    "gplv2": "GPL-2.0-only",
+    "gplversion2": "GPL-2.0-only",
+    "gplv2orlater": "GPL-2.0-or-later",
+    "gplversion2orlater": "GPL-2.0-or-later",
+    "lgpl": "LGPL-2.1-only",
+    "zpl21": "ZPL-2.1",
+}
+
 
 def get_pyproject_toml(path, comment=""):
     """Parse ``pyproject.toml`` and return its content as ``TOMLDocument``.
@@ -142,6 +160,62 @@ def parse_setup_function(ast_node, assigned_names=None):
     return setup_kwargs
 
 
+def handle_classifiers(classifiers):
+    new_classifiers = []
+    license_counter = 0
+    license_classifiers = []
+
+    for classifier in classifiers:
+        if classifier.startswith("License"):
+            if classifier not in LICENSE_CLASSIFIER_TO_SPDX.keys():
+                print(f"License classifier {classifier} was not expected")
+                print("either remove it and run the script again,")
+                print("or double check if that was the intended classifier.")
+                sys.exit()
+            license_counter += 1
+            license_classifiers.append(classifier)
+            continue
+        elif classifier in ("Framework :: Zope2", "Framework :: Zope :: 2"):
+            continue
+        elif classifier == "Framework :: Zope3":
+            new_classifiers.append("Framework :: Zope :: 3")
+        else:
+            new_classifiers.append(classifier)
+
+    if license_counter > 1:
+        print("There are too many License :: classifiers, fix that first!")
+        sys.exit()
+
+    return new_classifiers, license_classifiers
+
+
+def check_license(license, license_classifier):
+    """Check license sanity check.
+
+    Compare that the license key on setup.py and the license related classifier
+    match, otherwise complain.
+
+    If they match, return a SPDX license complain expression.
+    """
+    normalized_license = "".join(ch for ch in license.lower() if ch.isalnum())
+    license_spdx = LICENSE_TO_SPDX.get(normalized_license)
+    if len(license_classifier) == 0:
+        if license_spdx:
+            return license_spdx
+        print(f'Unknown license "{license}", please fix it or remove it ')
+        print("so that the script does not complain.")
+        sys.exit(1)
+
+    classifier_spdx = LICENSE_CLASSIFIER_TO_SPDX[license_classifier[0]]
+    if license_spdx and license_spdx != classifier_spdx:
+        print(
+            f'License "{license}" does not match classifier "{license_classifier[0]}".'
+        )
+        sys.exit(1)
+
+    return classifier_spdx
+
+
 def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
     """Iterate over setup_kwargs and generate a dictionary of values suitable
     for pyproject.toml and a dictionary with unconverted arguments
@@ -159,22 +233,13 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         if key in setup_kwargs:
             p_data[key] = setup_kwargs.pop(key)
 
-    license = setup_kwargs.pop("license", "ZPL-2.1")
-    license.replace("ZPL 2.1", "ZPL-2.1")
-    p_data["license"] = license
+    original_classifiers = setup_kwargs.pop("classifiers", [])
+    p_data["classifiers"], license_classifiers = handle_classifiers(
+        original_classifiers
+    )
 
-    classifiers = setup_kwargs.pop("classifiers", [])
-    new_classifiers = []
-    for classifier in classifiers:
-        if classifier.startswith("License"):
-            continue
-        elif classifier in ("Framework :: Zope2", "Framework :: Zope :: 2"):
-            continue
-        elif classifier == "Framework :: Zope3":
-            new_classifiers.append("Framework :: Zope :: 3")
-        else:
-            new_classifiers.append(classifier)
-    p_data["classifiers"] = new_classifiers
+    license = setup_kwargs.pop("license")
+    p_data["license"] = check_license(license, license_classifiers)
 
     readme = None
     for readme_name in ("README.rst", "README.txt"):
