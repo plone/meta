@@ -24,7 +24,6 @@ import ast
 import contextlib
 import os
 import pathlib
-import shutil
 import sys
 import tomlkit
 
@@ -444,6 +443,26 @@ def package_sanity_check(path):
     return sane
 
 
+def write_news_entry(path):
+    news_folder = path / "news"
+    if not news_folder.exists():
+        print("WARNING: no news entry created as there is no 'news' folder")
+        return
+
+    filename = "+setup-to-pyproject.internal"
+    news_entry = news_folder / filename
+    if (path / "CHANGES.md").exists():
+        changelog_text = (
+            "Move package metadata from `setup.py` to `pyproject.toml` @plone\n"
+        )
+    else:
+        changelog_text = "Move package metadata from ``setup.py`` to ``pyproject.toml``.\n[plone devs]\n"
+    news_entry.write_text(changelog_text)
+
+    with change_dir(path):
+        call("git", "add", f"news/{filename}")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Move package metadata from setup.py to pyproject.toml."
@@ -474,58 +493,21 @@ def main():
         print("Package has been converted already, exiting.")
         sys.exit()
 
-    toml_content = rewrite_pyproject_toml(args.path / "pyproject.toml", toml_dict)
+    toml_content = rewrite_pyproject_toml(args.path, toml_dict)
     setup_content = rewrite_setup_py(args.path / "setup.py", leftover_setup_kwargs)
 
-    # If this is a dry run, just print the end result and exit.
-    if args.dry_run:
-        print("\n------------> pyproject.toml with all changes applied:")
-        print(toml_content)
-        print("\n------------> setup.py with all changes applied:")
-        print(setup_content)
-        sys.exit()
+    (args.path / "pyproject.toml").write_text(toml_content)
+    (args.path / "setup.py").write_text(setup_content)
 
-    with change_dir(args.path) as cwd:
-        bin_dir = pathlib.Path(cwd) / "bin"
+    print("Look through setup.py and pyproject.toml to see if it needs changes.")
+    write_news_entry(args.path)
 
-        call(
-            bin_dir / "addchangelogentry",
-            "Move package metadata from setup.py to pyproject.toml.",
-        )
-
-        with open(args.path / "pyproject.toml", "w") as fp:
-            fp.write(toml_content)
-        with open(args.path / "setup.py", "w") as fp:
-            fp.write(setup_content)
-
-        if args.interactive or args.commit:
-            print("Look through setup.py to see if it needs changes.")
-            call(os.environ["EDITOR"], "setup.py")
-            call("git", "add", "setup.py")
-            print("Look through pyproject.toml to see if it needs changes.")
-            call(os.environ["EDITOR"], "pyproject.toml")
-            call("git", "add", "pyproject.toml")
-
-        if args.run_tests:
-            tox_path = shutil.which("tox") or (pathlib.Path(cwd) / "bin" / "tox")
-            call(tox_path, "-p", "auto")
-
+    with change_dir(args.path):
         branch_name = args.branch_name or "convert-setup-py-to-pyproject-toml"
-        updating = git_branch(branch_name)
+        git_branch(branch_name)
 
-        if args.commit:
-            if args.commit_msg:
-                commit_msg = args.commit_msg
-            else:
-                commit_msg = "Move package metadata from setup.py" " to pyproject.toml."
-            call("git", "commit", "-m", commit_msg)
-            if args.push:
-                call("git", "push", "--set-upstream", "origin", branch_name)
-
-        print("If everything went fine up to here:")
-        if updating:
-            print("Updated the previously created PR.")
-        else:
-            print("Create a PR, using the URL shown above.")
+        commit_msg = "feat: move metadata from setup.py to pyproject.toml."
+        call("git", "add", "setup.py", "pyproject.toml")
+        call("git", "commit", "-m", commit_msg)
 
     print(f"Finished converting {args.path.name}.")
