@@ -12,11 +12,9 @@
 #
 ##############################################################################
 
+from .config_package import META_HINT
 from .shared.call import call
 from .shared.git import git_branch
-from .shared.packages import get_pyproject_toml
-from .shared.packages import META_HINT
-from .shared.packages import OLDEST_PYTHON_VERSION
 from .shared.path import change_dir
 from importlib.util import module_from_spec
 from importlib.util import spec_from_file_location
@@ -50,6 +48,30 @@ UNCONVERTIBLE_KEYS = (
     "headers",
     "cffi_modules",
 )
+
+
+def get_pyproject_toml(path, comment=""):
+    """Parse ``pyproject.toml`` and return its content as ``TOMLDocument``.
+
+    Args:
+        path (str, pathlib.Path): Filesystem path to a pyproject.toml file.
+
+    Kwargs:
+        comment (str): Optional comment added to the top of the file.
+
+    Returns:
+        A TOMLDocument instance from the pyproject.toml file.
+    """
+    toml_contents = ""
+    if path.exists():
+        toml_contents = path.read_text()
+
+    if comment and not (
+        toml_contents.startswith(comment) or toml_contents.startswith(f"# \n{comment}")
+    ):
+        toml_contents = f"{comment}\n{toml_contents}"
+
+    return tomlkit.loads(toml_contents)
 
 
 def parse_setup_function(ast_node, assigned_names=None):
@@ -317,7 +339,8 @@ def parse_setup_py(path):
 
 
 def rewrite_pyproject_toml(path, toml_dict):
-    p_toml = get_pyproject_toml(path)
+    toml_file = path / "pyproject.toml"
+    p_toml = get_pyproject_toml(toml_file)
 
     def recursive_merge(dict1, dict2):
         for key, value in dict2.items():
@@ -354,12 +377,7 @@ def rewrite_pyproject_toml(path, toml_dict):
 
     # Last sanity check to see if anything is missing
     if "requires-python" not in p_toml["project"]:
-        print(
-            "XXX WARNING XXX: This package did not define the minimum"
-            ' required Python ("python_requires"). Forcing the minimum'
-            f" supported by zope.meta instead ({OLDEST_PYTHON_VERSION})."
-        )
-        p_toml["project"]["requires-python"] = f">={OLDEST_PYTHON_VERSION}"
+        p_toml["project"]["requires-python"] = ">=3.10"
 
     # Create a fresh TOMLDocument instance so I can control section sorting
     with open(path.absolute().parent / ".meta.toml", "rb") as fp:
