@@ -18,10 +18,10 @@ from .shared.packages import get_pyproject_toml
 from .shared.packages import META_HINT
 from .shared.packages import OLDEST_PYTHON_VERSION
 from .shared.path import change_dir
-from .shared.script_args import get_shared_parser
 from importlib.util import module_from_spec
 from importlib.util import spec_from_file_location
 
+import argparse
 import ast
 import contextlib
 import os
@@ -427,16 +427,19 @@ def package_sanity_check(path):
 
 
 def main():
-    parser = get_shared_parser(
-        "Move package metadata from setup.py to pyproject.toml.", interactive=True
+    parser = argparse.ArgumentParser(
+        description="Move package metadata from setup.py to pyproject.toml."
     )
     parser.add_argument(
-        "--dry-run",
-        dest="dry_run",
-        action="store_true",
-        default=False,
-        help="Do not make any changes but output contents for the changed"
-        " setup.py and pyproject.toml files.",
+        "path", type=pathlib.Path, help="path to the repository to be configured"
+    )
+    parser.add_argument(
+        "--branch",
+        dest="branch_name",
+        default=None,
+        help="Define a git branch name to be used for the changes. "
+        "If not given it is constructed automatically and includes "
+        'the configuration type. Use "current" to update the current branch.',
     )
     args = parser.parse_args()
 
