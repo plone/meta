@@ -293,8 +293,7 @@ def parse_setup_py(path):
     for key in dir(setup_module):
         assigned_names[key] = getattr(setup_module, key)
 
-    with open(path) as fp:
-        file_contents = fp.read()
+    file_contents = pathlib.Path(path).read_text()
 
     # Create the ast tree for the setup module to find the setup call
     # definition in order to parse out the call arguments.
