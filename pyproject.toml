@@ -33,6 +33,7 @@ classifiers = [
 dependencies = [
   "Jinja2",
   "editorconfig",
+  "packaging",
   "pyyaml",
   "tomlkit",
   "tox",
