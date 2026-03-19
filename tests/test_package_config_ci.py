@@ -79,9 +79,11 @@ class TestMinimalConfigFiles:
 
 class TestPyproject:
     def test_minimal_files(self, package_config):
+        pyproject_file_path = package_config.path / "pyproject.toml"
         result = package_config.pyproject_toml()
         assert len(result) == 1
-        assert (package_config.path / "pyproject.toml").exists()
+        text = pyproject_file_path.read_text()
+        assert len(text.splitlines()) > 50
 
     def test_if_news_folder_exists(self, package_config):
         (package_config.path / "news").mkdir(parents=True, exist_ok=True)
@@ -95,6 +97,21 @@ class TestPyproject:
         result = package_config.pyproject_toml()
         assert len(result) == 2
         assert (package_config.path / "news" / ".changelog_template.jinja").exists()
+
+    def test_metadata_is_kept(self, package_config):
+        pyproject_file_path = package_config.path / "pyproject.toml"
+        text = [
+            "# START-MARKER-MANUAL-CONFIG",
+            "[project]",
+            'name="random-project"',
+            "# END-MARKER-MANUAL-CONFIG",
+        ]
+        pyproject_file_path.write_text("\n".join(text))
+        package_config.pyproject_toml()
+        final_toml_text = pyproject_file_path.read_text()
+        assert len(final_toml_text.splitlines()) > len(text)
+        for line in text:
+            assert line in final_toml_text
 
 
 class TestSetuptoolsUpperBound:

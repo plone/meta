@@ -1,6 +1,8 @@
 [build-system]
 requires = ["setuptools>=68.2,<%(setuptools_upper_bound)s", "wheel"]
 
+%(project_metadata)s
+
 {% if news_folder_exists %}
 [tool.towncrier]
 directory = "news/"

@@ -109,12 +109,21 @@ Includes pyupgrade, isort, black, zpretty, flake8, codespell, check-manifest, py
 
 **Template:** {file}`pyproject.toml.j2`
 
-**Purpose:** Python tooling configuration for isort, black, codespell, check-manifest, and z3c.dependencychecker.
-Also includes towncrier configuration if a {file}`news/` folder exists.
+**Purpose:** Python distribution metadata and tooling configuration.
 
-:::{note}
-plone.meta overwrites {file}`pyproject.toml` completely, like all other generated files. All customization must go through {file}`.meta.toml`.
-:::
+Contrary to all other generated files, {file}`pyproject.toml` keeps whatever is within some special markers.
+
+These markers are meant to be around the `[project]` table, it should look like:
+
+```toml
+# START-MARKER-MANUAL-CONFIG
+[project]
+name = "plone.meta"
+version = "1.2.4"
+...
+# END-MARKER-MANUAL-CONFIG
+```
+
 
 ## tox.ini
 
