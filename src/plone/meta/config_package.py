@@ -438,7 +438,7 @@ class PackageConfiguration:
     def _get_manual_metadata(self):
         metadata = ""
         suffix = "MARKER-MANUAL-CONFIG"
-        pyproject_path = (Path(self.path) / "pyproject.toml")
+        pyproject_path = Path(self.path) / "pyproject.toml"
         if not pyproject_path.exists():
             return ""
         actual_pyproject = pyproject_path.read_text()
