@@ -16,6 +16,7 @@ from .config_package import META_HINT
 from .shared.call import call
 from .shared.git import get_branch_name
 from .shared.git import git_branch
+from .shared.git import git_server_url
 from .shared.path import change_dir
 from importlib.util import module_from_spec
 from importlib.util import spec_from_file_location
@@ -224,6 +225,12 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
     toml_dict = {"project": {}}
     p_data = toml_dict["project"]
 
+    is_plone_org_repo = False
+    with change_dir(setup_py_path.parent):
+        repository = git_server_url()
+        if "github.com:plone/" in repository or "github.com/plone/" in repository:
+            is_plone_org_repo = True
+
     for key in IGNORE_KEYS:
         setup_kwargs.pop(key, None)
 
@@ -279,12 +286,13 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         p_data["authors"] = tomlkit.array()
         p_data["authors"].add_line(author_dict)
 
-    maintainers_table = {
-        "name": "Plone Foundation and contributors",
-        "email": "zope-dev@zope.dev",
-    }
-    p_data["maintainers"] = tomlkit.array()
-    p_data["maintainers"].add_line(maintainers_table)
+    if is_plone_org_repo:
+        maintainers_table = {
+            "name": "Plone Foundation and contributors",
+            "email": "plone-developers@lists.sourceforge.net",
+        }
+        p_data["maintainers"] = tomlkit.array()
+        p_data["maintainers"].add_line(maintainers_table)
 
     entry_points = {}
     scripts = {}
