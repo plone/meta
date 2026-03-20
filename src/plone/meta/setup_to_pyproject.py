@@ -250,13 +250,13 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
     p_data["license"] = check_license(license, license_classifiers)
 
     readme = None
-    for readme_name in ("README.rst", "README.txt"):
+    for readme_name in ("README.rst", "README.txt", "README.md"):
         if (setup_py_path.parent / readme_name).exists():
             readme = readme_name
             break
 
     changelog = None
-    for changelog_name in ("CHANGES.rst", "CHANGES.txt"):
+    for changelog_name in ("CHANGES.rst", "CHANGES.txt", "CHANGES.md"):
         if (setup_py_path.parent / changelog_name).exists():
             changelog = changelog_name
             break
@@ -270,7 +270,7 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         dynamic_attributes = p_data.setdefault("dynamic", [])
         dynamic_attributes.append("readme")
     else:
-        print("XXX WARNING XXX: This package has no README.rst or README.txt!")
+        print("XXX WARNING XXX: This package has no README.(rst|txt|md)!")
 
     if "python_requires" in setup_kwargs:
         p_data["requires-python"] = setup_kwargs.pop("python_requires")
