@@ -438,9 +438,13 @@ def rewrite_pyproject_toml(args, toml_dict):
 
     opt_deps = p_toml["project"].get("optional-dependencies", {})
     for key, value in opt_deps.items():
-        if len(value) > 1:
-            p_toml["project"]["optional-dependencies"][key].multiline(True)
-
+        if isinstance(value, list):
+            if len(value) > 1:
+                p_toml["project"]["optional-dependencies"][key].multiline(True)
+        else:
+            print(f"XXX: {key} optional-dependencies needs to be a list.")
+            print("Fix it on setup.py and re-run.")
+            sys.exit()
     # Last sanity check to see if anything is missing
     if "requires-python" not in p_toml["project"]:
         p_toml["project"]["requires-python"] = ">=3.10"
