@@ -466,6 +466,19 @@ def rewrite_pyproject_toml(args, toml_dict):
     project_name = path.resolve().parts[-1]
     issues_url = "https://github.com/plone/Products.CMFPlone/issues"
     project_url = f"https://github.com/plone/{project_name}"
+    with change_dir(path):
+        # Let's see if we can find a different url.
+        repository = git_server_url()
+        if "github.com" in repository:
+            # Can be 'git@github.com:' or 'https://github.com/'.
+            repo_path = repository[
+                repository.find("github.com") + len("github.com") + 1 :
+            ]
+            # repo_path is like 'plone/project.name.git'
+            organisation = repo_path.split("/")[0]
+            project_url = f"https://github.com/{organisation}/{project_name}"
+            if organisation != "plone":
+                issues_url = f"{project_url}/issues"
     if args.issues_url == "own":
         issues_url = f"{project_url}/issues"
     elif args.issues_url:
