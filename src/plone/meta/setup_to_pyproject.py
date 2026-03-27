@@ -484,7 +484,8 @@ def rewrite_pyproject_toml(args, toml_dict):
     elif args.issues_url:
         issues_url = args.issues_url
 
-    existing_branch = get_branch_name(override="current", config_type="default")
+    with change_dir(path):
+        existing_branch = get_branch_name(override="current", config_type="default")
     if existing_branch not in ("master", "main"):
         print(
             "WARNING: check the projects.url.Changelog for accuracy, no proper default branch could be found"
