@@ -433,9 +433,9 @@ def rewrite_pyproject_toml(args, toml_dict):
     p_toml = recursive_merge(p_toml, toml_dict)
 
     # Format long lists
-    p_toml["project"]["classifiers"].multiline(True)
-    p_toml["project"]["authors"].multiline(True)
-    p_toml["project"]["maintainers"].multiline(True)
+    for long_list in ("classifiers", "authors", "maintainers"):
+        if long_list in p_toml["project"]:
+            p_toml["project"][long_list].multiline(True)
     if (
         "dependencies" in p_toml["project"]
         and len(p_toml["project"]["dependencies"]) > 1
