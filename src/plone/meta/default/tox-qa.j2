@@ -22,10 +22,9 @@ description = check if the package defines all its dependencies
 skip_install = true
 deps =
     build
-    setuptools<82.0.0
-    z3c.dependencychecker==2.14.3
+    z3c.dependencychecker==3.0
 commands =
-    python -m build --sdist
+    python -m build --wheel
     dependencychecker
 
 [testenv:dependencies-graph]
