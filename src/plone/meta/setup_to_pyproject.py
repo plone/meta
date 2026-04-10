@@ -97,7 +97,6 @@ def parse_setup_function(ast_node, assigned_names=None):
     """Parse values out of the setup call ast definition"""
     setup_kwargs = {}
     assigned_names = assigned_names or {}
-
     for kw_arg in ast_node.keywords:
         if isinstance(kw_arg.value, (ast.Constant, ast.List, ast.Tuple)):
             setup_kwargs[kw_arg.arg] = ast.literal_eval(kw_arg.value)
@@ -158,6 +157,25 @@ def parse_setup_function(ast_node, assigned_names=None):
             else:
                 value = kw_arg.value.id
             setup_kwargs[kw_arg.arg] = value
+        elif isinstance(kw_arg.value, ast.Call):
+            # For example: extras_require=dict(test=["zope.testing"])
+            # From https://stackoverflow.com/a/72359947/621201
+            try:
+                setup_kwargs[kw_arg.arg] = eval(
+                    compile(ast.Expression(body=kw_arg.value), "", "eval")
+                )
+            except Exception:
+                print("XXX Cannot convert call value XXX")
+                print("XXX Please fix setup.py manually first XXX")
+                print(f"XXX Dictionary key: {kw_arg.arg} XXX")
+                print(ast.dump(kw_arg.value, indent=2))
+                sys.exit(1)
+        else:
+            print("XXX Don't know how to handle this item XXX")
+            print("XXX Please fix setup.py manually first XXX")
+            print(f"XXX Dictionary key: {kw_arg.arg} XXX")
+            print(ast.dump(kw_arg.value, indent=2))
+            sys.exit(1)
 
     return setup_kwargs
 
@@ -406,6 +424,8 @@ def parse_setup_py(path):
 
     if setup_node is not None:
         setup_kwargs = parse_setup_function(setup_node, assigned_names)
+        if "extras_require" not in setup_kwargs:
+            raise ValueError()
     leftover_setup_kwargs, toml_dict = setup_args_to_toml_dict(path, setup_kwargs)
 
     return leftover_setup_kwargs, toml_dict
