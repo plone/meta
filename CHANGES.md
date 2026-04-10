@@ -9,6 +9,15 @@
 
 <!-- towncrier release notes start -->
 
+## 2.7.0 (2026-04-10)
+
+
+### New features:
+
+- Switch GHA workflows used by projects configured with `plone.meta` to `tox-uv` to speed them up @gforcada [#246](https://github.com/plone/meta/issues/246)
+- Ensure the `[project]` table is not removed from `pyproject.toml` @gforcada [#315](https://github.com/plone/meta/issues/315)
+- Update `z3c.dependencychecker` @gforcada 
+
 ## 2.6.0 (2026-03-16)
 
 
