@@ -356,6 +356,45 @@ class PackageConfiguration:
             return "82"
         return "83"
 
+    def _detect_setup_py_for_package_config(self):
+        """Dynamically find out if setup.py is used for package configuration.
+
+        If `pyproject.toml` contains some specific content, we assume that this
+        file is used for package configuration, and `setup.py` is basically empty.
+        Main reason: in that case `check-python-versions` fails if we ask it to
+        check `setup.py`.
+        """
+        if not (self.path / "setup.py").exists():
+            # If the file does not even exist, it is definitely not used. ;-)
+            return False
+        pyproject = self.path / "pyproject.toml"
+        if not pyproject.exists():
+            # Should not happen.  But if this file does not exist, then
+            # `setup.py` will be used.
+            return True
+        text = pyproject.read_text()
+        # If any of these markers do NOT exist in the `pyproject.toml` file,
+        # we conclude that `setup.py` is still used.
+        markers = [
+            "START-MARKER-MANUAL-CONFIG",
+            "[project]",
+            "Programming Language :: Python",
+            "requires-python",
+        ]
+        return any([marker not in text for marker in markers])
+
+    def _check_python_versions_files(self, using_setup_py):
+        """Which files should be checked by check-python-versions?
+
+        This is for inclusion in the pre-commit config:
+
+            id: check-python-versions
+            args: ['--only', 'setup.py,pyproject.toml']
+        """
+        if using_setup_py:
+            return "setup.py,tox.ini"
+        return "pyproject.toml,tox.ini"
+
     def pre_commit_config(self):
         options = self._get_options_for(
             "pre_commit",
@@ -370,6 +409,9 @@ class PackageConfiguration:
 
         python_version = self._minimal_python_version()
         options["minimal_python_version"] = self._no_dot_python_version(python_version)
+        options["check_python_versions_files"] = self._check_python_versions_files(
+            self._detect_setup_py_for_package_config()
+        )
 
         return self.copy_with_meta(
             "pre-commit-config.yaml.j2",

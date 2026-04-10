@@ -45,6 +45,13 @@ Set up CI jobs, Python version matrices, OS dependencies, and environment variab
 Set up CI pipelines for GitLab-hosted repositories, including custom Docker images and OS dependencies.
 :::
 
+:::{grid-item-card} Convert `setup.py` metadata to `pyproject.toml`
+:link: setup-to-pyproject
+:link-type: doc
+
+Convert the metadata in `setup.py` to `pyproject.toml`
+:::
+
 :::{grid-item-card} Re-enable GitHub Actions
 :link: re-enable-actions
 :link-type: doc
