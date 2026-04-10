@@ -34,7 +34,7 @@ lint:
     paths:
       - ${PRE_COMMIT_HOME}
   script:
-    - pip install tox
+    - pip install tox-uv
     - tox -e lint
   except:
     - schedules
@@ -44,7 +44,7 @@ lint:
 release-ready:
   stage: qa
   script:
-    - pip install tox
+    - pip install tox-uv
     - tox -e release-check
   except:
     - schedules
@@ -54,7 +54,7 @@ release-ready:
 dependencies:
   stage: qa
   script:
-    - pip install tox
+    - pip install tox-uv
     - tox -e dependencies
   except:
     - schedules
@@ -66,7 +66,7 @@ circular-dependencies:
   script:
     - apt-get update
     - apt-get install -y graphviz graphviz-dev
-    - pip install tox
+    - pip install tox-uv
     - tox -e circular
   except:
     - schedules
@@ -78,7 +78,7 @@ testing:
   image: $DOCKER_IMAGE
   script:
 %(os_dependencies)s
-    - pip install tox
+    - pip install tox-uv
     - tox -e $TOX_ENV -- --xml reports
   parallel:
     matrix:
@@ -108,7 +108,7 @@ coverage:
   stage: test
   script:
 %(os_dependencies)s
-    - pip install tox
+    - pip install tox-uv
     - tox -e coverage
 ##
 # Add extra test/coverage commands in .meta.toml:
