@@ -493,6 +493,9 @@ def rewrite_pyproject_toml(args, toml_dict):
         existing_branch = "master"
     changelog = f"{project_url}/blob/{existing_branch}/{changes_file}"
 
+    # There may be a tool.setuptools table with a dynamic setting.
+    # We must pop it here and then insert this later, before the END marker.
+    setuptools_table = p_toml["tool"].pop("setuptools", None)
     comment_header = (
         "START-MARKER-MANUAL-CONFIG",
         "Anything from here until END-MARKER-MANUAL-CONFIG",
@@ -514,6 +517,18 @@ def rewrite_pyproject_toml(args, toml_dict):
             new_doc.add(tomlkit.comment("END-MARKER-MANUAL-CONFIG"))
 
     new_text = tomlkit.dumps(new_doc)
+    if setuptools_table is not None:
+        table = tomlkit.table()
+        table["tool"] = tomlkit.table()
+        table["tool"]["setuptools"] = setuptools_table
+        setuptools_text = tomlkit.dumps(table)
+        lines = []
+        for line in new_text.splitlines():
+            if line == "# END-MARKER-MANUAL-CONFIG":
+                lines.extend(setuptools_text.splitlines())
+            lines.append(line)
+        new_text = "\n".join(lines)
+
     # There may be too many white lines as the end.  We want only one.
     return new_text.strip() + "\n"
 
