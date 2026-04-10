@@ -547,6 +547,25 @@ def rewrite_setup_py(path, leftover_setup_kwargs):
     return "".join(new_setup_py)
 
 
+def rewrite_pre_commit_config(path):
+    """Write new pre-commit config file.
+
+    The check-python-versions arguments need an update.
+    """
+    new_pre_commit = []
+    old_pre_commit = path.read_text().splitlines()
+
+    marker = "args: ['--only',"
+    new_text = "args: ['--only', 'pyproject.toml,tox.ini']"
+    for line in old_pre_commit:
+        if marker in line:
+            position = line.index(marker)
+            line = line[:position] + new_text
+        new_pre_commit.append(line)
+
+    return "\n".join(new_pre_commit) + "\n"
+
+
 def package_sanity_check(path):
     """Sanity checks for the provided path"""
     sane = True
@@ -630,9 +649,13 @@ def main():
 
     toml_content = rewrite_pyproject_toml(args, toml_dict)
     setup_content = rewrite_setup_py(args.path / "setup.py", leftover_setup_kwargs)
+    pre_commit_content = rewrite_pre_commit_config(
+        args.path / ".pre-commit-config.yaml"
+    )
 
     (args.path / "pyproject.toml").write_text(toml_content)
     (args.path / "setup.py").write_text(setup_content)
+    (args.path / ".pre-commit-config.yaml").write_text(pre_commit_content)
 
     print("Look through setup.py and pyproject.toml to see if it needs changes.")
     write_news_entry(args.path)
@@ -642,7 +665,7 @@ def main():
         git_branch(branch_name)
 
         commit_msg = "feat: move metadata from setup.py to pyproject.toml."
-        call("git", "add", "setup.py", "pyproject.toml")
+        call("git", "add", "setup.py", "pyproject.toml", ".pre-commit-config.yaml")
         call("git", "commit", "-m", commit_msg)
 
     print(f"Finished converting {args.path.name}.")
