@@ -513,7 +513,9 @@ def rewrite_pyproject_toml(args, toml_dict):
             new_doc[key]["urls"].append("Changelog", changelog)
             new_doc.add(tomlkit.comment("END-MARKER-MANUAL-CONFIG"))
 
-    return tomlkit.dumps(new_doc)
+    new_text = tomlkit.dumps(new_doc)
+    # There may be too many white lines as the end.  We want only one.
+    return new_text.strip() + "\n"
 
 
 def rewrite_setup_py(path, leftover_setup_kwargs):
