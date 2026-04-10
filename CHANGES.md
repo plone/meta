@@ -9,6 +9,18 @@
 
 <!-- towncrier release notes start -->
 
+## 2.8.0 (2026-04-10)
+
+
+### New features:
+
+- Add `setup-to-pyproject` script to move `setup.py` metadata into `pyproject.toml` @gforcada [#315](https://github.com/plone/meta/issues/315)
+
+
+### Bug fixes:
+
+- Bump `setup-uv` GHA version @gforcada 
+
 ## 2.7.0 (2026-04-10)
 
 
