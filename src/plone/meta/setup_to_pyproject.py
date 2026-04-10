@@ -424,8 +424,6 @@ def parse_setup_py(path):
 
     if setup_node is not None:
         setup_kwargs = parse_setup_function(setup_node, assigned_names)
-        if "extras_require" not in setup_kwargs:
-            raise ValueError()
     leftover_setup_kwargs, toml_dict = setup_args_to_toml_dict(path, setup_kwargs)
 
     return leftover_setup_kwargs, toml_dict
