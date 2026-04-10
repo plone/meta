@@ -1,6 +1,7 @@
 > [!WARNING]
-> Since February 11th 2025 `plone.meta` is not using `main` branch for development anymore,
-> have a look at the current default branch on GitHub UI.
+> Since February 11th 2025 `plone.meta` is not using `main` branch for development anymore.
+> Have a look at the current default branch in the GitHub UI (at time of writing: 2.x).
+> If you really want to use the current branch, pass `--yes` as option.
 
 # plone/meta
 
@@ -40,7 +41,7 @@ When you run this command, it automatically goes through the following steps.
 1.  It writes the configuration files.
 1.  It creates a change log entry.
 1.  By default, it commits changes.
-1.  It optionally adds packages, pushes commits, or runs tox from the configuration files. 
+1.  It optionally adds packages, pushes commits, or runs tox from the configuration files.
 
 > [!TIP]
 > If you prefer to name the new git branch instead of letting the command name it using its default naming scheme, then either create a new branch `my-new-branch`, switch to it, and use the `--branch current` option, or do all that in one step with the `--branch my-new-branch` option.

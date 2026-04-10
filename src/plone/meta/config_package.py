@@ -14,6 +14,7 @@ import jinja2
 import pathlib
 import re
 import shutil
+import sys
 import tomlkit
 import validate_pyproject
 import yaml
@@ -65,9 +66,32 @@ GITLAB_DEFAULT_JOBS = [
 
 def handle_command_line_arguments():
     """Parse command line options"""
-    parser = argparse.ArgumentParser(description="Use configuration for a package.")
+    # Note: the line endings in the following branch text are ignored in the
+    # command description, but they are shown when we explicitly print this
+    # at the end of this function.
+    branch_text = (
+        "You should NOT use this main branch.\n"
+        "Have a look at the current default branch in the GitHub UI "
+        "(at time of writing: 2.x).\n"
+        "If you really want to use the current branch, pass --yes as option."
+    )
+
+    parser = argparse.ArgumentParser(
+        description=f"Use configuration for a package. WARNING: {branch_text}"
+    )
+    # parser = argparse.ArgumentParser(
+    #     description="Use configuration for a package. "
+    #     "WARNING: you should NOT use the main branch. "
+    #     "Use a version branch like 2.x instead.")
     parser.add_argument(
         "path", type=pathlib.Path, help="path to the repository to be configured"
+    )
+    parser.add_argument(
+        "--yes",
+        dest="yes",
+        action="store_true",
+        default=False,
+        help="Yes, use this branch.",
     )
     parser.add_argument(
         "--commit-msg",
@@ -124,6 +148,9 @@ def handle_command_line_arguments():
     )
 
     args = parser.parse_args()
+    if not args.yes:
+        print(f"ERROR: {branch_text}")
+        sys.exit(1)
     return args
 
 
