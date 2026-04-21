@@ -40,7 +40,7 @@ jobs:
         working-directory: docs
         run: .venv/bin/sphinx-build sources html
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/html
 
