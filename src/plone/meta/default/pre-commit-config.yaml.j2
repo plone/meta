@@ -17,7 +17,7 @@ repos:
     hooks:
     -   id: black
 -   repo: https://github.com/collective/zpretty
-    rev: 3.1.1
+    rev: 4.0.0
     hooks:
     -   id: zpretty
 %(zpretty_extra_lines)s
@@ -63,7 +63,7 @@ repos:
     hooks:
     -   id: pyroma
 -   repo: https://github.com/mgedmin/check-python-versions
-    rev: "0.24.0"
+    rev: "0.24.2"
     hooks:
     -   id: check-python-versions
         args: ['--only', '%(check_python_versions_files)s']
