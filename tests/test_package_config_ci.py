@@ -129,7 +129,8 @@ class TestMinimalPythonVersion:
     @pytest.mark.parametrize(
         ["matrix", "output"],
         [
-            [None, "3.10"],
+            [None, "3.9"],
+            [{"6.0": ["*"]}, "3.9"],
             [{"6.1": ["*"]}, "3.10"],
             [{"6.2": ["*"]}, "3.10"],
             [{"6.2": ["3.13"]}, "3.13"],
