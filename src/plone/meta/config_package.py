@@ -36,7 +36,7 @@ DEFAULT = object()
 TOX_TEST_MATRIX = {
     "6.2": ["3.14", "3.13", "3.12", "3.11", "3.10"],
     "6.1": ["3.13", "3.12", "3.11", "3.10"],
-    "6.0": ["3.13", "3.12", "3.11", "3.10"],
+    "6.0": ["3.13", "3.12", "3.11", "3.10", "3.9"],
 }
 
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
@@ -47,6 +47,7 @@ DOCKER_IMAGES = {
     "3.12": "python:3.12-trixie",
     "3.11": "python:3.11-trixie",
     "3.10": "python:3.10-trixie",
+    "3.9": "python:3.9-trixie",
 }
 
 # Rather than pointing configured repositories to `plone.meta`'s `main` branch
