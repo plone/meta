@@ -8,9 +8,7 @@ It generates and manages `.editorconfig`, `.flake8`, `.gitignore`, `pyproject.to
 ## Quick Start
 
 ```shell
-python3 -m venv venv
-venv/bin/pip install plone.meta
-venv/bin/config-package /path/to/your/package
+uvx --from plone.meta config-package path/to/your/package
 ```
 
 
