@@ -19,20 +19,15 @@ runs:
   using: "composite"
   steps:
     - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v5
+      uses: astral-sh/setup-uv@v8.1.0
       with:
         python-version: ${{ inputs.python-version }}
-        enable-cache: false
-
-    - name: Restore uv cache
-      uses: actions/cache@v4
-      with:
-        path: ${{ env.UV_CACHE_DIR }}
-        key: uv-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.plone-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('uv.lock') }}
-        restore-keys: |
-          uv-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.plone-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('uv.lock') }}
-          uv-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.plone-version }}-${{ hashFiles('pyproject.toml') }}
-          uv-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.plone-version }}
+        cache-python: true
+        enable-cache: true
+        cache-suffix: "optional-suffix"
+        cache-dependency-glob: |
+          **/pyproject.toml
+          **/uv.lock
 
     - name: Install codebase
       working-directory: ${{ inputs.working-directory }}
