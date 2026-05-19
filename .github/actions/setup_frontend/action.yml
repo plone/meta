@@ -10,12 +10,20 @@ inputs:
     description: 'Working directory to use'
     required: false
     default: '.'
+  cache:
+    description: 'Cache type to use'
+    required: false
+    default: 'pnpm'
+  cache-dependency-path:
+    description: 'Cache dependency path'
+    required: false
+    default: '**/pnpm-lock.yaml'
 
 runs:
   using: "composite"
   steps:
     - name: Use Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6.4.0
       with:
         node-version: ${{ inputs.node-version }}
 
@@ -25,20 +33,14 @@ runs:
       run: |
         npm i -g corepack@latest
         corepack enable
+        corepack prepare --activate
 
-    - name: Get pnpm store directory
-      working-directory: ${{ inputs.working-directory }}
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-    - uses: actions/cache@v4
-      name: Setup pnpm cache
+    - name: Cache for node version ${{ inputs.node-version }}
+      uses: actions/setup-node@v6.4.0
       with:
-        path: ${{ env.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-
+        node-version: ${{ inputs.node-version }}
+        cache: '${{ inputs.cache }}'
+        cache-dependency-path: '${{ inputs.cache-dependency-path }}'
 
     - name: Install project dependencies
       working-directory: ${{ inputs.working-directory }}
