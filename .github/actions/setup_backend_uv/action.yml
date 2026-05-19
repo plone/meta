@@ -9,7 +9,7 @@ inputs:
   plone-version:
     description: 'Plone Version'
     required: true
-    default: '6.1.1'
+    default: '6.2.0'
   working-directory:
     description: 'Working directory to use'
     required: false
