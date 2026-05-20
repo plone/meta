@@ -32,8 +32,6 @@ jobs:
   storybook:
     name: Storybook
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     outputs:
       artifact_name: ${{ steps.upload-artifact.outcome == 'success' && format('storybook-{0}', github.run_id) || '' }}
       artifact_id: ${{ steps.upload-artifact.outputs.artifact-id }}
@@ -86,9 +84,6 @@ jobs:
     needs: storybook
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' && inputs.deploy && inputs.deploy_mode == 'action' }}
-    permissions:
-      pages: write
-      id-token: write
     concurrency:
       group: pages
       cancel-in-progress: false

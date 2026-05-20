@@ -210,10 +210,14 @@ Builds Storybook stories and, optionally, deploys them to GitHub Pages or upload
 
 **Permissions required from the caller:**
 
-| `deploy_mode` | Permissions |
-|---------------|-------------|
-| `branch` | Workflow needs `contents: write` (granted by this workflow at the job level) |
-| `action`  | Caller workflow must grant `pages: write` and `id-token: write` |
+This reusable workflow does **not** declare any `permissions:` of its own — a reusable workflow cannot grant the caller more access than the caller has already enabled. The caller workflow must declare the required permissions at the workflow level (or on the calling job):
+
+| `deploy_mode` | Permissions the caller must grant |
+|---------------|-----------------------------------|
+| `branch` | `contents: write` (so `JamesIves/github-pages-deploy-action` can push to the `gh-pages` branch) |
+| `action`  | `pages: write` and `id-token: write` (required by `actions/deploy-pages@v5`) |
+
+If `deploy: false`, no extra permissions are required beyond the workflow defaults.
 
 **Example — build and deploy via `actions/deploy-pages`:**
 
