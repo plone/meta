@@ -11,17 +11,34 @@ on:
         type: string
         required: false
         default: '.'
+      build-path:
+        type: string
+        required: false
+        default: '_build/html'
       check-links:
         default: true
         type: boolean
       check-vale:
         default: true
         type: boolean
+      upload_artifact:
+        type: boolean
+        default: false
+    outputs:
+      artifact_name:
+        description: "Name of the uploaded artifact — empty when upload_artifact=false or the step was skipped"
+        value: ${{ jobs.docs.outputs.artifact_name }}
+      artifact_id:
+        description: "GitHub Actions artifact ID — pass to actions/download-artifact"
+        value: ${{ jobs.docs.outputs.artifact_id }}
 
 jobs:
   docs:
     name: Documentation
     runs-on: ubuntu-latest
+    outputs:
+      artifact_name: ${{ steps.upload-artifact.outcome == 'success' && format('docs-{0}', github.run_id) || '' }}
+      artifact_id: ${{ steps.upload-artifact.outputs.artifact-id }}
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
@@ -54,3 +71,11 @@ jobs:
         shell: bash
         run: |
           make vale VALEOPTS="--minAlertLevel='warning'"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        id: upload-artifact
+        if: ${{ inputs.upload_artifact }}
+        with:
+          name: docs-${{ github.run_id }}
+          path: ${{ inputs.working-directory }}/${{ inputs.build-path }}

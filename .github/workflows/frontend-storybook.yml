@@ -12,11 +12,29 @@ on:
       deploy:
         type: boolean
         default: false
+      deploy_mode:
+        type: string
+        required: false
+        default: 'branch'
+      upload_artifact:
+        type: boolean
+        default: false
+    outputs:
+      artifact_name:
+        description: "Name of the uploaded artifact — empty when upload_artifact=false or the step was skipped"
+        value: ${{ jobs.storybook.outputs.artifact_name }}
+      artifact_id:
+        description: "GitHub Actions artifact ID — pass to actions/download-artifact"
+        value: ${{ jobs.storybook.outputs.artifact_id }}
+
 
 jobs:
   storybook:
     name: Storybook
     runs-on: ubuntu-latest
+    outputs:
+      artifact_name: ${{ steps.upload-artifact.outcome == 'success' && format('storybook-{0}', github.run_id) || '' }}
+      artifact_id: ${{ steps.upload-artifact.outputs.artifact-id }}
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
@@ -41,9 +59,38 @@ jobs:
         run: |
           make storybook-build
 
-      - name: Deploy to GitHub pages
-        if: ${{ github.ref == 'refs/heads/main' && inputs.deploy }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        id: upload-artifact
+        if: ${{ inputs.upload_artifact }}
+        with:
+          name: storybook-${{ github.run_id }}
+          path: ${{ inputs.working-directory }}/.storybook-build
+
+      - name: Deploy branch to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
+        if: ${{ github.ref == 'refs/heads/main' && inputs.deploy && inputs.deploy_mode == 'branch' }}
         with:
           branch: gh-pages
           folder: ${{ inputs.working-directory }}/.storybook-build
+
+      - name: Upload Storybook pages artifact
+        uses: actions/upload-pages-artifact@v5
+        if: ${{ github.ref == 'refs/heads/main' && inputs.deploy && inputs.deploy_mode == 'action' }}
+        with:
+          path: ${{ inputs.working-directory }}/.storybook-build
+
+  deploy-action:
+    needs: storybook
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' && inputs.deploy && inputs.deploy_mode == 'action' }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: "${{ steps.deployment.outputs.page_url }}"
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

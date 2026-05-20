@@ -118,7 +118,25 @@ jobs:
 
 ### docs-build
 
-Builds project documentation.
+Builds project documentation, optionally uploading the build output as a GitHub Actions artifact for later consumption (e.g. merging with other artifacts before deploying to GitHub Pages).
+
+**Inputs:**
+
+| Input | Description | Required | Default |
+|-------|-------------|----------|---------|
+| `python-version` | Python version to install | No | `"3.12"` |
+| `working-directory` | Directory the workflow operates in | No | `"."` |
+| `build-path` | Build output directory, relative to `working-directory` | No | `"_build/html"` |
+| `check-links` | Run `make linkcheckbroken` | No | `true` |
+| `check-vale` | Run `make vale` style checks | No | `true` |
+| `upload_artifact` | Upload the build output as a GitHub Actions artifact | No | `false` |
+
+**Outputs:**
+
+| Output | Description |
+|--------|-------------|
+| `artifact_name` | Name of the uploaded artifact (`docs-<run_id>`). Empty when `upload_artifact=false` or the upload step is skipped. |
+| `artifact_id` | GitHub Actions artifact ID. Pass to `actions/download-artifact` via the `artifact-ids` input. |
 
 **Example usage:**
 
@@ -126,6 +144,9 @@ Builds project documentation.
 jobs:
   docs-build:
     uses: plone/meta/.github/workflows/docs-build.yml@2.x
+    with:
+      python-version: "3.13"
+      upload_artifact: true
 ```
 
 ## Frontend Workflows
@@ -168,14 +189,94 @@ jobs:
 
 ### frontend-storybook
 
-Builds and validates Storybook stories.
+Builds Storybook stories and, optionally, deploys them to GitHub Pages or uploads them as a regular artifact for downstream consumption.
 
-**Example usage:**
+**Inputs:**
+
+| Input | Description | Required | Default |
+|-------|-------------|----------|---------|
+| `node-version` | Node.js version to install | Yes | — |
+| `working-directory` | Directory the workflow operates in | No | `"."` |
+| `deploy` | Deploy the build (only fires on `refs/heads/main`) | No | `false` |
+| `deploy_mode` | Deploy mechanism: `branch` (push to `gh-pages` via `JamesIves/github-pages-deploy-action`) or `action` (publish via `actions/deploy-pages`) | No | `"branch"` |
+| `upload_artifact` | Upload the build output as a GitHub Actions artifact (independent of `deploy`) | No | `false` |
+
+**Outputs:**
+
+| Output | Description |
+|--------|-------------|
+| `artifact_name` | Name of the uploaded artifact (`storybook-<run_id>`). Empty when `upload_artifact=false` or the upload step is skipped. |
+| `artifact_id` | GitHub Actions artifact ID. Pass to `actions/download-artifact` via the `artifact-ids` input. |
+
+**Permissions required from the caller:**
+
+This reusable workflow does **not** declare any `permissions:` of its own — a reusable workflow cannot grant the caller more access than the caller has already enabled. The caller workflow must declare the required permissions at the workflow level (or on the calling job):
+
+| `deploy_mode` | Permissions the caller must grant |
+|---------------|-----------------------------------|
+| `branch` | `contents: write` (so `JamesIves/github-pages-deploy-action` can push to the `gh-pages` branch) |
+| `action`  | `pages: write` and `id-token: write` (required by `actions/deploy-pages@v5`) |
+
+If `deploy: false`, no extra permissions are required beyond the workflow defaults.
+
+**Example — build and deploy via `actions/deploy-pages`:**
 
 ```yaml
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   frontend-storybook:
     uses: plone/meta/.github/workflows/frontend-storybook.yml@2.x
+    with:
+      node-version: "22.x"
+      deploy: true
+      deploy_mode: "action"
+```
+
+**Example — combine docs and Storybook into a single Pages deploy:**
+
+```yaml
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  storybook:
+    uses: plone/meta/.github/workflows/frontend-storybook.yml@2.x
+    with:
+      node-version: "22.x"
+      upload_artifact: true
+
+  docs:
+    uses: plone/meta/.github/workflows/docs-build.yml@2.x
+    with:
+      upload_artifact: true
+
+  deploy-pages:
+    needs: [storybook, docs]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.docs.outputs.artifact_name }}
+          path: ./site
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.storybook.outputs.artifact_name }}
+          path: ./site/storybook
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./site
+
+      - id: deployment
+        uses: actions/deploy-pages@v5
 ```
 
 ### frontend-unit
