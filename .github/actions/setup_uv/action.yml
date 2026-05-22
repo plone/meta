@@ -20,7 +20,7 @@ runs:
         python-version: ${{ inputs.python-version }}
         cache-python: true
         enable-cache: true
-        cache-suffix: "optional-suffix"
+        ignore-nothing-to-cache: true
         cache-dependency-glob: |
           **/pyproject.toml
           **/uv.lock
