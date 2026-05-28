@@ -9,6 +9,27 @@
 
 <!-- towncrier release notes start -->
 
+## 2.9.0 (2026-05-28)
+
+
+### New features:
+
+- Add Plone 6.3 to the test matrix.
+  Test this on Python 3.10-3.14.
+  @mauritsvanrees 
+- Bumped default Plone version in setup_backend_uv action from 6.1.1 to 6.2.0. @ericof 
+
+
+### Bug fixes:
+
+- Restore Python 3.9 as one of the default Pythons for Plone 6.0.  @mauritsvanrees 
+
+
+### Internal:
+
+- Updated shared workflows and actions to use astral-sh/setup-uv@v8.1.0 with built-in caching. @ericof [#364](https://github.com/plone/meta/issues/364)
+- Updated setup_frontend action to use actions/setup-node@v6.4.0 with built-in pnpm caching. @ericof 
+
 ## 2.8.0 (2026-04-10)
 
 
