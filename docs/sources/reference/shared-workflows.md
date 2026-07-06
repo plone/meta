@@ -80,7 +80,22 @@ steps:
 
 ### backend-lint
 
-Runs backend linting checks.
+Runs backend linting checks: `ruff` (format and lint), `zpretty` (XML / ZCML), `pyroma` (package metadata), `check-python-versions`, and optionally `mypy` (typing).
+
+**Inputs:**
+
+| Input | Description | Required | Default |
+|-------|-------------|----------|---------|
+| `python-version` | Python version to install | Yes | |
+| `plone-version` | Plone version to install | Yes | |
+| `working-directory` | Directory to run the checks in | No | `"."` |
+| `check-typing` | Run `mypy` type checking on `src` | No | `false` |
+| `version-ruff` | Version of `ruff` to use | No | `"latest"` |
+| `version-zpretty` | Version of `zpretty` to use | No | `"latest"` |
+| `version-pyroma` | Version of `pyroma` to use | No | `"latest"` |
+| `version-check-python` | Version of `check-python-versions` to use | No | `"latest"` |
+| `zpretty-check-path` | Path checked by `zpretty` | No | `"src"` |
+| `zpretty-options` | Additional command-line options passed to `zpretty` | No | `""` |
 
 **Example usage:**
 
@@ -88,6 +103,11 @@ Runs backend linting checks.
 jobs:
   backend-lint:
     uses: plone/meta/.github/workflows/backend-lint.yml@2.x
+    with:
+      python-version: "3.12"
+      plone-version: "6.1"
+      zpretty-check-path: "src"
+      zpretty-options: '--extend-exclude "/rss/(rss\.xml|search-rss)\.pt$"'
 ```
 
 ### backend-pytest

@@ -32,6 +32,14 @@ on:
         required: false
         default: 'latest'
         type: string
+      zpretty-check-path:
+        required: false
+        default: 'src'
+        type: string
+      zpretty-options:
+        required: false
+        default: ''
+        type: string
 
 jobs:
 
@@ -73,7 +81,7 @@ jobs:
         id: zpretty
         shell: bash
         run: |
-          uvx zpretty@${{ inputs.version-zpretty }} --check src
+          uvx zpretty@${{ inputs.version-zpretty }} --check ${{ inputs.zpretty-check-path }} ${{ inputs.zpretty-options }}
 
       - name: Check Package Metadata
         if: ${{ success() || failure() }}
