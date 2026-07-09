@@ -9,6 +9,19 @@
 
 <!-- towncrier release notes start -->
 
+## 2.10.0 (2026-07-09)
+
+
+### New features:
+
+- Added `zpretty-check-path` and `zpretty-options` inputs to the `backend-lint` reusable workflow, allowing a custom check path and additional command-line options to be passed to `zpretty`. @ericof [#389](https://github.com/plone/meta/issues/389)
+
+
+### Bug fixes:
+
+- Bump GHA versions @dependabot 
+- Bump `astral-sh/setup-uv` GHA version @gforcada 
+
 ## 2.9.0 (2026-05-28)
 
 
