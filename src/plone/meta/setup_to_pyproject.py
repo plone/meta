@@ -324,15 +324,18 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
     if isinstance(ep_data, str):
         ep_lines = [x.strip() for x in ep_data.split("\n") if x]
         ep_data = {}
+        key_buffer = ""
         for line in ep_lines:
-            key_buffer = ""
             if line.startswith("["):
                 line = line.replace("[", "").replace("]", "").strip()
                 key_buffer = line
             else:
                 if line and key_buffer:
                     line = line.replace(" = ", "=").strip()
-                    ep_data[key_buffer] = line
+                    if key_buffer in ep_data:
+                        ep_data[key_buffer].append(line)
+                    else:
+                        ep_data[key_buffer] = [line]
                     key_buffer = ""
 
     for ep_type, ep_list in ep_data.items():
