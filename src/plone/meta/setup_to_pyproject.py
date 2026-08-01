@@ -328,7 +328,9 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         for line in ep_lines:
             if line.startswith("["):
                 line = line.replace("[", "").replace("]", "").strip()
-                key_buffer = line
+                key_buffer = line.replace(
+                    "z3c.autoinclude.plugin", "plone.autoinclude.plugin"
+                )
             else:
                 if line and key_buffer:
                     line = line.replace(" = ", "=").strip()
