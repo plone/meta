@@ -649,7 +649,7 @@ def write_news_entry(path):
         call("git", "add", f"news/{filename}")
 
 
-def main():
+def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Move package metadata from setup.py to pyproject.toml."
     )
@@ -672,7 +672,11 @@ def main():
         "If not given it defaults to Products.CMFPlone issue tracker. "
         'Use "own" to use the repository own issue tracker (assuming GitHub).',
     )
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+    args = parse_arguments()
 
     print(f"Converting package {args.path.name}")
 
