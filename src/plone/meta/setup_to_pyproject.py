@@ -283,7 +283,11 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         p_data["readme"] = readme
     elif readme and changelog:
         readme_spec = tomlkit.inline_table()
-        readme_spec.update({"file": [readme, changelog]})
+        files = [readme, changelog]
+        if readme.endswith(".md"):
+            readme_spec.update({"file": files, "content-type": "text/markdown"})
+        else:
+            readme_spec.update({"file": files})
         toml_dict["tool"] = {"setuptools": {"dynamic": {"readme": readme_spec}}}
         dynamic_attributes = p_data.setdefault("dynamic", [])
         dynamic_attributes.append("readme")
