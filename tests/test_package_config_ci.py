@@ -82,7 +82,32 @@ class TestMinimalConfigFiles:
     def test_precommit(self, package_config):
         result = package_config.pre_commit_config()
         assert result
-        assert (package_config.path / ".pre-commit-config.yaml").exists()
+        pre_commit_file = package_config.path / ".pre-commit-config.yaml"
+        assert pre_commit_file.exists()
+        assert "tox.ini" in pre_commit_file.read_text()
+
+    def test_precommit_no_test_matrix(self, package_config):
+        meta_config = package_config.path / ".meta.toml"
+        data = meta_config.read_text()
+        meta_config.write_text(f"{data}\n\n[tox]\nuse_test_matrix = false\n")
+        # reload configuration
+        package_config.meta_cfg = package_config._read_meta_configuration()
+
+        result = package_config.pre_commit_config()
+        assert result
+        pre_commit_file = package_config.path / ".pre-commit-config.yaml"
+        assert pre_commit_file.exists()
+        assert "tox.ini" not in pre_commit_file.read_text()
+
+    def test_precommit_use_setup_py(self, package_config):
+        setup_py = package_config.path / "setup.py"
+        setup_py.touch()
+
+        result = package_config.pre_commit_config()
+        assert result
+        pre_commit_file = package_config.path / ".pre-commit-config.yaml"
+        assert pre_commit_file.exists()
+        assert "setup.py" in pre_commit_file.read_text()
 
     def test_tox(self, package_config):
         result = package_config.tox()
