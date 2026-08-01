@@ -187,7 +187,7 @@ def handle_classifiers(classifiers):
 
     for classifier in classifiers:
         if classifier.startswith("License"):
-            if classifier not in LICENSE_CLASSIFIER_TO_SPDX.keys():
+            if classifier not in LICENSE_CLASSIFIER_TO_SPDX:
                 print(f"License classifier {classifier} was not expected")
                 print("either remove it and run the script again,")
                 print("or double check if that was the intended classifier.")
