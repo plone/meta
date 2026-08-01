@@ -36,6 +36,7 @@ PROJECT_SIMPLE_KEYS = (
 )
 IGNORE_KEYS = (
     "zip_safe",
+    "long_description",
     "long_description_content_type",
     "package_dir",
     "packages",
