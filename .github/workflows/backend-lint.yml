@@ -69,35 +69,47 @@ jobs:
         id: ruff-format
         shell: bash
         run: |
-          uvx ruff@${{ inputs.version-ruff }} format --diff
+          uvx ruff@${INPUTS_VERSION_RUFF} format --diff
+        env:
+          INPUTS_VERSION_RUFF: ${{ inputs.version-ruff }}
 
       - name: Check lint
         if: ${{ success() || failure() }}
         id: ruff-lint
         shell: bash
         run: |
-          uvx ruff@${{ inputs.version-ruff }} check --diff
+          uvx ruff@${INPUTS_VERSION_RUFF} check --diff
+        env:
+          INPUTS_VERSION_RUFF: ${{ inputs.version-ruff }}
 
       - name: Check XML / ZCML
         if: ${{ success() || failure() }}
         id: zpretty
         shell: bash
         run: |
-          uvx zpretty@${{ inputs.version-zpretty }} --check ${{ inputs.zpretty-check-path }} ${{ inputs.zpretty-options }}
+          uvx zpretty@${INPUTS_VERSION_ZPRETTY} --check ${INPUTS_ZPRETTY_CHECK_PATH} ${INPUTS_ZPRETTY_OPTIONS}
+        env:
+          INPUTS_VERSION_ZPRETTY: ${{ inputs.version-zpretty }}
+          INPUTS_ZPRETTY_CHECK_PATH: ${{ inputs.zpretty-check-path }}
+          INPUTS_ZPRETTY_OPTIONS: ${{ inputs.zpretty-options }}
 
       - name: Check Package Metadata
         if: ${{ success() || failure() }}
         id: pyroma
         shell: bash
         run: |
-          uvx pyroma@${{ inputs.version-pyroma }} -d .
+          uvx pyroma@${INPUTS_VERSION_PYROMA} -d .
+        env:
+          INPUTS_VERSION_PYROMA: ${{ inputs.version-pyroma }}
 
       - name: Check Python Versions
         if: ${{ success() || failure() }}
         id: py-versions
         shell: bash
         run: |
-          uvx check-python-versions@${{ inputs.version-check-python }} .
+          uvx check-python-versions@${INPUTS_VERSION_CHECK_PYTHON} .
+        env:
+          INPUTS_VERSION_CHECK_PYTHON: ${{ inputs.version-check-python }}
 
       - name: Check typing
         if: ${{ (success() || failure()) && inputs.check-typing }}
