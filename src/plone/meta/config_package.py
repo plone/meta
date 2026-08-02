@@ -684,6 +684,18 @@ class PackageConfiguration:
             options["ref"] = GHA_DEFAULT_REF
         if not options.get("jobs"):
             options["jobs"] = GHA_DEFAULT_JOBS
+        elif options["ref"] == GHA_DEFAULT_REF:
+            final_jobs = []
+            for job_name in options["jobs"]:
+                if job_name not in GHA_DEFAULT_JOBS:
+                    self.print_warning(
+                        "CI configuration",
+                        f"Job '{job_name}' does not exist. Please review `github.jobs` in .meta.toml. Current valid jobs are: ${GHA_DEFAULT_JOBS}",
+                    )
+                    continue
+                final_jobs.append(job_name)
+            options["jobs"] = final_jobs
+
         meta_file = self.copy_with_meta(
             "meta.yml.j2", destination=destination, **options
         )
