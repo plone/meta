@@ -20,6 +20,8 @@ jobs:
         os: ["ubuntu-latest"]
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Install uv + caching
         uses: astral-sh/setup-uv@v7.5.0
         with:

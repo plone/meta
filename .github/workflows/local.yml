@@ -10,6 +10,8 @@ jobs:
         python-version: ["3.14"]
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Install uv + caching
         uses: astral-sh/setup-uv@v7.5.0
         with:
@@ -29,6 +31,8 @@ jobs:
         python-version: ["3.11", "3.14"]
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Install uv + caching
         uses: astral-sh/setup-uv@v7.5.0
         with:
@@ -48,6 +52,8 @@ jobs:
         python-version: ["3.14"]
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Install uv + caching
         uses: astral-sh/setup-uv@v7.5.0
         with:
