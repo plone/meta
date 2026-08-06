@@ -34,8 +34,26 @@ class TestGhaWorkflows:
         result = package_config.gha_workflows()
         assert len(result) >= 2  # at least meta.yml and dependabot.yml
         workflows_dir = package_config.path / ".github" / "workflows"
-        assert (workflows_dir / "meta.yml").exists()
+        meta_workflow_file = workflows_dir / "meta.yml"
+
         assert (package_config.path / ".github" / "dependabot.yml").exists()
+        assert meta_workflow_file.exists()
+        meta_ci = meta_workflow_file.read_text()
+        assert meta_ci.count(".yml@2.x") == 5  # all jobs are added
+
+    def test_validate_custom_jobs(self, package_config):
+        meta_config = package_config.path / ".meta.toml"
+        data = meta_config.read_text()
+        meta_config.write_text(
+            f'{data}\n\n[github]\njobs = ["one", "two", "circular"]\n'
+        )
+        # reload configuration
+        package_config.meta_cfg = package_config._read_meta_configuration()
+
+        package_config.gha_workflows()
+        workflow_file = package_config.path / ".github" / "workflows" / "meta.yml"
+        meta_ci = workflow_file.read_text()
+        assert meta_ci.count(".yml@2.x") == 1  # only the circular job is added
 
 
 class TestGitlabCi:
