@@ -327,10 +327,7 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         key_buffer = ""
         for line in ep_lines:
             if line.startswith("["):
-                line = line.replace("[", "").replace("]", "").strip()
-                key_buffer = line.replace(
-                    "z3c.autoinclude.plugin", "plone.autoinclude.plugin"
-                )
+                key_buffer = line.replace("[", "").replace("]", "").strip()
             else:
                 if line and key_buffer:
                     line = line.replace(" = ", "=").strip()
@@ -346,6 +343,8 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
                 ep_name, ep_target = (x.strip() for x in ep.split("="))
                 scripts[ep_name] = ep_target
         else:
+            if ep_type == "z3c.autoinclude.plugin":
+                ep_type = "plone.autoinclude.plugin"
             entrypoint_dict = entry_points.setdefault(ep_type, {})
             for ep in ep_list:
                 ep_name, ep_target = (x.strip() for x in ep.split("="))
