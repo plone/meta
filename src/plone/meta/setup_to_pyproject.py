@@ -539,8 +539,10 @@ def rewrite_pyproject_toml(args, toml_dict):
                 urls_table = tomlkit.table()
                 urls_table.append("Source", project_url)
                 new_doc[key].append("urls", urls_table)
-            new_doc[key]["urls"].append("Issues", issues_url)
-            new_doc[key]["urls"].append("Changelog", changelog)
+            if "Issues" not in new_doc[key]["urls"]:
+                new_doc[key]["urls"].append("Issues", issues_url)
+            if "Changelog" not in new_doc[key]["urls"]:
+                new_doc[key]["urls"].append("Changelog", changelog)
             new_doc.add(tomlkit.comment("END-MARKER-MANUAL-CONFIG"))
 
     new_text = tomlkit.dumps(new_doc)
