@@ -385,17 +385,19 @@ class PackageConfiguration:
         ]
         return any([marker not in text for marker in markers])
 
-    def _check_python_versions_files(self, using_setup_py):
+    def _check_python_versions_files(self, using_setup_py, use_test_matrix):
         """Which files should be checked by check-python-versions?
 
         This is for inclusion in the pre-commit config:
 
             id: check-python-versions
             args: ['--only', 'setup.py,pyproject.toml']
+
+        Either we want to point to setup.py or pyproject.toml,
+        and if the test matrix is used also tox.ini, otherwise skip it.
         """
-        if using_setup_py:
-            return "setup.py,tox.ini"
-        return "pyproject.toml,tox.ini"
+        main_file = "setup.py" if using_setup_py else "pyproject.toml"
+        return main_file if not use_test_matrix else f"{main_file},tox.ini"
 
     def pre_commit_config(self):
         options = self._get_options_for(
@@ -409,10 +411,14 @@ class PackageConfiguration:
             ),
         )
 
+        tox_options = self._get_options_for("tox", ("use_test_matrix",))
+        use_test_matrix = tox_options["use_test_matrix"]
+        if use_test_matrix == "":
+            use_test_matrix = True
         python_version = self._minimal_python_version()
         options["minimal_python_version"] = self._no_dot_python_version(python_version)
         options["check_python_versions_files"] = self._check_python_versions_files(
-            self._detect_setup_py_for_package_config()
+            self._detect_setup_py_for_package_config(), use_test_matrix
         )
 
         return self.copy_with_meta(
