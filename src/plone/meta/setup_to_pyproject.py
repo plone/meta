@@ -36,6 +36,7 @@ PROJECT_SIMPLE_KEYS = (
 )
 IGNORE_KEYS = (
     "zip_safe",
+    "long_description",
     "long_description_content_type",
     "package_dir",
     "packages",
@@ -187,7 +188,7 @@ def handle_classifiers(classifiers):
 
     for classifier in classifiers:
         if classifier.startswith("License"):
-            if classifier not in LICENSE_CLASSIFIER_TO_SPDX.keys():
+            if classifier not in LICENSE_CLASSIFIER_TO_SPDX:
                 print(f"License classifier {classifier} was not expected")
                 print("either remove it and run the script again,")
                 print("or double check if that was the intended classifier.")
@@ -323,15 +324,17 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
     if isinstance(ep_data, str):
         ep_lines = [x.strip() for x in ep_data.split("\n") if x]
         ep_data = {}
+        key_buffer = ""
         for line in ep_lines:
-            key_buffer = ""
             if line.startswith("["):
-                line = line.replace("[", "").replace("]", "").strip()
-                key_buffer = line
+                key_buffer = line.replace("[", "").replace("]", "").strip()
             else:
                 if line and key_buffer:
                     line = line.replace(" = ", "=").strip()
-                    ep_data[key_buffer] = line
+                    if key_buffer in ep_data:
+                        ep_data[key_buffer].append(line)
+                    else:
+                        ep_data[key_buffer] = [line]
                     key_buffer = ""
 
     for ep_type, ep_list in ep_data.items():
@@ -340,6 +343,8 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
                 ep_name, ep_target = (x.strip() for x in ep.split("="))
                 scripts[ep_name] = ep_target
         else:
+            if ep_type == "z3c.autoinclude.plugin":
+                ep_type = "plone.autoinclude.plugin"
             entrypoint_dict = entry_points.setdefault(ep_type, {})
             for ep in ep_list:
                 ep_name, ep_target = (x.strip() for x in ep.split("="))
@@ -534,8 +539,10 @@ def rewrite_pyproject_toml(args, toml_dict):
                 urls_table = tomlkit.table()
                 urls_table.append("Source", project_url)
                 new_doc[key].append("urls", urls_table)
-            new_doc[key]["urls"].append("Issues", issues_url)
-            new_doc[key]["urls"].append("Changelog", changelog)
+            if "Issues" not in new_doc[key]["urls"]:
+                new_doc[key]["urls"].append("Issues", issues_url)
+            if "Changelog" not in new_doc[key]["urls"]:
+                new_doc[key]["urls"].append("Changelog", changelog)
             new_doc.add(tomlkit.comment("END-MARKER-MANUAL-CONFIG"))
 
     new_text = tomlkit.dumps(new_doc)
@@ -648,7 +655,7 @@ def write_news_entry(path):
         call("git", "add", f"news/{filename}")
 
 
-def main():
+def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Move package metadata from setup.py to pyproject.toml."
     )
@@ -671,7 +678,11 @@ def main():
         "If not given it defaults to Products.CMFPlone issue tracker. "
         'Use "own" to use the repository own issue tracker (assuming GitHub).',
     )
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+    args = parse_arguments()
 
     print(f"Converting package {args.path.name}")
 
