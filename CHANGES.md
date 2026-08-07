@@ -9,6 +9,23 @@
 
 <!-- towncrier release notes start -->
 
+## 2.10.1 (2026-08-07)
+
+
+### Bug fixes:
+
+- Ensure any custom specific GHA job exist @gforcada [#356](https://github.com/plone/meta/issues/356)
+- Dynamically add `tox.ini` to `check-python-versions`'s argument in its pre-commit hook @gforcada [#379](https://github.com/plone/meta/issues/379)
+- Fix entry-points conversion on setup-to-pyproject script @gforcada [#387](https://github.com/plone/meta/issues/387)
+- On project's metadata, specify that readme's content type is markdown in case it is @gforcada [#398](https://github.com/plone/meta/issues/398)
+- Bump some pre-commit tools' versions @gforcada 
+- Update `astral-sh/setup-uv` GHA version @gforcada 
+
+
+### Internal:
+
+- Use Python 3.14 for plone.meta's own CI jobs @gforcada 
+
 ## 2.10.0 (2026-07-09)
 
 
