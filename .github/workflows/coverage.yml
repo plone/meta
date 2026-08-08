@@ -20,6 +20,8 @@ jobs:
         os: ["ubuntu-latest"]
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Install uv + caching
         uses: astral-sh/setup-uv@v7.5.0
         with:
@@ -31,7 +33,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: install OS packages
         if: inputs.os-packages != ''
-        run: sudo apt-get install -y ${{ inputs.os-packages }}
+        run: sudo apt-get install -y ${INPUTS_OS_PACKAGES}
+        env:
+          INPUTS_OS_PACKAGES: ${{ inputs.os-packages }}
       - name: Initialize tox
         run: |
           if [ `uvx tox list --no-desc -f init|wc -l` = 1 ]; then uvx --with tox-uv tox -e init;else true; fi

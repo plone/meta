@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Setup codebase
         uses: plone/meta/.github/actions/setup_backend_uv@2.x

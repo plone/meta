@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Main checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Setup uv
         uses: plone/meta/.github/actions/setup_uv@2.x
