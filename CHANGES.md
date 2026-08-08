@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.11.0 (2026-08-08)
+
+
+### New features:
+
+- Implement security measures from `zizmor` @gforcada [#384](https://github.com/plone/meta/issues/384)
+
 ## 2.10.1 (2026-08-07)
 
 
