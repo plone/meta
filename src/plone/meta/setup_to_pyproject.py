@@ -52,10 +52,10 @@ UNCONVERTIBLE_KEYS = (
 )
 
 LICENSE_CLASSIFIER_TO_SPDX = {
+    "License :: OSI Approved :: BSD License": "BSD-3-Clause",
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)": "GPL-2.0-only",
     "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)": "GPL-2.0-or-later",
     "License :: OSI Approved :: Zope Public License": "ZPL-2.1",
-    "License :: OSI Approved :: BSD License": "BSD-3-Clause",
 }
 
 LICENSE_TO_SPDX = {
