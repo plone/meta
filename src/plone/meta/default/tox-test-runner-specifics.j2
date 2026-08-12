@@ -7,12 +7,12 @@ deps =
 {% endif %}
 test =
 {% if prime_robotframework %}
-    rfbrowser init
+    rfbrowser init chromium
 {% endif %}
     pytest --disable-warnings {posargs} {toxinidir}%(test_path)s
 coverage =
 {% if prime_robotframework %}
-    rfbrowser init
+    rfbrowser init chromium
 {% endif %}
     coverage run --source %(package_name)s -m pytest  {posargs} --disable-warnings {toxinidir}%(test_path)s
     coverage report -m --format markdown
@@ -22,12 +22,12 @@ coverage =
 deps = zope.testrunner
 test =
 {% if prime_robotframework %}
-    rfbrowser init
+    rfbrowser init chromium
 {% endif %}
     zope-testrunner --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
 coverage =
 {% if prime_robotframework %}
-    rfbrowser init
+    rfbrowser init chromium
 {% endif %}
     coverage run --branch --source %(package_name)s {envbindir}/zope-testrunner --quiet --all --test-path={toxinidir}%(test_path)s -s %(package_name)s {posargs}
     coverage report -m --format markdown
