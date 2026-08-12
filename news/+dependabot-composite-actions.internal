@@ -1,0 +1,1 @@
+Let Dependabot update the dependencies of our composite actions under `.github/actions`, which the previous `directory: "/"` configuration did not reach @ericof

@@ -1,7 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      # Covers `.github/workflows` and a root-level `action.yml` only.
+      - "/"
+      # Our composite actions live one directory deeper, so `/` does not
+      # reach them and their dependencies are never updated.
+      - "/.github/actions/*"
     schedule:
       # Check for updates to GitHub Actions every week
       interval: "weekly"
