@@ -1,1 +1,0 @@
-Document the inputs, secrets and required caller permissions of every shared workflow and composite action, and explain that shell-expanded options inputs are word-split and must not contain quotes @ericof

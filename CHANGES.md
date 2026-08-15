@@ -9,6 +9,24 @@
 
 <!-- towncrier release notes start -->
 
+## 2.11.1 (2026-08-15)
+
+
+### Bug fixes:
+
+- Handle more licenses on `setup-to-pyproject` script @gforcada 
+- rfbrowser: only init chromium.  @mauritsvanrees 
+
+
+### Internal:
+
+- Let Dependabot update the dependencies of our composite actions under `.github/actions`, which the previous `directory: "/"` configuration did not reach @ericof 
+
+
+### Documentation:
+
+- Document the inputs, secrets and required caller permissions of every shared workflow and composite action, and explain that shell-expanded options inputs are word-split and must not contain quotes @ericof [#404](https://github.com/plone/meta/issues/404)
+
 ## 2.11.0 (2026-08-08)
 
 
