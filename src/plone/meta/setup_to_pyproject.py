@@ -52,10 +52,12 @@ UNCONVERTIBLE_KEYS = (
 )
 
 LICENSE_CLASSIFIER_TO_SPDX = {
+    "License :: OSI Approved :: BSD License": "BSD-3-Clause",
+    "License :: OSI Approved :: GNU General Public License (GPL)": "GPL-2.0-only",
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)": "GPL-2.0-only",
     "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)": "GPL-2.0-or-later",
+    "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)": "LGPL-2.1-only",
     "License :: OSI Approved :: Zope Public License": "ZPL-2.1",
-    "License :: OSI Approved :: BSD License": "BSD-3-Clause",
 }
 
 LICENSE_TO_SPDX = {
@@ -207,7 +209,7 @@ def handle_classifiers(classifiers):
         print("There are too many License :: classifiers, fix that first!")
         sys.exit()
 
-    return new_classifiers, license_classifiers
+    return sorted(new_classifiers), license_classifiers
 
 
 def check_license(license, license_classifier):
@@ -364,7 +366,7 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
         sys.exit(1)
     opt_deps = {}
     for e_name, e_list in extras.items():
-        opt_deps[e_name] = e_list
+        opt_deps[e_name] = sorted(e_list)
     if opt_deps:
         p_data["optional-dependencies"] = opt_deps
 
@@ -375,7 +377,7 @@ def setup_args_to_toml_dict(setup_py_path, setup_kwargs):
                 print('XXX Found "setuptools" as install time dependency.')
                 print("XXX Please check if it is really needed!")
                 break
-        p_data["dependencies"] = install_reqs
+        p_data["dependencies"] = sorted(install_reqs)
 
     keywords = setup_kwargs.pop("keywords", "")
     if keywords and isinstance(keywords, str):
