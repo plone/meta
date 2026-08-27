@@ -437,6 +437,7 @@ class PackageConfiguration:
                 "codespell_skip",
                 "dependencies_ignores",
                 "dependencies_mappings",
+                "plone_mappings",
                 "check_manifest_ignores",
                 "towncrier_issue_format",
                 "towncrier_extra_lines",
@@ -450,6 +451,10 @@ class PackageConfiguration:
         python_version = self._minimal_python_version()
         options["minimal_python_version"] = self._no_dot_python_version(python_version)
         options["setuptools_upper_bound"] = self._setuptools_upper_bound()
+
+        if options["plone_mappings"] is not False:
+            # Default is '', so turn it into True
+            options["plone_mappings"] = True
 
         options["changes_extension"] = "rst"
         if (self.path / "CHANGES.md").exists():

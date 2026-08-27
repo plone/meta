@@ -128,6 +128,11 @@ Managed by plone.meta itself. Do not edit manually.
 `dependencies_mappings`
 : List of import-to-package mappings for z3c.dependencychecker.
 
+`plone_mappings`
+: Whether to include the built-in Zope and Plone mappings for
+  z3c.dependencychecker. Defaults to `true`. Set to `false` for a package used
+  outside the Zope world, where those mappings are noise.
+
 `check_manifest_ignores`
 : Additional patterns for check-manifest to ignore.
 
