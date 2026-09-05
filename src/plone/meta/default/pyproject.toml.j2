@@ -94,6 +94,7 @@ skip = "*.po,%(codespell_skip)s"
 ##
 
 [tool.dependencychecker]
+{% if plone_mappings %}
 Zope = [
   # Zope own provided namespaces
   'App', 'OFS', 'Products.Five', 'Products.OFSP', 'Products.PageTemplates',
@@ -133,6 +134,7 @@ Zope = [
 ]
 python-dateutil = ['dateutil']
 pytest-plone = ['pytest', 'zope.pytestlayer', 'plone.testing', 'plone.app.testing']
+{% endif %}
 {% if dependencies_ignores %}
 ignore-packages = %(dependencies_ignores)s
 {% endif %}
@@ -148,6 +150,11 @@ ignore-packages = %(dependencies_ignores)s
 #    "gitpython = ['git']",
 #    "pygithub = ['github']",
 #  ]
+#
+# The Zope and Plone mappings above are included by default. For a package
+# used outside the Zope world they are noise, and can be turned off with:
+#  [pyproject]
+#  plone_mappings = false
 ##
 
 [tool.check-manifest]

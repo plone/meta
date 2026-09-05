@@ -141,6 +141,38 @@ class TestPyproject:
         assert len(result) == 2
         assert (package_config.path / "news" / ".changelog_template.jinja").exists()
 
+    def test_plone_mappings_included_by_default(self, package_config):
+        pyproject_file_path = package_config.path / "pyproject.toml"
+        package_config.pyproject_toml()
+        text = pyproject_file_path.read_text()
+        assert "[tool.dependencychecker]" in text
+        assert "Zope = [" in text
+        assert "'Products.CMFCore'" in text
+
+    def test_plone_mappings_can_be_disabled(self, package_config):
+        """The Zope and Plone mappings are noise for a package used outside the
+        Zope world, so `plone_mappings = false` leaves them out while keeping the
+        section itself available for the package's own mappings.
+        """
+        package_config.meta_cfg["pyproject"]["plone_mappings"] = False
+        pyproject_file_path = package_config.path / "pyproject.toml"
+        package_config.pyproject_toml()
+        text = pyproject_file_path.read_text()
+        assert "[tool.dependencychecker]" in text
+        assert "Zope = [" not in text
+        assert "'Products.CMFCore'" not in text
+
+    def test_plone_mappings_disabled_keeps_custom_mappings(self, package_config):
+        package_config.meta_cfg["pyproject"]["plone_mappings"] = False
+        package_config.meta_cfg["pyproject"]["dependencies_mappings"] = [
+            "gitpython = ['git']",
+        ]
+        pyproject_file_path = package_config.path / "pyproject.toml"
+        package_config.pyproject_toml()
+        text = pyproject_file_path.read_text()
+        assert "Zope = [" not in text
+        assert "gitpython = ['git']" in text
+
     def test_metadata_is_kept(self, package_config):
         pyproject_file_path = package_config.path / "pyproject.toml"
         text = [
