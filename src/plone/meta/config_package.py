@@ -341,6 +341,22 @@ class PackageConfiguration:
                     min_version = py_version
         return min_version
 
+    def _maximum_python_version(self):
+        """Detect the maximum Python version to be used in tooling (black, pre-commit...).
+
+        Returns something like "3.14".
+        """
+        options = self._get_options_for("tox", ("test_matrix",))
+        test_matrix = get_test_matrix(options.get("test_matrix"))
+        max_version = None
+        for python_versions in test_matrix.values():
+            for py_version in python_versions:
+                if py_version.startswith("pypy"):
+                    continue
+                if max_version is None or Version(py_version) > Version(max_version):
+                    max_version = py_version
+        return max_version
+
     def _setuptools_upper_bound(self):
         """Determine upper bound for setuptools in build-system.
 

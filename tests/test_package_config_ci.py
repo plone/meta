@@ -222,6 +222,28 @@ class TestMinimalPythonVersion:
         assert result == output
 
 
+class TestMaximalPythonVersion:
+    @pytest.mark.parametrize(
+        ["matrix", "output"],
+        [
+            [None, "3.14"],
+            [{"6.0": ["*"]}, "3.13"],
+            [{"6.1": ["*"]}, "3.13"],
+            [{"6.2": ["*"]}, "3.14"],
+            [{"6.2": ["3.13"]}, "3.13"],
+            [{"6.2": ["3.13"], "6.1": ["3.9"]}, "3.13"],
+            [{"6.2": ["3.13", "3.10"], "5.2": ["3.8"]}, "3.13"],
+            [{"6.2": ["pypy3.10", "3.11"]}, "3.11"],
+        ],
+    )
+    def test_python_version(self, package_config, matrix, output):
+        if matrix:
+            package_config.meta_cfg["tox"]["test_matrix"] = matrix
+
+        result = package_config._maximum_python_version()
+        assert result == output
+
+
 class TestHandleGhActions:
     def test_returns_empty_when_disabled(self, package_config):
         package_config.meta_cfg["tox"]["use_test_matrix"] = False
