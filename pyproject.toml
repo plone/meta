@@ -32,15 +32,15 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 dependencies = [
-  "Jinja2",
+  "check-python-versions",
   "editorconfig",
+  "Jinja2",
   "packaging",
   "pyyaml",
   "tomlkit",
   "tox",
   "validate-pyproject[all]",
   "zest.releaser",
-  "check-python-versions",
 ]
 
 [project.optional-dependencies]
