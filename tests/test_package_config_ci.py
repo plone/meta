@@ -188,6 +188,23 @@ class TestPyproject:
         for line in text:
             assert line in final_toml_text
 
+    def test_update_classifiers(self, package_config):
+        pyproject_file_path = package_config.path / "pyproject.toml"
+        text = [
+            "# START-MARKER-MANUAL-CONFIG",
+            "[project]",
+            'name="random-project"',
+            "classifiers = []",
+            "# END-MARKER-MANUAL-CONFIG",
+        ]
+        pyproject_file_path.write_text("\n".join(text))
+        # set a specific test matrix to ensure test stability
+        package_config.meta_cfg["tox"]["test_matrix"] = {"6.2": ["3.14", "3.13"]}
+        package_config.pyproject_toml()
+        final_toml_text = pyproject_file_path.read_text()
+        assert '"Programming Language :: Python :: 3.13",' in final_toml_text
+        assert '"Programming Language :: Python :: 3.14",' in final_toml_text
+
 
 class TestSetuptoolsUpperBound:
     @pytest.mark.parametrize(["is_native", "expected"], [[True, "82"], [False, "83"]])
