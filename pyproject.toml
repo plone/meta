@@ -40,6 +40,7 @@ dependencies = [
   "tox",
   "validate-pyproject[all]",
   "zest.releaser",
+  "check-python-versions",
 ]
 
 [project.optional-dependencies]
