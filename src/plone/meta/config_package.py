@@ -341,6 +341,22 @@ class PackageConfiguration:
                     min_version = py_version
         return min_version
 
+    def _maximum_python_version(self):
+        """Detect the maximum Python version to be used in tooling (black, pre-commit...).
+
+        Returns something like "3.14".
+        """
+        options = self._get_options_for("tox", ("test_matrix",))
+        test_matrix = get_test_matrix(options.get("test_matrix"))
+        max_version = None
+        for python_versions in test_matrix.values():
+            for py_version in python_versions:
+                if py_version.startswith("pypy"):
+                    continue
+                if max_version is None or Version(py_version) > Version(max_version):
+                    max_version = py_version
+        return max_version
+
     def _setuptools_upper_bound(self):
         """Determine upper bound for setuptools in build-system.
 
@@ -487,6 +503,8 @@ class PackageConfiguration:
             "pyproject.toml.j2",
             **options,
         )
+        self._update_python_versions_on_pyproject_toml()
+
         files.append(filename)
         return files
 
@@ -503,6 +521,33 @@ class PackageConfiguration:
             end_marker = end_marker + len(f"# END-{suffix}")
             metadata = actual_pyproject[start_marker:end_marker]
         return metadata
+
+    def _update_python_versions_on_pyproject_toml(self):
+        """Update trove classifiers and `requires-python` on pyproject.toml
+
+        Based on the test matrix.
+        """
+        min_version = self._minimal_python_version()
+        max_version = self._maximum_python_version()
+
+        config = (self.path / "pyproject.toml").read_text()
+        if "classifiers" not in config:
+            self.print_warning(
+                "Python versions",
+                "Project metadata, classifiers at least, are not found on pyproject.toml,"
+                "thus they can not be updated to state.",
+            )
+            return
+
+        with change_dir(self.path):
+            call(
+                "check-python-versions",
+                "--update",
+                f"{min_version}-{max_version}",
+                "--only",
+                "pyproject.toml",
+                input="y\ny\n",
+            )
 
     def tox(self):
         options = self._get_options_for(
