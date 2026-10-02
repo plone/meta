@@ -417,7 +417,7 @@ Useful for validation in pull requests.
 | `dockerfile` | Dockerfile to build | No | `"Dockerfile"` |
 | `registry` | Container registry to log in to | No | `"ghcr.io"` |
 | `build-args` | Build arguments passed to `docker/build-push-action` | No | `""` |
-| `cache-key` | Cache key used for the build cache | No | `${{ github.ref_name }}` |
+| `cache-key` | Key of the build cache to write, usually the branch name. Characters not allowed in image tags are replaced with `-` | No | `${{ github.ref_name }}` |
 
 **Secrets:**
 
@@ -446,6 +446,9 @@ jobs:
 
 Builds a container image reusing the cache written by `container-image-build`, and pushes it to the registry.
 
+Both `container-image-build` and `container-image-push` read the build cache from the image tagged `<image-cache-suffix>-<base-tag>`, then `<image-cache-suffix>-<cache-key>`, then `<image-cache-suffix>-<default branch>`, and write it to `<image-cache-suffix>-<cache-key>`.
+A build of a new branch starts from the cache of the default branch, and `container-image-push` reuses the cache that `container-image-build` wrote earlier in the same run.
+
 **Inputs:**
 
 | Input | Description | Required | Default |
@@ -459,7 +462,7 @@ Builds a container image reusing the cache written by `container-image-build`, a
 | `dockerfile` | Dockerfile to build | No | `"Dockerfile"` |
 | `registry` | Container registry to log in to | No | `"ghcr.io"` |
 | `build-args` | Build arguments passed to `docker/build-push-action` | No | `""` |
-| `cache-key` | Cache key used for the build cache | No | `${{ github.ref_name }}` |
+| `cache-key` | Key of the build cache to write, usually the branch name. Characters not allowed in image tags are replaced with `-` | No | `${{ github.ref_name }}` |
 
 **Secrets:**
 

@@ -1,0 +1,1 @@
+Fix the build cache of the `container-image-build` and `container-image-push` workflows, which was written under the base tag but read under the cache key, so it was never reused. The cache is now written per branch and falls back to the default branch. @sneridagh

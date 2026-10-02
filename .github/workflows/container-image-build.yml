@@ -87,6 +87,38 @@ jobs:
           tags: |
             type=raw,value=${{ inputs.base-tag }}
 
+      - name: Compute build cache references
+        id: cache
+        env:
+          IMAGE: ${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}
+          CACHE_SUFFIX: ${{ inputs.image-cache-suffix }}
+          CACHE_KEY: ${{ inputs.cache-key }}
+          BASE_TAG: ${{ inputs.base-tag }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          # Image tags only allow [A-Za-z0-9_.-], and branch names such as
+          # "feature/x" don't, so normalize the keys.
+          sanitize() { printf '%s' "$1" | tr -c 'A-Za-z0-9_.-' '-' | cut -c1-100; }
+          key="$(sanitize "$CACHE_KEY")"
+          base="$(sanitize "$BASE_TAG")"
+          default="$(sanitize "$DEFAULT_BRANCH")"
+          # Write the cache for the branch (or the given cache-key), so the next
+          # build of the same branch, and the push job of the same run, reuse it.
+          echo "cache-to=type=registry,ref=${IMAGE}:${CACHE_SUFFIX}-${key},mode=max" >> "$GITHUB_OUTPUT"
+          # Read the cache of this commit, then of the branch, then of the
+          # default branch as a fallback for new branches.
+          {
+            echo "cache-from<<EOF"
+            echo "type=registry,ref=${IMAGE}:${CACHE_SUFFIX}-${base}"
+            if [ "$key" != "$base" ]; then
+              echo "type=registry,ref=${IMAGE}:${CACHE_SUFFIX}-${key}"
+            fi
+            if [ -n "$default" ] && [ "$default" != "$key" ]; then
+              echo "type=registry,ref=${IMAGE}:${CACHE_SUFFIX}-${default}"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Build Image
         uses: docker/build-push-action@v7
         with:
@@ -96,6 +128,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ inputs.platforms }}
           push: true
-          cache-from: type=registry,ref=${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}:${{ inputs.image-cache-suffix }}-${{ inputs.cache-key }}
-          cache-to: type=registry,ref=${{ inputs.image-name-prefix }}-${{ inputs.image-name-suffix }}:${{ inputs.image-cache-suffix }}-${{ inputs.base-tag }},mode=max
+          cache-from: ${{ steps.cache.outputs.cache-from }}
+          cache-to: ${{ steps.cache.outputs.cache-to }}
           build-args: ${{ inputs.build-args }}
