@@ -188,6 +188,23 @@ class TestPyproject:
         for line in text:
             assert line in final_toml_text
 
+    def test_update_classifiers(self, package_config):
+        pyproject_file_path = package_config.path / "pyproject.toml"
+        text = [
+            "# START-MARKER-MANUAL-CONFIG",
+            "[project]",
+            'name="random-project"',
+            "classifiers = []",
+            "# END-MARKER-MANUAL-CONFIG",
+        ]
+        pyproject_file_path.write_text("\n".join(text))
+        # set a specific test matrix to ensure test stability
+        package_config.meta_cfg["tox"]["test_matrix"] = {"6.2": ["3.14", "3.13"]}
+        package_config.pyproject_toml()
+        final_toml_text = pyproject_file_path.read_text()
+        assert '"Programming Language :: Python :: 3.13",' in final_toml_text
+        assert '"Programming Language :: Python :: 3.14",' in final_toml_text
+
 
 class TestSetuptoolsUpperBound:
     @pytest.mark.parametrize(["is_native", "expected"], [[True, "82"], [False, "83"]])
@@ -219,6 +236,28 @@ class TestMinimalPythonVersion:
             package_config.meta_cfg["tox"]["test_matrix"] = matrix
 
         result = package_config._minimal_python_version()
+        assert result == output
+
+
+class TestMaximalPythonVersion:
+    @pytest.mark.parametrize(
+        ["matrix", "output"],
+        [
+            [None, "3.14"],
+            [{"6.0": ["*"]}, "3.13"],
+            [{"6.1": ["*"]}, "3.13"],
+            [{"6.2": ["*"]}, "3.14"],
+            [{"6.2": ["3.13"]}, "3.13"],
+            [{"6.2": ["3.13"], "6.1": ["3.9"]}, "3.13"],
+            [{"6.2": ["3.13", "3.10"], "5.2": ["3.8"]}, "3.13"],
+            [{"6.2": ["pypy3.10", "3.11"]}, "3.11"],
+        ],
+    )
+    def test_python_version(self, package_config, matrix, output):
+        if matrix:
+            package_config.meta_cfg["tox"]["test_matrix"] = matrix
+
+        result = package_config._maximum_python_version()
         assert result == output
 
 

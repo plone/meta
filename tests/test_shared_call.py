@@ -23,7 +23,7 @@ class TestCall:
         )
         call("git", "status")
         mock_run.assert_called_once_with(
-            ("git", "status"), capture_output=False, text=True, cwd=None
+            ("git", "status"), capture_output=False, text=True, cwd=None, input=None
         )
 
     @patch("plone.meta.shared.call.subprocess.run")
@@ -33,7 +33,7 @@ class TestCall:
         )
         call("cmd", capture_output=True)
         mock_run.assert_called_once_with(
-            ("cmd",), capture_output=True, text=True, cwd=None
+            ("cmd",), capture_output=True, text=True, cwd=None, input=None
         )
 
     @patch("plone.meta.shared.call.subprocess.run")
@@ -41,7 +41,7 @@ class TestCall:
         mock_run.return_value = subprocess.CompletedProcess(args=["cmd"], returncode=0)
         call("cmd", cwd="/tmp")
         mock_run.assert_called_once_with(
-            ("cmd",), capture_output=False, text=True, cwd="/tmp"
+            ("cmd",), capture_output=False, text=True, cwd="/tmp", input=None
         )
 
     @patch("plone.meta.shared.call.abort")
