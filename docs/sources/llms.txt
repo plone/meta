@@ -113,7 +113,7 @@ Container workflows: container-image-build-push, container-image-build, containe
 
 - test: Run the test suite (with test matrix: py314-plone62, py313-plone61, etc.)
 - coverage: Test coverage reporting
-- lint: Code quality checks via pre-commit
+- lint: Code quality checks via prek
 - format: Auto-formatting (isort, black, zpretty)
 - release-check: Release readiness validation
 - dependencies: Dependency declaration check

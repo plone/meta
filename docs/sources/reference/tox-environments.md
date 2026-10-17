@@ -48,11 +48,11 @@ Validates the package is ready for release by checking changelog entries, buildi
 
 ## `lint`
 
-Runs code quality and formatting checks via `pre-commit run --all-files`.
+Runs code quality and formatting checks via `prek run --all-files`.
 
 ## `format`
 
-Applies auto-formatting by running each formatter individually via `pre-commit run <formatter>`.
+Applies auto-formatting by running each formatter individually via `prek run <formatter>`.
 Each formatter is invoked separately so that its changes can be committed and inspected independently.
 This is particularly useful when porting old code, where subtle autoformatter changes might break the test suite.
 

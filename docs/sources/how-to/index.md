@@ -28,7 +28,7 @@ Clone the repository and install plone.meta into a virtual environment.
 :link: customize-meta-toml
 :link-type: doc
 
-Add custom configuration for flake8, tox, pyproject.toml, pre-commit, and more without editing generated files.
+Add custom configuration for flake8, tox, pyproject.toml, pre-commit/prek, and more without editing generated files.
 :::
 
 :::{grid-item-card} Configure GitHub Actions
