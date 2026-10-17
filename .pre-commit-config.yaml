@@ -34,3 +34,8 @@ repos:
     rev: "5.1b2"
     hooks:
     -   id: pyroma
+-   repo: https://github.com/mgedmin/check-python-versions
+    rev: "0.24.2"
+    hooks:
+    -   id: check-python-versions
+        args: ['--only', 'pyproject.toml,tox.ini']
