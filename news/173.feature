@@ -1,1 +1,0 @@
-Add a `plone_mappings` option to the `[pyproject]` section, `true` by default. Set it to `false` to leave the Zope and Plone `dependencychecker` mappings out, for packages used outside the Zope world. @kunalKumar-13

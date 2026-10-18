@@ -9,6 +9,21 @@
 
 <!-- towncrier release notes start -->
 
+## 2.12.0 (2026-10-19)
+
+
+### New features:
+
+- Add a `plone_mappings` option to the `[pyproject]` section, `true` by default. Set it to `false` to leave the Zope and Plone `dependencychecker` mappings out, for packages used outside the Zope world. @kunalKumar-13 [#173](https://github.com/plone/meta/issues/173)
+- Switch to `prek` to run pre-commit hooks @gforcada [#319](https://github.com/plone/meta/issues/319)
+
+
+### Bug fixes:
+
+- Fix the build cache of the `container-image-build` and `container-image-push` workflows, which was written under the base tag but read under the cache key, so it was never reused. The cache is now written per branch and falls back to the default branch. @sneridagh 
+- Update `JarvusInnovations/background-action` GHA version to v2. @sneridagh 
+- Update `astral-sh/setup-uv` GHA version @gforcada 
+
 ## 2.11.1 (2026-08-15)
 
 
