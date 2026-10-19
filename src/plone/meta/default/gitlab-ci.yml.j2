@@ -29,7 +29,7 @@ stages:
 lint:
   stage: qa
   variables:
-    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/prek
   cache:
     paths:
       - ${PRE_COMMIT_HOME}
