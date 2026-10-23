@@ -16,6 +16,7 @@ import jinja2
 import pathlib
 import re
 import shutil
+import sys
 import tomlkit
 import validate_pyproject
 import yaml
@@ -539,9 +540,15 @@ class PackageConfiguration:
             )
             return
 
+        check_python_versions_path = (
+            Path(sys.argv[0]).absolute().parent / "check-python-versions"
+        )
+        if not check_python_versions_path.exists():
+            # Hope that this command is available on the PATH.
+            check_python_versions_path = "check-python-versions"
         with change_dir(self.path):
             call(
-                "check-python-versions",
+                check_python_versions_path,
                 "--update",
                 f"{min_version}-{max_version}",
                 "--only",
