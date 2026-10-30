@@ -10,12 +10,14 @@ def abort(exitcode):
         sys.exit(exitcode)
 
 
-def call(*args, capture_output=False, cwd=None, allowed_return_codes=(0,)):
+def call(*args, capture_output=False, cwd=None, allowed_return_codes=(0,), input=None):
     """Call `args` as a subprocess.
 
     If it fails exit the process.
     """
-    result = subprocess.run(args, capture_output=capture_output, text=True, cwd=cwd)
+    result = subprocess.run(
+        args, capture_output=capture_output, text=True, cwd=cwd, input=input
+    )
     if result.returncode not in allowed_return_codes:
         print(f"ERROR: exit code {result.returncode}.")
         print("output:")

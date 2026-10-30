@@ -32,8 +32,12 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 dependencies = [
-  "Jinja2",
+  # check-python-versions 0.25 may explicitly block Python 3.15 by adding
+  # `requires-python = ">=3.10, !=3.15.*"`
+  # In pre-commit 0.25 is fine, but not as our dependency.
+  "check-python-versions<0.25",
   "editorconfig",
+  "Jinja2",
   "packaging",
   "pyyaml",
   "tomlkit",
