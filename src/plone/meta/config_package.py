@@ -35,8 +35,8 @@ DEFAULT = object()
 
 # List all python versions we want to test a given Plone version against
 TOX_TEST_MATRIX = {
-    "6.3": ["3.14", "3.13", "3.12", "3.11"],
-    "6.2": ["3.14", "3.13", "3.12", "3.11", "3.10"],
+    "6.3": ["3.15", "3.14", "3.13", "3.12", "3.11"],
+    "6.2": ["3.15", "3.14", "3.13", "3.12", "3.11"],
     "6.1": ["3.13", "3.12", "3.11", "3.10"],
     "6.0": ["3.13", "3.12", "3.11", "3.10", "3.9"],
 }
@@ -44,6 +44,7 @@ TOX_TEST_MATRIX = {
 MXDEV_CONSTRAINTS = "constraints-mxdev.txt"
 
 DOCKER_IMAGES = {
+    "3.15": "python:3.14-trixie",
     "3.14": "python:3.14-trixie",
     "3.13": "python:3.13-trixie",
     "3.12": "python:3.12-trixie",
