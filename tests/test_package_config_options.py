@@ -44,7 +44,7 @@ class TestHandleTestingMatrix:
     def test_default_matrix(self, package_config):
         result = package_config._handle_testing_matrix(None)
         assert "py314-plone62" in result
-        assert "py310-plone62" in result
+        assert "py311-plone62" in result
 
     def test_custom_matrix(self, package_config):
         result = package_config._handle_testing_matrix({"6.2": ["3.13", "3.12"]})
