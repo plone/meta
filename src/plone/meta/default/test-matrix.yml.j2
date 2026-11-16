@@ -27,13 +27,8 @@ jobs:
       with:
         persist-credentials: false
     - name: Install uv + caching
-      uses: astral-sh/setup-uv@v10.3.3
+      uses: plone/meta/.github/actions/setup_uv@%(ref)s
       with:
-        enable-cache: true
-        cache-dependency-glob: |
-          setup.*
-          tox.ini
-          pyproject.toml
         python-version: ${{ matrix.config[0] }}
 {% if os_dependencies %}
     - name: install OS packages
