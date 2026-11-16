@@ -33,5 +33,8 @@ jobs:
         run: |
           if [ `uvx tox list --no-desc -f init|wc -l` = 1 ]; then uvx --with tox-uv tox -e init;else true; fi
       - name: Run circular dependencies check
+        # Only fail on cycles this repository takes part in, see `pipforester --select`.
+        # The tox environment comes from each repository, so pass the variable through.
         run: |
-          uvx --with tox-uv tox -e circular
+          export PIPFORESTER_SELECT="${GITHUB_REPOSITORY#*/}"
+          uvx --with tox-uv tox -e circular -x 'testenv:circular.pass_env+=PIPFORESTER_SELECT'

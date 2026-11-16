@@ -520,6 +520,10 @@ jobs:
 
 Runs the `circular` tox environment to report circular dependencies.
 The workflow installs `libgraphviz-dev` for you.
+It sets the environment variable `PIPFORESTER_SELECT` to the repository name and passes it into the tox environment.
+`pipforester` then fails only on cycles that the repository takes part in.
+It still prints the other cycles, prefixed with `ignored edge`.
+The repository name must match the distribution name, ignoring case, dots, dashes, and underscores.
 
 **Example usage:**
 
