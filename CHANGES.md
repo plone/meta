@@ -9,6 +9,24 @@
 
 <!-- towncrier release notes start -->
 
+## 2.13.0 (2026-11-16)
+
+
+### New features:
+
+- Add Python 3.15 support on Plone 6.3 and 6.2, drop Python 3.10 on Plone 6.2 @gforcada [#python-versions](https://github.com/plone/meta/issues/python-versions)
+- Update trove classifiers to match the python test matrix @gforcada [#381](https://github.com/plone/meta/issues/381)
+- Reuse the `actions/setup_uv` GHA across all repositories, this avoids having PRs created for each repository at any `uv` version bump @gforcada [#427](https://github.com/plone/meta/issues/427)
+- The shared `circular` workflow only fails on dependency cycles the repository takes part in.
+  It sets `PIPFORESTER_SELECT` to the repository name, which needs `pipforester` 1.1.0 or later.
+  @jensens 
+
+
+### Bug fixes:
+
+- Add `.venv` to the `.gitignore` file of packages.  @mauritsvanrees 
+- Remove Python 3.11 from Plone 6.3 test matrix @gforcada 
+
 ## 2.12.0 (2026-10-19)
 
 
