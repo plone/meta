@@ -68,3 +68,11 @@ Generates a visual dependency graph using `pipdeptree` and `graphviz`.
 
 Checks for circular dependencies using `pipdeptree` and `pipforester`.
 Requires `libgraphviz-dev` for graph visualization.
+By default, every cycle in the installed dependencies fails the check.
+To fail only on cycles that one distribution takes part in, set `PIPFORESTER_SELECT` to its name and pass it into the environment.
+
+```shell
+PIPFORESTER_SELECT=plone.app.layout tox -e circular -x 'testenv:circular.pass_env+=PIPFORESTER_SELECT'
+```
+
+The shared `circular` workflow does this for you.
