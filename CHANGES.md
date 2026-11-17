@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.13.1 (2026-11-17)
+
+
+### Bug fixes:
+
+- Ignore circular dependencies that do not involve the package under test @gforcada 
+
 ## 2.13.0 (2026-11-16)
 
 
