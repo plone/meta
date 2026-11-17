@@ -38,7 +38,7 @@ allowlist_externals =
     sh
 deps =
     pipdeptree
-    pipforester
+    pipforester==1.1.0
     %(single_constraints_file)s
 commands =
     # Generate the full dependency tree
@@ -46,4 +46,4 @@ commands =
     # Generate a DOT graph with the circular dependencies, if any
     pipforester -i forest.json -o forest.dot --cycles
     # Report if there are any circular dependencies, i.e. error if there are any
-    pipforester -i forest.json --check-cycles -o /dev/null
+    pipforester -i forest.json --check-cycles -o /dev/null -s %(package_name)s
