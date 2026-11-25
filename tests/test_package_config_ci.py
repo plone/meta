@@ -56,6 +56,62 @@ class TestGhaWorkflows:
         assert meta_ci.count(".yml@2.x") == 1  # only the circular job is added
 
 
+class TestAutoUpdate:
+    def _set_github_option(self, package_config, line):
+        meta_config = package_config.path / ".meta.toml"
+        data = meta_config.read_text()
+        meta_config.write_text(f"{data}\n\n[github]\n{line}\n")
+        package_config.meta_cfg = package_config._read_meta_configuration()
+
+    def test_enabled_by_default(self, package_config):
+        package_config.gha_workflows()
+        github = package_config.path / ".github"
+        auto_update = (github / "workflows" / "auto-update.yml").read_text()
+        assert "plone/meta/.github/workflows/auto-update.yml@2.x" in auto_update
+        assert "schedule:" in auto_update
+        dependabot = (github / "dependabot.yml").read_text()
+        assert "open-pull-requests-limit: 0" in dependabot
+
+    def test_uses_ref(self, package_config):
+        self._set_github_option(package_config, 'ref = "2.13.1"')
+        package_config.gha_workflows()
+        workflow_file = (
+            package_config.path / ".github" / "workflows" / "auto-update.yml"
+        )
+        assert "auto-update.yml@2.13.1" in workflow_file.read_text()
+
+    def test_disabled(self, package_config, capsys):
+        self._set_github_option(package_config, "auto_update = false")
+        package_config.gha_workflows()
+        github = package_config.path / ".github"
+        assert not (github / "workflows" / "auto-update.yml").exists()
+        dependabot = (github / "dependabot.yml").read_text()
+        assert "open-pull-requests-limit" not in dependabot
+
+    def test_disabled_warns_about_existing_file(self, package_config, capsys):
+        workflows = package_config.path / ".github" / "workflows"
+        workflows.mkdir(parents=True)
+        (workflows / "auto-update.yml").write_text("")
+        self._set_github_option(package_config, "auto_update = false")
+        package_config.gha_workflows()
+        assert "`auto-update.yml` file was found" in capsys.readouterr().out
+
+    def test_not_for_gitlab(self, package_config):
+        package_config.is_github = False
+        assert package_config.auto_update is False
+
+    def test_pre_commit_schedule(self, package_config):
+        package_config.pre_commit_config()
+        config = (package_config.path / ".pre-commit-config.yaml").read_text()
+        assert "autoupdate_schedule: quarterly" in config
+
+    def test_pre_commit_schedule_disabled(self, package_config):
+        self._set_github_option(package_config, "auto_update = false")
+        package_config.pre_commit_config()
+        config = (package_config.path / ".pre-commit-config.yaml").read_text()
+        assert "autoupdate_schedule: monthly" in config
+
+
 class TestGitlabCi:
     def test_returns_empty_for_non_gitlab(self, package_config):
         package_config.is_gitlab = False
