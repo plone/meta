@@ -119,7 +119,8 @@ test_matrix = {"6.2" = ["*"]}
 
 plone.meta generates a {file}`.github/workflows/auto-update.yml` workflow.
 Every Monday it runs `config-package` from the latest plone.meta release on the repository.
-When that changes the configuration files, it opens a pull request from the `plone-meta-auto-update` branch, or updates the one that is still open, and starts the {file}`meta.yml` and {file}`test-matrix.yml` workflows for it.
+When that changes the configuration files, it opens a pull request from the `plone-meta-auto-update` branch, or updates the one that is still open, and runs the {file}`meta.yml` and {file}`test-matrix.yml` workflows for it.
+Their results show on the pull request as `auto-update` statuses.
 You can also start it by hand from the Actions tab.
 
 Because these pull requests bring the updates of the GitHub Actions and the pre-commit hooks, Dependabot no longer opens version update pull requests (security updates still come), and pre-commit.ci updates quarterly, the least often it allows.

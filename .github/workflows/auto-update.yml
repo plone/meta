@@ -10,7 +10,8 @@
 #   out, and the pull request says that `config-package` has to be run by hand.
 # - Pushes and pull requests made with it do not start other workflows, so the
 #   `meta.yml` and `test-matrix.yml` workflows are started with
-#   `workflow_dispatch` instead.
+#   `workflow_dispatch` instead.  Runs started that way do not show on the pull
+#   request, so this job waits for them and reports each one as a commit status.
 #
 # The repository (or organization) must allow GitHub Actions to create pull
 # requests: Settings > Actions > General > Workflow permissions.
@@ -35,6 +36,7 @@ jobs:
       actions: write
       contents: write
       pull-requests: write
+      statuses: write
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -98,7 +100,7 @@ jobs:
               echo '```'
             fi
             echo
-            echo "The \`meta.yml\` and \`test-matrix.yml\` workflows are started for this branch."
+            echo "The \`meta.yml\` and \`test-matrix.yml\` workflows are started for this branch; their results show as the \`auto-update\` statuses below."
             echo "Workflows that only run on \`pull_request\` do not start for pull requests made by GitHub Actions; close and reopen this pull request to run them."
           } > "$RUNNER_TEMP/body.md"
           title="Update configuration files with plone.meta $VERSION"
@@ -107,12 +109,42 @@ jobs:
           else
             gh pr create --head "$BRANCH" --title "$title" --body-file "$RUNNER_TEMP/body.md"
           fi
-      - name: Start CI for the branch
+      - name: Run CI for the branch
         if: env.PUSHED == 'true'
         run: |
+          sha=$(git rev-parse HEAD)
+          set_status() {  # workflow, state, run id, description
+            gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$sha" \
+              -f context="auto-update / $1" -f state="$2" -f description="$4" \
+              -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$3" > /dev/null
+          }
+          runs=""
           for workflow in meta.yml test-matrix.yml; do
-            if [ -f ".github/workflows/$workflow" ]; then
-              gh workflow run "$workflow" --ref "$BRANCH" \
-                || echo "::warning::Could not start $workflow; does it have a workflow_dispatch trigger?"
+            [ -f ".github/workflows/$workflow" ] || continue
+            if ! gh workflow run "$workflow" --ref "$BRANCH"; then
+              echo "::warning::Could not start $workflow; does it have a workflow_dispatch trigger?"
+              continue
+            fi
+            id=""
+            for _ in $(seq 30); do
+              sleep 5
+              id=$(gh run list --workflow "$workflow" --branch "$BRANCH" --event workflow_dispatch \
+                --commit "$sha" --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+              [ -n "$id" ] && break
+            done
+            if [ -z "$id" ]; then
+              echo "::warning::Could not find the run of $workflow."
+              continue
+            fi
+            set_status "$workflow" pending "$id" "Running"
+            runs="$runs $workflow:$id"
+          done
+          for run in $runs; do
+            workflow=${run%%:*}
+            id=${run#*:}
+            if gh run watch "$id" --exit-status --interval 30 > /dev/null; then
+              set_status "$workflow" success "$id" "Passed"
+            else
+              set_status "$workflow" failure "$id" "Failed"
             fi
           done
