@@ -1,6 +1,12 @@
 ci:
     autofix_prs: false
+{% if auto_update %}
+    # The auto-update workflow brings the updates via plone.meta;
+    # pre-commit.ci cannot turn autoupdate off, quarterly is the least often.
+    autoupdate_schedule: quarterly
+{% else %}
     autoupdate_schedule: monthly
+{% endif %}
 
 repos:
 -   repo: https://github.com/asottile/pyupgrade

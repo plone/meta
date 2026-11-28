@@ -61,6 +61,7 @@ Usage: re-enable-actions
 - .flake8: Flake8 linting rules
 - .gitignore: Git ignore patterns
 - .github/workflows/meta.yml: GitHub Actions CI (GitHub repos only); default jobs: qa, coverage, dependencies, release_ready, circular (note: "test" no longer included by default)
+- .github/workflows/auto-update.yml: weekly workflow that runs config-package from the latest plone.meta release and opens a pull request (GitHub repos only); generated when [github] auto_update is true (default)
 - .github/workflows/test-matrix.yml: GitHub Actions test matrix workflow (GitHub repos only); generated when use_test_matrix is true (default)
 - .gitlab-ci.yml: GitLab CI (GitLab repos only)
 - .pre-commit-config.yaml: Pre-commit hooks
@@ -97,6 +98,7 @@ Most sections support extra_lines for appending custom configuration.
 - [tox] test_matrix: dict defining Plone version to Python versions mapping
 - [tox] use_test_matrix: boolean (default true) to enable/disable test matrix
 - [tox] skip_test_extra: boolean for packages without a test extra
+- [github] auto_update: boolean (default true) for the weekly auto-update workflow
 
 ## Shared Workflows & Actions
 

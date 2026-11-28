@@ -73,6 +73,11 @@ Managed by plone.meta itself. Do not edit manually.
 `extra_lines`
 : Additional YAML appended to the workflow file.
 
+`auto_update`
+: Generate the weekly {file}`auto-update.yml` workflow, which opens a pull request with the changes of the latest plone.meta release.
+  It also limits Dependabot to security updates and pre-commit.ci to quarterly updates.
+  Default: `true`.
+
 ## `[gitlab]`
 
 `jobs`

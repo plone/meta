@@ -439,6 +439,8 @@ class PackageConfiguration:
             self._detect_setup_py_for_package_config(), use_test_matrix
         )
 
+        options["auto_update"] = self.auto_update
+
         return self.copy_with_meta(
             "pre-commit-config.yaml.j2",
             self.path / ".pre-commit-config.yaml",
@@ -698,6 +700,16 @@ class PackageConfiguration:
                     return True
         return False
 
+    @cached_property
+    def auto_update(self):
+        """Whether the weekly auto-update workflow is used.
+
+        Only for GitHub repositories; on by default.
+        """
+        if not self.is_github:
+            return False
+        return self.cfg_option("github", "auto_update", True) is not False
+
     def _detect_pkg_resources_namespace(self):
         """Dynamically find out if package uses pkg_resources namespaces."""
         for file_obj in self.path.glob("src/*/__init__.py"):
@@ -765,9 +777,26 @@ class PackageConfiguration:
         )
         files.append(meta_file)
         dependabot = self.copy_with_meta(
-            "dependabot.yml", destination=github_folder / "dependabot.yml"
+            "dependabot.yml.j2",
+            destination=github_folder / "dependabot.yml",
+            auto_update=self.auto_update,
         )
         files.append(dependabot)
+
+        auto_update_file = workflows_folder / "auto-update.yml"
+        if self.auto_update:
+            files.append(
+                self.copy_with_meta(
+                    "auto-update.yml.j2",
+                    destination=auto_update_file,
+                    ref=options["ref"],
+                )
+            )
+        elif auto_update_file.exists():
+            self.print_warning(
+                "CI configuration",
+                "An `auto-update.yml` file was found in the workflows folder, please remove it",
+            )
 
         if (self.path / "dependabot.yml").exists():
             self.print_warning(

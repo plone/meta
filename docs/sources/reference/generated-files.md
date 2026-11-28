@@ -79,9 +79,22 @@ Only generated for GitHub-hosted repositories.
 
 ## .github/dependabot.yml
 
-**Template:** {file}`dependabot.yml` (static)
+**Template:** {file}`dependabot.yml.j2`
 
 **Purpose:** Dependabot configuration for automatic GitHub Actions updates on a weekly schedule.
+With `[github] auto_update` enabled (the default), Dependabot only opens security updates.
+
+:::{note}
+Only generated for GitHub-hosted repositories.
+:::
+
+## .github/workflows/auto-update.yml
+
+**Template:** {file}`auto-update.yml.j2`
+
+**Purpose:** Weekly workflow that runs `config-package` from the latest plone.meta release and opens a pull request with the changes.
+It calls the reusable {file}`auto-update.yml` workflow of plone/meta.
+Generated when `[github] auto_update` is enabled (the default).
 
 :::{note}
 Only generated for GitHub-hosted repositories.

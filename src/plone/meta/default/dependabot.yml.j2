@@ -8,3 +8,8 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
+{% if auto_update %}
+    # The auto-update workflow brings the updates via plone.meta,
+    # so only security updates are opened by Dependabot.
+    open-pull-requests-limit: 0
+{% endif %}

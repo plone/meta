@@ -1,0 +1,24 @@
+name: Auto-update
+permissions: {}
+
+on:
+  schedule:
+    # Every Monday at 05:00 UTC
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+jobs:
+  auto-update:
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+      statuses: write
+    uses: plone/meta/.github/workflows/auto-update.yml@%(ref)s
+
+##
+# This workflow opens a pull request each week when a new plone.meta release
+# changes the configuration files.  To disable it, add in .meta.toml:
+# [github]
+# auto_update = false
+##

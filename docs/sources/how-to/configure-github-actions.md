@@ -115,6 +115,31 @@ Using `"*"` as shorthand includes all currently supported Python versions for a 
 test_matrix = {"6.2" = ["*"]}
 ```
 
+## Weekly auto-update
+
+plone.meta generates a {file}`.github/workflows/auto-update.yml` workflow.
+Every Monday it runs `config-package` from the latest plone.meta release on the repository.
+When that changes the configuration files, it opens a pull request from the `plone-meta-auto-update` branch, or updates the one that is still open, and runs the {file}`meta.yml` and {file}`test-matrix.yml` workflows for it.
+Their results show on the pull request as `auto-update` statuses.
+You can also start it by hand from the Actions tab.
+
+Because these pull requests bring the updates of the GitHub Actions and the pre-commit hooks, Dependabot no longer opens version update pull requests (security updates still come), and pre-commit.ci updates quarterly, the least often it allows.
+
+The workflow uses `GITHUB_TOKEN`, so:
+
+- The repository, or its organization, must allow GitHub Actions to create pull requests: {guilabel}`Settings > Actions > General > Workflow permissions`.
+- It cannot change files in {file}`.github/workflows`.
+  When those need an update, the pull request says so, with the `config-package` command to run on its branch.
+- Workflows that only run on `pull_request` do not start for its pull requests.
+  Close and reopen the pull request to run them.
+
+To keep the Dependabot and pre-commit.ci updates instead:
+
+```toml
+[github]
+auto_update = false
+```
+
 ## Add extra workflow jobs
 
 ```toml

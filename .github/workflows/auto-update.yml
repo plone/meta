@@ -1,0 +1,150 @@
+# Workflow meant to be used by external repositories
+# that are configured with this `meta` repository.
+#
+# It runs `config-package` from the latest plone.meta release on the
+# repository and opens a pull request with the changes, or updates the one
+# that is still open.
+#
+# The pull request is made with `GITHUB_TOKEN`, which brings two limits:
+# - It cannot change files in `.github/workflows`. Changes to those are left
+#   out, and the pull request says that `config-package` has to be run by hand.
+# - Pushes and pull requests made with it do not start other workflows, so the
+#   `meta.yml` and `test-matrix.yml` workflows are started with
+#   `workflow_dispatch` instead.  Runs started that way do not show on the pull
+#   request, so this job waits for them and reports each one as a commit status.
+#
+# The repository (or organization) must allow GitHub Actions to create pull
+# requests: Settings > Actions > General > Workflow permissions.
+name: Auto-update
+on:
+  # allow this workflow to be called
+  # by other workflows from other repositories
+  workflow_call:
+
+permissions: {}
+
+env:
+  BRANCH: plone-meta-auto-update
+
+jobs:
+  config-package:
+    name: Update configuration files
+    runs-on: ubuntu-latest
+    # Scheduled workflows can also run in forks; only update the repository itself.
+    if: ${{ !github.event.repository.fork }}
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+      statuses: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      # Keep the credentials (the default), they are needed to push.
+      - uses: actions/checkout@v7
+      - name: Install uv
+        uses: plone/meta/.github/actions/setup_uv@2.x
+      - name: Run config-package
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          uvx --from plone.meta@latest config-package --no-commit --branch "$BRANCH" .
+          version=$(sed -n 's/^commit-id = "\(.*\)"$/\1/p' .meta.toml)
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+      - name: Leave out changes to workflow files
+        run: |
+          if [ -n "$(git status --porcelain -- .github/workflows)" ]; then
+            echo "WORKFLOWS_CHANGED=true" >> "$GITHUB_ENV"
+            git checkout HEAD -- .github/workflows 2>/dev/null || true
+            git clean -fdq -- .github/workflows
+          fi
+      - name: Commit and push
+        run: |
+          pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          # The news entry and the commit-id in .meta.toml always change,
+          # so leave them out when checking for changes.
+          if [ -z "$(git status --porcelain -- . ':!news' ':!.meta.toml')" ] && [ -z "$WORKFLOWS_CHANGED" ]; then
+            echo "The configuration is up to date with plone.meta $VERSION." >> "$GITHUB_STEP_SUMMARY"
+            if [ -n "$pr" ]; then
+              gh pr close "$pr" --delete-branch --comment "The configuration is up to date with plone.meta $VERSION now."
+            fi
+            exit 0
+          fi
+          git add -A
+          git commit -q -m "Update configuration files with plone.meta $VERSION"
+          # Only push when the content differs from what is on the branch already,
+          # so an unchanged pull request does not run CI every week.
+          if git fetch -q origin "$BRANCH" 2>/dev/null && [ "$(git rev-parse FETCH_HEAD^{tree})" = "$(git rev-parse HEAD^{tree})" ]; then
+            echo "Branch $BRANCH is up to date already." >> "$GITHUB_STEP_SUMMARY"
+            echo "PUSHED=false" >> "$GITHUB_ENV"
+          else
+            git push -q --force origin "HEAD:refs/heads/$BRANCH"
+            echo "PUSHED=true" >> "$GITHUB_ENV"
+          fi
+          echo "PR=$pr" >> "$GITHUB_ENV"
+      - name: Open or update the pull request
+        if: env.PUSHED == 'true'
+        run: |
+          {
+            echo "Run \`config-package\` from plone.meta $VERSION."
+            echo
+            echo "Made by the weekly auto-update workflow, see https://github.com/plone/meta/blob/2.x/.github/workflows/auto-update.yml."
+            echo "The branch is replaced on each run while this pull request is open."
+            if [ -n "$WORKFLOWS_CHANGED" ]; then
+              echo
+              echo "**The files in \`.github/workflows\` need an update too.**"
+              echo "This workflow cannot change those, so run this on the branch and push:"
+              echo
+              echo '```'
+              echo "uvx --from plone.meta==$VERSION config-package --branch current ."
+              echo '```'
+            fi
+            echo
+            echo "The \`meta.yml\` and \`test-matrix.yml\` workflows are started for this branch; their results show as the \`auto-update\` statuses below."
+            echo "Workflows that only run on \`pull_request\` do not start for pull requests made by GitHub Actions; close and reopen this pull request to run them."
+          } > "$RUNNER_TEMP/body.md"
+          title="Update configuration files with plone.meta $VERSION"
+          if [ -n "$PR" ]; then
+            gh pr edit "$PR" --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --head "$BRANCH" --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          fi
+      - name: Run CI for the branch
+        if: env.PUSHED == 'true'
+        run: |
+          sha=$(git rev-parse HEAD)
+          set_status() {  # workflow, state, run id, description
+            gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$sha" \
+              -f context="auto-update / $1" -f state="$2" -f description="$4" \
+              -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$3" > /dev/null
+          }
+          runs=""
+          for workflow in meta.yml test-matrix.yml; do
+            [ -f ".github/workflows/$workflow" ] || continue
+            if ! gh workflow run "$workflow" --ref "$BRANCH"; then
+              echo "::warning::Could not start $workflow; does it have a workflow_dispatch trigger?"
+              continue
+            fi
+            id=""
+            for _ in $(seq 30); do
+              sleep 5
+              id=$(gh run list --workflow "$workflow" --branch "$BRANCH" --event workflow_dispatch \
+                --commit "$sha" --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+              [ -n "$id" ] && break
+            done
+            if [ -z "$id" ]; then
+              echo "::warning::Could not find the run of $workflow."
+              continue
+            fi
+            set_status "$workflow" pending "$id" "Running"
+            runs="$runs $workflow:$id"
+          done
+          for run in $runs; do
+            workflow=${run%%:*}
+            id=${run#*:}
+            if gh run watch "$id" --exit-status --interval 30 > /dev/null; then
+              set_status "$workflow" success "$id" "Passed"
+            else
+              set_status "$workflow" failure "$id" "Failed"
+            fi
+          done
